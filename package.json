@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "export-build": "next export",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export",
+    "deploy": "npm run build && npm run export && gh-pages -d pages"
   },
   "dependencies": {
     "framer-motion": "^7.10.3",
