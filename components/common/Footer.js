@@ -103,7 +103,7 @@ const Footer = () => {
           <img src="/logo.png" alt="" className="w-20" />
         </a>
         <p className="text-center  text-muted pb-2">
-          Created By <span className="text-primary-light">Wabweni Brian</span> | All
+          Created By <span className="text-primary-light">SkillGate</span> | All
           Rights Reserved
         </p>
       </section>
