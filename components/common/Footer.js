@@ -100,7 +100,7 @@ const Footer = () => {
       </footer>
       <section className="attribution pt-2 border-top-light">
         <a href="#" className="logo flex-center-center gap-1 my-3">
-          <img src="/logo.png" alt="" className="w-20" />
+          <img src="https://res.cloudinary.com/midefulness/image/upload/v1694111827/SkillGate/logo_pxxasx.png" alt="" className="w-20" />
         </a>
         <p className="text-center  text-muted pb-2">
           Created By <span className="text-primary-light">SkillGate</span> | All

@@ -36,13 +36,13 @@ const SingleJob = () => {
   );
 
   return !loading ? (
-    <div className="grid md:grid-cols-3 gap-x-14">
+    <div className="padding-container grid md:grid-cols-3 gap-x-14">
       <div className="md:col-span-2 h-fit md:sticky top-0">
         <div className="card overflow-hidden">
           <div className="relative">
             <img
-              src="/images/photo-3.jpg"
-              alt=""
+              src="https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"
+              alt="job-header-image"
               className="h-full sm:h-[200px] object-cover w-full"
             />
             <img

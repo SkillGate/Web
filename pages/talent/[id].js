@@ -13,7 +13,7 @@ const SingleTalent = () => {
   const { data: users } = useFetch(`${server}/api/users`);
   const recommendedUsers = users.filter((user) => user.id !== id);
   return !loading ? (
-    <div className="grid md:grid-cols-3 gap-x-14">
+    <div className="padding-container grid md:grid-cols-3 gap-x-14">
       <div className="md:col-span-2 h-fit md:sticky top-0">
         <div className="card overflow-hidden">
           <div className="relative">
@@ -34,9 +34,9 @@ const SingleTalent = () => {
                 {user?.name} (${user?.hourly_rate}/hr)
               </h1>
               <div className="flex-align-center gap-x-2">
-                <button className="btn flex-shrink-0 bg-slate-100 hover:bg-slate-200 text-muted dark:bg-hover-color dark:hover:bg-[#252532]">
+                {/* <button className="btn flex-shrink-0 bg-slate-100 hover:bg-slate-200 text-muted dark:bg-hover-color dark:hover:bg-[#252532]">
                   message
-                </button>
+                </button> */}
                 <button className="btn btn-primary flex-shrink-0">
                   connect
                 </button>

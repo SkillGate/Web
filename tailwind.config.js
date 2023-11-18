@@ -37,8 +37,11 @@ module.exports = {
         // secondaryGreen: "#0BAB7C",
         secondaryGreen: "#896FBC",
         secondaryRed: "#FC615C",
+        "hover-btn-color": "#420264",
+        "hover-btn-color2": "#C55FFC",
         "hover-color": "#2d2d39",
         "dark-light": "#393948",
+        "purple-haze":"#EFDCF9",
       },
       backgroundColor: {
         main: "#f5f5f9",

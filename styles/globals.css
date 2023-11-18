@@ -59,11 +59,11 @@ footer a:hover {
 }
 
 .btn-primary {
-  @apply bg-primary text-white hover:bg-[#0a986e];
+  @apply bg-primary text-white hover:bg-hover-btn-color;
 }
 
 .btn-primary-light {
-  @apply bg-primary-light text-primary hover:bg-[#07ae7146];
+  @apply bg-primary text-purple-haze hover:bg-hover-btn-color;
 }
 
 .icon-box {

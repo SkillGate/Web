@@ -1,21 +1,36 @@
-/* eslint-disable @next/next/no-img-element */
+import React from "react";
+import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { BiFile, BiLink } from "react-icons/bi";
 import { FaLinkedin } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
-import { userTypes } from "../constants";
+import { userTypes } from "../../constants";
+import useFetch from "../api/useFetch";
+import { server } from "../../config";
 
-const Appy = () => {
+const ApplyJob = ({ candidate }) => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+
   const [userType, setUserType] = useState("Candidate");
   const fileInput = useRef(null);
   const [file, setFile] = useState("");
+
   return (
     <>
       <div className="rounded max-w-3xl w-full mx-auto">
         {/*---------------------------------------- Back to home button------------------------------------- */}
         <button className="btn bg-slate-200 hover:bg-slate-300 dark:bg-dark-card dark:hover:bg-hover-color">
-          <Link href={userTypes.candidate == userType ? "/candidateDashboard" : "employerDashboard"}>
+          <Link
+            href={
+              userTypes.candidate == userType
+                ? "/candidateDashboard"
+                : "employerDashboard"
+            }
+          >
             <a className="flex-align-center gap-2">
               <FiChevronLeft />
               <span>back</span>
@@ -25,22 +40,22 @@ const Appy = () => {
 
         <div className="relative mt-5">
           <img
-            src="/images/photo-3.jpg"
-            alt=""
+            src={job?.banner_url}
+            alt="Background Image"
             className="h-[200px] object-cover w-full rounded-tl-xl rounded-tr-xl"
           />
           <img
-            src="/images/whatsapp.png"
-            alt=""
+            src={job?.logo_url}
+            alt="Logo"
             className="w-16 left-10 -bottom-8 absolute"
           />
         </div>
 
         <div className="mt-10">
-          <h1 className="text-xl font-semibold">UI/UX Designer</h1>
+          <h1 className="text-xl font-semibold">{job?.title}</h1>
           <p className="text-sm">
-            <span className="text-primary">WhatsApp Inc.</span>
-            <span>California, USA</span>
+            <span className="text-primary">{job?.company_name}</span>
+            <span className="px-2">{job?.company_location}</span>
             <span>3 days ago</span>
           </p>
         </div>
@@ -49,7 +64,7 @@ const Appy = () => {
         </div>
         <div className="py-4 border-b dark:border-hover-color">
           <div className="flex-align-center gap-5">
-            <div>
+            {/* <div>
               <p>LinkedIn Profile</p>
               <button className="btn bg-[#1275B1] hover:bg-[#0f6397] text-white">
                 <a href="www/linkedin.com" className="flex-align-center gap-2">
@@ -57,7 +72,7 @@ const Appy = () => {
                   <span>Apply with LinkedIn</span>
                 </a>
               </button>
-            </div>
+            </div> */}
 
             {/*---------------------------------------- File upload------------------------------------- */}
             <div>
@@ -165,4 +180,4 @@ const Appy = () => {
   );
 };
 
-export default Appy;
+export default ApplyJob;

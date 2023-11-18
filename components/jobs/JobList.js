@@ -4,7 +4,9 @@ import JobSkillTags from "../common/JobSkillTags";
 import { FaBookmark } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Skeleton from "../loading-skeleton/Skeleton";
+import { useState } from "react";
 const JobList = ({ jobs, loading }) => {
+  const [userType, setUserType] = useState("Candidate");
   return !loading ? (
     <>
       {jobs.length > 0 ? (
@@ -20,7 +22,10 @@ const JobList = ({ jobs, loading }) => {
               <div className="flex flex-col sm:flex-row gap-3 justify-between">
                 <div className="flex-align-center gap-3">
                   <img
-                    src={job?.logo_url || "/images/whatsapp.png"}
+                    src={
+                      job?.logo_url ||
+                      "https://res.cloudinary.com/midefulness/image/upload/v1700257571/SkillGate/photo_abisc5.png"
+                    }
                     alt="logo"
                     className="w-14 rounded-lg"
                   />
@@ -72,12 +77,14 @@ const JobList = ({ jobs, loading }) => {
                   </h1>
                 </div>
                 <div className="flex-align-center gap-x-4 mt-4 sm:mt-0">
-                  <button className="btn flex-shrink-0 bg-slate-100 hover:bg-slate-200 text-muted dark:bg-hover-color dark:hover:bg-[#252532]">
+                  {/* <button className="btn flex-shrink-0 bg-slate-100 hover:bg-slate-200 text-muted dark:bg-hover-color dark:hover:bg-[#252532]">
                     message
-                  </button>
-                  <Link href="/apply">
-                    <a className="btn btn-primary flex-shrink-0">apply now</a>
-                  </Link>
+                  </button> */}
+                  {userType && (
+                    <Link href={`/apply/${job?.id}`}>
+                      <a className="btn btn-primary flex-shrink-0">apply now</a>
+                    </Link>
+                  )}
                 </div>
               </div>
             </motion.div>

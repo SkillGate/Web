@@ -13,8 +13,10 @@ import Notifications from "./Notifications";
 import Dropdown from "./Dropdown";
 import ActiveLink from "./ActiveLink";
 import useDarkMode from "../../helpers/useDarkMode";
+import { imageUrl, userTypes } from "../../constants";
 
 const Navbar = () => {
+  const [userType, setUserType] = useState("Candidate");
   const [search, setSearch] = useState("");
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -52,24 +54,26 @@ const Navbar = () => {
     }
   };
 
+  const logoUrl = imageUrl.logoDoubleColor;
+
   return (
     <div
       className="navbar fixed w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.35rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
       onClick={handleClose}
     >
-      <Link href="/">
+      <Link href={userType ? "/candidateDashboard" : "/employerDashboard"}>
         <a className="hidden md:block flex-shrink-0">
           <div className="image-wrapper">
             <Image
-              src="/logo.png"
+              src={logoUrl}
               alt="logo"
               layout="fill"
-              className="!object-contain !h-8 !w-20 !relative"
+              className="!object-contain !h-10 !w-20 !relative bg-white rounded"
             />
           </div>
         </a>
       </Link>
-      <Link href="/">
+      <Link href={userType ? "/candidateDashboard" : "/employerDashboard"}>
         <a className="md:hidden">
           <Image src="/logo-mobile.png" alt="logo" width={32} height={32} />
         </a>
@@ -117,15 +121,17 @@ const Navbar = () => {
 
       <div className="flex-align-center space-x-2">
         {/*-------------------------------- Post Job------------------------------------------------------- */}
-        <Link href="/post">
-          <a
-            className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2 ${
-              showSearchBar && "hidden"
-            }`}
-          >
-            <FiPlus /> <span className="hidden md:block">post job</span>
-          </a>
-        </Link>
+        {userType == userTypes.employer && (
+          <Link href="/post">
+            <a
+              className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2 ${
+                showSearchBar && "hidden"
+              }`}
+            >
+              <FiPlus /> <span className="hidden md:block">post job</span>
+            </a>
+          </Link>
+        )}
 
         {/*---------------------- Notifications toggle------------------------------------------------ */}
         <div

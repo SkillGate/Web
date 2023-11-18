@@ -30,3 +30,73 @@ export const links = [
     url: "/events",
   },
 ];
+
+
+export const candidateLinks = [
+  {
+    id: 1,
+    linkText: "Home",
+    url: "/candidateDashboard",
+  },
+  // {
+  //   id: 2,
+  //   linkText: "Job Search",
+  //   url: "/search",
+  // },
+  // {
+  //   id: 3,
+  //   linkText: "Talent",
+  //   url: "/talent",
+  // },
+  // {
+  //   id: 4,
+  //   linkText: "Schedule",
+  //   url: "/schedule",
+  // },
+  {
+    id: 5,
+    linkText: "History",
+    url: "/history",
+  },
+  // {
+  //   id: 6,
+  //   linkText: "Events",
+  //   url: "/events",
+  // },
+];
+
+
+export const employerLinks = [
+  {
+    id: 1,
+    linkText: "Home",
+    url: "/employerDashboard",
+  },
+  {
+    id: 2,
+    linkText: "Job Search",
+    url: "/search",
+  },
+  {
+    id: 3,
+    linkText: "Talent",
+    url: "/talent",
+  },
+  // {
+  //   id: 4,
+  //   linkText: "Schedule",
+  //   url: "/schedule",
+  // },
+  {
+    id: 5,
+    linkText: "History",
+    url: "/history",
+  },
+  // {
+  //   id: 6,
+  //   linkText: "Events",
+  //   url: "/events",
+  // },
+];
+
+
