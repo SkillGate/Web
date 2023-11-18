@@ -1,26 +1,25 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FiDelete, FiMoon, FiPlus, FiSun } from "react-icons/fi";
+import { FiDelete, FiMoon, FiPlus, FiSun  } from "react-icons/fi";
 import { BiBell, BiChevronDown, BiSearch, BiMenu } from "react-icons/bi";
+import { CiLogin } from "react-icons/ci";
 import { useUiContext } from "../../contexts/UiContext";
 import { actioTypes } from "../../reducers/uiReducer";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import { links } from "../../data/links";
-import Notifications from "./Notifications";
-import Dropdown from "./Dropdown";
-import ActiveLink from "./ActiveLink";
+import { navLinks } from "../../data/links";
+import Dropdown from "../common/Dropdown";
+import ActiveLink from "../common/ActiveLink";
 import useDarkMode from "../../helpers/useDarkMode";
 import { imageUrl, userTypes } from "../../constants";
+import { NAV_LINKS } from "./../../constants/index";
 
-const Navbar = () => {
-  const [userType, setUserType] = useState("Candidate");
-  const [search, setSearch] = useState("");
+const MainNavbar = () => {
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
-  const [showSearchBar, setShowSearchBar] = useState(false);
   const router = useRouter();
+
+  const currentPath = router.pathname;
 
   const { dispatch, isSidebarOpen } = useUiContext();
 
@@ -37,21 +36,9 @@ const Navbar = () => {
     }
   };
 
-  const handleNotifications = () => {
-    dispatch({ type: actioTypes.toggleNotifications });
-  };
-
   const handleCloseSidebar = (e) => {
     if (e.target.classList.contains("mobile-modal"))
       dispatch({ type: actioTypes.closeSidebar });
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (search) {
-      setSearch("");
-      router.push(`/jobs/search/${search}`);
-    }
   };
 
   const logoUrl = imageUrl.logoDoubleColor;
@@ -61,7 +48,7 @@ const Navbar = () => {
       className="navbar fixed w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.35rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
       onClick={handleClose}
     >
-      <Link href={userType ? "/candidateDashboard" : "/employerDashboard"}>
+      <Link href="/">
         <a className="hidden md:block flex-shrink-0">
           <div className="image-wrapper">
             <Image
@@ -73,7 +60,7 @@ const Navbar = () => {
           </div>
         </a>
       </Link>
-      <Link href={userType ? "/candidateDashboard" : "/employerDashboard"}>
+      <Link href="/">
         <a className="md:hidden">
           <Image src={logoUrl} alt="logo" width={32} height={32} />
         </a>
@@ -81,7 +68,7 @@ const Navbar = () => {
 
       {/*-------------------------------------- Desktop Menu------------------------------------- */}
       <ul className="hidden md:flex-align-center space-x-3 lg:space-x-6">
-        {links.map(({ id, linkText, url }) => (
+        {navLinks.map(({ id, linkText, url }) => (
           <ActiveLink href={url} key={id}>
             {linkText}
           </ActiveLink>
@@ -109,7 +96,7 @@ const Navbar = () => {
               <FiDelete />
             </div>
           </div>
-          {links.map(({ id, linkText, url }) => (
+          {navLinks.map(({ id, linkText, url }) => (
             <Link key={id} href={url} end>
               <a onClick={() => dispatch({ type: actioTypes.closeSidebar })}>
                 {linkText}
@@ -120,21 +107,23 @@ const Navbar = () => {
       </div>
 
       <div className="flex-align-center space-x-2">
-        {/*-------------------------------- Post Job------------------------------------------------------- */}
-        {userType == userTypes.employer && (
-          <Link href="/post">
-            <a
-              className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2 ${
-                showSearchBar && "hidden"
-              }`}
-            >
-              <FiPlus /> <span className="hidden md:block">post job</span>
-            </a>
-          </Link>
-        )}
+        <Link href="/sign-in">
+          <a
+            className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
+          >
+            <CiLogin /> <span className="hidden md:block">Sign In</span>
+          </a>
+        </Link>
 
+        <Link href="/create-account">
+          <a
+            className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
+          >
+            <CiLogin /> <span className="hidden md:block">Register</span>
+          </a>
+        </Link>
         {/*---------------------- Notifications toggle------------------------------------------------ */}
-        <div
+        {/* <div
           className={`icon-box !opacity-100 relative notification-btn ${
             showSearchBar && "!hidden"
           }`}
@@ -145,10 +134,10 @@ const Navbar = () => {
             <div className="absolute w-2 h-2 bg-primary top-0 right-0 rounded-full notification-btn"></div>
           </motion.div>
           <Notifications />
-        </div>
+        </div> */}
 
         {/*----------------------------- search Bar----------------------------------------------------- */}
-        <form onSubmit={handleSearch}>
+        {/* <form onSubmit={handleSearch}>
           <div
             className={`flex-align-center relative h-9 w-9 transition-a  border-slate-300 dark:border-hover-color rounded-full ${
               showSearchBar && "!w-[150px] md:!w-[200px] border"
@@ -170,20 +159,20 @@ const Navbar = () => {
               <BiSearch className="text-muted" />
             </span>
           </div>
-        </form>
+        </form> */}
 
         {/*----------------------------- Dark mode toggle-------------------------------------------------- */}
-        <motion.div
+        {/* <motion.div
           className="icon-box bg-slate-100 dark:bg-[#2b2b35]"
           onClick={toggleMode}
           whileTap={{ scale: 0.5 }}
         >
           {mode === "dark" ? <FiSun /> : <FiMoon />}
         </motion.div>
-        <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-700"></div>
+        <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-700"></div> */}
 
         {/*------------------------------- Profile Dropdown toggle-------------------------------------------- */}
-        <div
+        {/* <div
           className="dropdown-btn flex-align-center space-x-1  md:pl-4 flex-shrink-0 relative"
           onClick={handleDropdown}
         >
@@ -195,7 +184,7 @@ const Navbar = () => {
           />
           <BiChevronDown className="dropdown-btn" />
           <Dropdown />
-        </div>
+        </div> */}
 
         {/*------------------------------- Mobile Menu Toogle------------------------- */}
         <motion.div
@@ -210,4 +199,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default MainNavbar;

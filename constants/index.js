@@ -9,3 +9,11 @@ export const userTypes = {
   employer: "Employer",
   candidate: "Candidate",
 };
+
+export const NAV_LINKS = [
+  { href: "/", key: "home", label: "Home" },
+  { href: "/about", key: "about_us", label: "About Us" },
+  { href: "/services", key: "services", label: "Services" },
+  { href: "/products", key: "products", label: "Products" },
+  { href: "/contact", key: "contact_us", label: "Contact Us" },
+];

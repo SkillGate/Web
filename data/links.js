@@ -99,4 +99,25 @@ export const employerLinks = [
   // },
 ];
 
-
+export const navLinks = [
+  {
+    id: 1,
+    linkText: "Home",
+    url: "#home",
+  },
+  {
+    id: 2,
+    linkText: "About Us",
+    url: "#about",
+  },
+  {
+    id: 3,
+    linkText: "Advertisement",
+    url: "#advertisement",
+  },
+  {
+    id: 4,
+    linkText: "Contact Us",
+    url: "#contact",
+  },
+];
