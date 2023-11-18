@@ -9,6 +9,7 @@ import Schedule from "../components/home/Schedule";
 import { server } from "../config";
 import useFetch from "./api/useFetch";
 import Skeleton from "../components/loading-skeleton/Skeleton";
+import About from "../components/landing/About";
 
 const Home = () => {
   const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
@@ -67,7 +68,9 @@ const Home = () => {
     // </div>
 
     <div>
-
+      <div>
+        <About />
+      </div>
     </div>
   );
 };

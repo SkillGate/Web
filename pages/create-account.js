@@ -24,10 +24,10 @@ const RegisterPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="bg-white p-8 rounded shadow-md">
-        <h2 className="text-2xl font-semibold mb-4">Register</h2>
+        <h2 className="text-2xl font-semibold mb-4">Who are you?</h2>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2">Select Users</label>
+          <label className="block text-gray-700 font-bold mb-2">Select your roal to register</label>
           <div className="grid grid-cols-2 gap-4">
             {/* User 1 */}
             <div
