@@ -54,12 +54,18 @@ const Layout = ({ children }) => {
       {!(currentPath == "/sign-in" || currentPath == "/create-account") &&
         (userType == "" ? <MainNavbar /> : <Navbar />)}
       <div
-        className={`px-[2%] md:px-[6%] 2xl:container 2xl:mx-auto ${!(currentPath === "/sign-in" || currentPath === "/create-account") ? 'pt-20' : ''} min-h-screen`}
+        className={`${
+          !(currentPath === "/sign-in" || currentPath === "/create-account")
+            ? "px-[2%] md:px-[6%] 2xl:container 2xl:mx-auto pt-20 min-h-screen"
+            : ""
+        } `}
         onClick={handleCloseDropdown}
       >
         {children}
       </div>
-      <Footer />
+      {!(currentPath == "/sign-in" || currentPath == "/create-account") && (
+        <Footer />
+      )}
     </>
   );
 };
