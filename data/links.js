@@ -103,7 +103,7 @@ export const navLinks = [
   {
     id: 1,
     linkText: "Home",
-    url: "#home",
+    url: "/",
   },
   {
     id: 2,
