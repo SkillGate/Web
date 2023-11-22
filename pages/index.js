@@ -70,7 +70,7 @@ const Home = () => {
     //   </div>
     // </div>
 
-    <div>
+    <div className="overflow-hidden">
       <div>
         <Homes />
         <About />

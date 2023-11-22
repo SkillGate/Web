@@ -13,6 +13,26 @@ export const imageUrl = {
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700158487/SkillGate/innovation.png",
   aboutitem4:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700158478/SkillGate/diversity.png",
+  google:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700118695/SkillGate/google_icon.png",
+  signInPageImage:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700378904/SkillGate/signInIPageImage.svg",
+  xvlogo:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645058/SkillGate/xv-logo.png",
+  ifslogo:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645073/SkillGate/ifs-logo.png",
+  directfnlogo: 
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645188/SkillGate/directfn-logo.png",
+  gtnlogo: 
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645187/SkillGate/gtn-logo.webp",
+  dialoglogo: 
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645063/SkillGate/Dialog_Axiata-logo.png",
+  axiatalabslogo: 
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645084/SkillGate/axiata_dialog-logo.png",
+  wealthoslogo: 
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645454/SkillGate/wealthos-logo.png",
+  x99logo: 
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645059/SkillGate/99x-logo.png",
 };
 
 export const userTypes = {

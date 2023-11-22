@@ -48,6 +48,10 @@ module.exports = {
         "dark-main": "#13131A",
         "dark-card": "#1C1C24",
       },
+      backgroundImage: {
+        pattern: "url('/pattern.png')",
+        "hero-bg": "url('https://res.cloudinary.com/midefulness/image/upload/v1694111835/SkillGate/hero-bg.png')",
+      },
     },
   },
   plugins: [
