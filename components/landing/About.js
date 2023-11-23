@@ -36,7 +36,7 @@ const About = () => {
   return (
     <section id='about' >
       <div className="relative isolate overflow-hidden">
-        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl px-6 lg:px-8 py-10 sm:py-20">
           <div className="text-center mt-10 text-lg">
             <p>Our mission is to bridge the gap between top-notch talent and exceptional opportunities. We strive to revolutionize the recruitment process and make hiring efficient, effective, and enjoyable for both employers and candidates.</p>
           </div>
