@@ -176,16 +176,6 @@ const MainNavbar = () => {
           </div>
         </form> */}
 
-        {/*----------------------------- Dark mode toggle-------------------------------------------------- */}
-        <motion.div
-          className="icon-box bg-slate-100 dark:bg-[#2b2b35]"
-          onClick={toggleMode}
-          whileTap={{ scale: 0.5 }}
-        >
-          {mode === "dark" ? <FiSun /> : <FiMoon />}
-        </motion.div>
-        <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-700"></div>
-
         {/*------------------------------- Profile Dropdown toggle-------------------------------------------- */}
         {/* <div
           className="dropdown-btn flex-align-center space-x-1  md:pl-4 flex-shrink-0 relative"
