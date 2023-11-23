@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FiDelete, FiMoon, FiPlus, FiSun  } from "react-icons/fi";
+import { FiDelete, FiMoon, FiPlus, FiSun } from "react-icons/fi";
 import { BiBell, BiChevronDown, BiSearch, BiMenu } from "react-icons/bi";
 import { CiLogin } from "react-icons/ci";
 import { useUiContext } from "../../contexts/UiContext";
@@ -45,7 +45,7 @@ const MainNavbar = () => {
 
   return (
     <div
-      className="navbar fixed w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.35rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
+      className="navbar fixed w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.5rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
       onClick={handleClose}
     >
       <Link href="/">
@@ -107,21 +107,36 @@ const MainNavbar = () => {
       </div>
 
       <div className="flex-align-center space-x-2">
-        <Link href="/sign-in">
-          <a
-            className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
-          >
-            <CiLogin /> <span className="hidden md:block">Sign In</span>
-          </a>
-        </Link>
+        {/*----------------------------- Dark mode toggle-------------------------------------------------- */}
+        <motion.div
+          className="icon-box bg-slate-100 dark:bg-[#2b2b35] mr-2"
+          onClick={toggleMode}
+          whileTap={{ scale: 0.5 }}
+        >
+          {mode === "dark" ? <FiSun /> : <FiMoon />}
+        </motion.div>
+        <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-700"></div>
 
-        <Link href="/create-account">
-          <a
-            className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
-          >
-            <CiLogin /> <span className="hidden md:block">Register</span>
-          </a>
-        </Link>
+        <div className="pl-2">
+          <Link href="/sign-in">
+            <a
+              className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
+            >
+              <CiLogin /> <span className="hidden md:block">Sign In</span>
+            </a>
+          </Link>
+        </div>
+
+        <div>
+          <Link href="/create-account">
+            <a
+              className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
+            >
+              <CiLogin /> <span className="hidden md:block">Register</span>
+            </a>
+          </Link>
+        </div>
+
         {/*---------------------- Notifications toggle------------------------------------------------ */}
         {/* <div
           className={`icon-box !opacity-100 relative notification-btn ${
