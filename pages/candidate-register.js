@@ -2,7 +2,7 @@
 
 import { useForm, Controller } from "react-hook-form";
 
-const LoginPage = () => {
+const CandidateRegisterPage = () => {
   const {
     handleSubmit,
     control,
@@ -266,4 +266,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default CandidateRegisterPage;

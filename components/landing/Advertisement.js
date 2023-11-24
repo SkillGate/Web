@@ -16,13 +16,13 @@ const Advertisement = () => {
   }
 
   return (
-    <section id='advertisement' className='overflow-hidden lg:pb-25 xl:pb-30'>
-      <div className="relative isolate overflow-hidden py-10 sm:py-20">
+    <section id='advertisement' className='relative isolate overflow-hidden'>
+      <div className="relative isolate overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mt-5 text-lg">
             <div className="min-h-60 flex flex-col items-center justify-start py-10 px-8" >
               <div className="flex items-center justify-center">
-                <h2 className="font-primary font-bold text-2xl text-center">Advertisements</h2>
+                <h2 className="font-primary font-bold text-5xl text-center">Advertisements</h2>
               </div>
               <div className="flex items-center justify-center w-full mt-14 px-8">
                 <div className="w-full mx-8">
