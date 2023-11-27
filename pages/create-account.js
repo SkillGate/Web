@@ -1,9 +1,11 @@
 // pages/register.js
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from "next/router";
 
 const RegisterPage = () => {
   const [selectedUsers, setSelectedUsers] = useState();
+  const router = useRouter();
 
   const handleUserSelect = (userId) => {
     if (selectedUsers==userId) {
@@ -19,6 +21,11 @@ const RegisterPage = () => {
     // Handle registration with selected users
     console.log('Selected Users:', selectedUsers);
     // Add your registration logic here
+    if(selectedUsers == 1){
+      router.push('/candidate-register');
+    }else if(selectedUsers == 2){
+      router.push('/employer-register');
+    }
   };
 
   return (
