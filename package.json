@@ -19,12 +19,14 @@
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-calendar": "^4.0.0",
+    "react-datepicker": "^4.23.0",
     "react-dom": "18.2.0",
     "react-fast-marquee": "^1.6.2",
     "react-firebase-hooks": "^5.1.1",
     "react-hook-form": "^7.48.2",
     "react-icons": "^4.6.0",
-    "react-paginate": "^8.1.4"
+    "react-paginate": "^8.1.4",
+    "react-select": "^5.8.0"
   },
   "devDependencies": {
     "@types/react": "18.2.37",
