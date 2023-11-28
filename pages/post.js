@@ -4,6 +4,7 @@ import { BiTag } from "react-icons/bi";
 import { FaCamera, FaTimes } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
+import Select from "react-select";
 
 const PostJob = () => {
   const logoInput = useRef(null);
@@ -54,9 +55,8 @@ const PostJob = () => {
             onChange={(e) => setLogo(e.target.files[0])}
           />
           <img
-            src={`${
-              banner ? URL.createObjectURL(banner) : "/images/placeholder.png"
-            }`}
+            src={`${banner ? URL.createObjectURL(banner) : "/images/placeholder.png"
+              }`}
             alt=""
             className="h-[200px] sm:cursor-pointer object-cover w-full rounded-tl-xl rounded-tr-xl"
             onClick={() => bannerInput.current.click()}
@@ -95,7 +95,7 @@ const PostJob = () => {
               name="name"
               className="input"
               value="FrontEnd Engineer"
-              onChange={() => {}}
+              onChange={() => { }}
               required
             />
             <label htmlFor="name">Job Title</label>
@@ -106,10 +106,52 @@ const PostJob = () => {
               name="name"
               className="input"
               value="Whatsapp Inc."
-              onChange={() => {}}
+              onChange={() => { }}
               required
             />
             <label htmlFor="name">Company name</label>
+          </div>
+        </div>
+        <div className="form-input w-full sm:flex-1 relative mt-5">
+          <textarea
+            name="name"
+            className="input !h-28 pt-2"
+            required
+          ></textarea>
+          <label htmlFor="name">About the Job</label>
+        </div>
+        <div className="form-input w-full sm:flex-1 relative mt-5">
+          <textarea
+            name="name"
+            className="input !h-28 pt-2"
+            required
+          ></textarea>
+          <label htmlFor="name">Resposibilities</label>
+        </div>
+        <h3>Requirements</h3>
+        <h6 className="mt-2">Education</h6>
+        <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
+          <label htmlFor="name">Degree Type</label>
+          <div className="form-input w-full sm:flex-1 relative">
+            <Select
+              options={[
+                { value: "Bachelor's Degree", label: "Bachelor's Degree" },
+                { value: "Master's Degree", label: "Master's Degree" },
+                { value: "PHD", label: "PHD" },
+                { value: "Graduated High School", label: "Graduated High School" }
+              ]}
+            />
+          </div>
+          <label htmlFor="name">Related Field</label>
+          <div className="form-input w-full sm:flex-1 relative">
+            <Select
+              options={[
+                { value: "First Class", label: "First Class" },
+                { value: "Second Class - Upper Division", label: "Second Class - Upper Division" },
+                { value: "Second Class - Lower DIvision", label: "Second Class - Lower DIvision" },
+                { value: "General", label: "General" }
+              ]}
+            />
           </div>
         </div>
         <div className="mt-5">
@@ -145,7 +187,7 @@ const PostJob = () => {
             </div>
           </form>
         </div>
-        <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
+        {/* <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
           <div className="flex-align-center gap-3 w-full sm:w-fit">
             <div className="form-input flex-1 relative">
               <select className="input" required>
@@ -195,26 +237,26 @@ const PostJob = () => {
             <input type="text" name="phone" className="input" required />
             <label htmlFor="phone">Phone 2</label>
           </div>
-        </div>
+        </div> */}
         <div className="form-input w-full sm:flex-1 relative mt-5">
           <input
             type="text"
             name="email"
             className="input"
             value="whatsapp@inc.com"
-            onChange={() => {}}
+            onChange={() => { }}
             required
           />
           <label htmlFor="email">Email Address</label>
         </div>
-        <div className="form-input w-full sm:flex-1 relative mt-5">
+        {/* <div className="form-input w-full sm:flex-1 relative mt-5">
           <textarea
             name="name"
             className="input !h-28 pt-2"
             required
           ></textarea>
           <label htmlFor="name">Job Description</label>
-        </div>
+        </div> */}
         <div className="input-check">
           <input type="checkbox" name="" id="terms" />
           <label htmlFor="terms">I agree to the terms & conditions</label>
