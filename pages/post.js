@@ -5,6 +5,8 @@ import { FaCamera, FaTimes } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
 import Select from "react-select";
+import { useForm, Controller } from "react-hook-form";
+import { IoMdAdd } from "react-icons/io";
 
 const PostJob = () => {
   const logoInput = useRef(null);
@@ -12,26 +14,54 @@ const PostJob = () => {
   const [logo, setLogo] = useState("");
   const [banner, setBanner] = useState("");
 
-  const [tag, setTag] = useState("react");
-  const [tags, setTags] = useState([
-    { id: 18179290, tag: "html" },
-    { id: 18938347, tag: "css" },
-    { id: 43617839, tag: "javascript" },
-    { id: 32523642, tag: "react" },
-    { id: 13532646, tag: "firebase" },
-    { id: 36323526, tag: "graphql" },
-  ]);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+    watch,
+    setError,
+    clearErrors
+  } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (tag) {
-      setTags([...tags, { id: new Date().getTime().toString(), tag }]);
-    }
-    setTag("");
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
-  const removeTag = (id) => {
-    setTags(tags.filter((tag) => tag.id !== id));
+  const [educationFields, setEducationFields] = useState(1);
+
+  const handleAddEducationField = () => {
+    setEducationFields((prevEducationFields) => prevEducationFields + 1);
+  };
+
+  const [experienceFields, setExperienceFields] = useState(1);
+
+  const handleAddExperienceField = () => {
+    setExperienceFields((prevExperienceFields) => prevExperienceFields + 1);
+  };
+
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState('');
+
+  const addSkill = () => {
+    if (newSkill.trim() !== '') {
+      const updatedSkills = [...skills, newSkill.trim()];
+      setSkills(updatedSkills);
+      setNewSkill('');
+
+      setValue('skills', updatedSkills);
+    }
+  };
+
+  const removeSkill = (skillToRemove) => {
+    const updatedSkills = skills.filter((skill) => skill !== skillToRemove);
+    setSkills(updatedSkills);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      addSkill();
+    }
   };
 
   return (
@@ -86,182 +116,303 @@ const PostJob = () => {
           </div>
         </div>
         <h1 className="text-2xl font-bold mt-10">Fill the form</h1>
-        {/*---------------------------------------- Form------------------------------------- */}
 
-        <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
-          <div className="form-input w-full sm:flex-1 relative">
-            <input
-              type="text"
-              name="name"
-              className="input"
-              value="FrontEnd Engineer"
-              onChange={() => { }}
-              required
-            />
-            <label htmlFor="name">Job Title</label>
-          </div>
-          <div className="form-input w-full sm:flex-1 relative">
-            <input
-              type="text"
-              name="name"
-              className="input"
-              value="Whatsapp Inc."
-              onChange={() => { }}
-              required
-            />
-            <label htmlFor="name">Company name</label>
-          </div>
-        </div>
-        <div className="form-input w-full sm:flex-1 relative mt-5">
-          <textarea
-            name="name"
-            className="input !h-28 pt-2"
-            required
-          ></textarea>
-          <label htmlFor="name">About the Job</label>
-        </div>
-        <div className="form-input w-full sm:flex-1 relative mt-5">
-          <textarea
-            name="name"
-            className="input !h-28 pt-2"
-            required
-          ></textarea>
-          <label htmlFor="name">Resposibilities</label>
-        </div>
-        <h3>Requirements</h3>
-        <h6 className="mt-2">Education</h6>
-        <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
-          <label htmlFor="name">Degree Type</label>
-          <div className="form-input w-full sm:flex-1 relative">
-            <Select
-              options={[
-                { value: "Bachelor's Degree", label: "Bachelor's Degree" },
-                { value: "Master's Degree", label: "Master's Degree" },
-                { value: "PHD", label: "PHD" },
-                { value: "Graduated High School", label: "Graduated High School" }
-              ]}
-            />
-          </div>
-          <label htmlFor="name">Related Field</label>
-          <div className="form-input w-full sm:flex-1 relative">
-            <Select
-              options={[
-                { value: "First Class", label: "First Class" },
-                { value: "Second Class - Upper Division", label: "Second Class - Upper Division" },
-                { value: "Second Class - Lower DIvision", label: "Second Class - Lower DIvision" },
-                { value: "General", label: "General" }
-              ]}
-            />
-          </div>
-        </div>
-        <div className="mt-5">
-          <form onSubmit={handleSubmit}>
+        {/*----------------------------------------Begin Form------------------------------------- */}
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
             <div className="form-input w-full sm:flex-1 relative">
-              <span className="absolute top-2 left-2">
-                <BiTag className="opacity-50" />
-              </span>
-              <input
-                type="text"
-                className="input !pl-8"
-                value={tag}
-                onChange={(e) => setTag(e.target.value)}
+              <Controller
+                name="companyname"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    id="companyname"
+                    className="input"
+                    required
+                  />
+                )}
               />
-              <label htmlFor="name">Add skills</label>
+              <label htmlFor="firstname">Company Name</label>
             </div>
+            <div className="form-input w-full sm:flex-1 relative">
+              <Controller
+                name="jobtitle"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    id="jobtitle"
+                    className="input"
+                    required
+                  />
+                )}
+              />
+              <label htmlFor="jobtitle">Job Title</label>
+            </div>
+          </div>
+          <div className="form-input w-full sm:flex-1 relative mt-5">
+            <Controller
+              name="abouthtejob"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="textarea"
+                  id="aboutthejob"
+                  className="input !h-28 pt-2"
+                  required
+                />
+              )}
+            />
+            <label htmlFor="aboutthejob">About the Job</label>
+          </div>
+          <div className="form-input w-full sm:flex-1 relative mt-5">
+            <Controller
+              name="resposibilities"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="textarea"
+                  id="resposibilities"
+                  className="input !h-28 pt-2"
+                  required
+                />
+              )}
+            />
+            <label htmlFor="resposibilities">Resposibilities</label>
+          </div>
+          <h3>Requirements</h3>
 
-            <div className="flex-align-center gap-2 flex-wrap">
-              {tags?.map(({ id, tag }) => (
-                <div
-                  className="flex-center-between gap-2 px-1 py-[1px] bg-slate-200 dark:bg-hover-color"
-                  key={id}
-                >
-                  <span className="text-sm capitalize">{tag}</span>
-                  <div
-                    className="sm:cursor-pointer"
-                    onClick={() => removeTag(id)}
-                  >
-                    <FaTimes className="text-sm" />
+          {/*----------------------------------------Begin education section------------------------------------- */}
+
+          <h6 className="mt-2">Education</h6>
+          <div>
+            {Array.from({ length: educationFields }, (_, index) => (
+              <div key={index} className="mt-4 flex flex-col lg:flex-row gap-4">
+                <div className="flex-auto mb-4 lg:mb-0" >
+                  <Controller
+                    name={`education[${index}].educationtype`}
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <select
+                        {...field}
+                        id="dropdown"
+                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 p-2">
+                        <option value="">Select...</option>
+                        <option value="Bachelor s degree">Bachelor s degree</option>
+                        <option value="Master s degree">Master s degree</option>
+                        <option value="Doctoral degree">Doctoral degree</option>
+                      </select>
+                    )}
+                  />
+                </div>
+                <div className="ml-6 flex-auto mb-4 lg:mb-0">
+                  <Controller
+                    name={`education[${index}].educationfield`}
+                    control={control}
+                    defaultValue={{ computerScience: false, softwareEngineer: false }}
+                    render={({ field: { onChange, value } }) => (
+                      <>
+                        <div className="mb-2">
+                          <input
+                            type="checkbox"
+                            id="computerscience"
+                            value="computerScience"
+                            onChange={(e) => {
+                              onChange({
+                                ...value,
+                                computerScience: e.target.checked,
+                              });
+                            }}
+                            class="float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+                          />
+                          <label htmlFor="computerscince">Computer Science</label>
+                        </div>
+                        <div className="mb-2">
+                          <input
+                            type="checkbox"
+                            id="softwareengineer"
+                            value="softwareEngineer"
+                            onChange={(e) => {
+                              onChange({
+                                ...value,
+                                softwareEngineering: e.target.checked,
+                              });
+                            }}
+                            class="float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+                          />
+                          <label className="mt-5" htmlFor="softwareengineering">Software Engineer</label>
+                        </div>
+                      </>
+                    )}
+                  />
+                </div>
+              </div>
+            ))}
+            <div>
+              <button onClick={handleAddEducationField}><IoMdAdd size={25} className="text-gray-400" /></button>
+            </div>
+            <div className="form-input w-full sm:flex-1 relative mt-5">
+              <Controller
+                name="education job post"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="textarea"
+                    id="education job post"
+                    className="input !h-28 pt-2"
+                    required
+                  />
+                )}
+              />
+              <label htmlFor="education job post">Describe candidate education</label>
+            </div>
+          </div>
+
+          {/*----------------------------------------End education section------------------------------------- */}
+
+          {/*----------------------------------------Begin experience section------------------------------------- */}
+
+          <h6 className="mt-2">Experience</h6>
+          <div>
+            {Array.from({ length: experienceFields }, (_, index) => (
+              <div key={index} className="mt-4 flex flex-col lg:flex-row gap-4">
+                <div className="flex-auto mb-4 lg:mb-0" >
+                  <Controller
+                    name={`experience[${index}].experiencedYears`}
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <select
+                        {...field}
+                        id="dropdown"
+                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 p-2">
+                        <option value="">Select...</option>
+                        <option value="Less than 1 Year">Less than 1 Year</option>
+                        <option value="+ 1 Year">+ 1 Year</option>
+                        <option value="+ 2 Year">+ 2 Year</option>
+                        <option value="+ 3 Year">+ 3 Year</option>
+                        <option value="+ 4 Year">+ 4 Year</option>
+                        <option value="+ 5 Year">+ 5 Year</option>
+                        <option value="More than 5 Year">More than 5 Year</option>
+                      </select>
+                    )}
+                  />
+                </div>
+                <div className="flex-auto mb-4 lg:mb-0">
+                  <div className="form-input w-full sm:flex-1 relative">
+                    <Controller
+                      name={`experience[${index}].experiencedArea`}
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="textarea"
+                          id="experiencedArea"
+                          className="input !h-28 pt-2"
+                          required
+                        />
+                      )}
+                    />
+                    <label htmlFor="experiencedArea">Experince required area</label>
                   </div>
+                </div>
+              </div>
+            ))}
+            <div>
+              <button onClick={handleAddExperienceField}><IoMdAdd size={25} className="text-gray-400" /></button>
+            </div>
+            <div className="form-input w-full sm:flex-1 relative mt-5">
+              <Controller
+                name="experience job post"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="textarea"
+                    id="experience job post"
+                    className="input !h-28 pt-2"
+                    required
+                  />
+                )}
+              />
+              <label htmlFor="experience job post">Describe candidate experience</label>
+            </div>
+          </div>
+
+          {/*----------------------------------------End experience section------------------------------------- */}
+
+          {/*----------------------------------------Begin skill section------------------------------------- */}
+
+          <div className="mt-10">
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className="bg-purple-400 text-white px-2 py-1 rounded-full flex items-center"
+                >
+                  <span>{skill}</span>
+                  <button
+                    onClick={() => removeSkill(skill)}
+                    className="ml-2 focus:outline-none"
+                  >
+                    &#10005;
+                  </button>
                 </div>
               ))}
             </div>
-          </form>
-        </div>
-        {/* <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
-          <div className="flex-align-center gap-3 w-full sm:w-fit">
-            <div className="form-input flex-1 relative">
-              <select className="input" required>
-                <option value="uganda">USD</option>
-                <option value="uganda">UGX</option>
-                <option value="uganda">KSH</option>
-                <option value="uganda">Naira</option>
-              </select>
-              <label htmlFor="email">Currency</label>
-            </div>
-            <div className="form-input flex-2 relative">
-              <input
-                type="number"
-                name="name"
-                className="input"
-                value="1092"
-                onChange={() => {}}
-                required
+            <div className="mt-4 form-input w-full sm:flex-1 relative">
+              <Controller
+                name="skills"
+                control={control}
+                defaultValue={skills}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    placeholder="Enter skill"
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="input"
+                  />
+                )}
               />
-              <label htmlFor="name">Salary</label>
             </div>
           </div>
-          <div className="form-input w-full sm:flex-1 relative">
-            <input
-              type="text"
-              name="name"
-              className="input"
-              value="Whatsapp Inc."
-              onChange={() => {}}
-              required
+
+          {/*----------------------------------------End skill section------------------------------------- */}
+
+          <div className="form-input w-full sm:flex-1 relative mt-10">
+            <Controller
+              name="email"
+              control={control}
+              defaultValue={skills}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="input"
+                  required
+                />
+              )}
             />
-            <label htmlFor="name">Company name</label>
-          </div>
-        </div>
-        <div className="flex-align-center flex-col sm:flex-row gap-4 mt-5">
-          <div className="form-input w-full sm:flex-1 relative">
-            <input type="text" name="address" className="input" required />
-            <label htmlFor="address">Address</label>
+            <label htmlFor="email">Email Address</label>
           </div>
 
-          <div className="form-input w-full sm:flex-1 relative">
-            <input type="text" name="phone" className="input" required />
-            <label htmlFor="phone">Phone 1</label>
-          </div>
+          <button className="btn btn-primary w-full mt-4">post job</button>
 
-          <div className="form-input w-full sm:flex-1 relative">
-            <input type="text" name="phone" className="input" required />
-            <label htmlFor="phone">Phone 2</label>
-          </div>
-        </div> */}
-        <div className="form-input w-full sm:flex-1 relative mt-5">
-          <input
-            type="text"
-            name="email"
-            className="input"
-            value="whatsapp@inc.com"
-            onChange={() => { }}
-            required
-          />
-          <label htmlFor="email">Email Address</label>
-        </div>
-        {/* <div className="form-input w-full sm:flex-1 relative mt-5">
-          <textarea
-            name="name"
-            className="input !h-28 pt-2"
-            required
-          ></textarea>
-          <label htmlFor="name">Job Description</label>
-        </div> */}
-        <div className="input-check">
-          <input type="checkbox" name="" id="terms" />
-          <label htmlFor="terms">I agree to the terms & conditions</label>
-        </div>
-        <button className="btn btn-primary w-full mt-4">post job</button>
+        </form>
+
+        {/*----------------------------------------End Form------------------------------------- */}
+
       </div>
     </>
   );
