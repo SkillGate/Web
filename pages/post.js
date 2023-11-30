@@ -64,6 +64,23 @@ const PostJob = () => {
     }
   };
 
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  // const tooltipButton = document.getElementById('tooltipbutton');
+  // const tooltip = document.getElementById('tooltip');
+
+  // function showTooltip() {
+  //   tooltip.classList.remove('hidden');
+  // }
+
+  // function hideTooltip() {
+  //   tooltip.classList.add('hidden');
+  // }
+
+  // tooltipButton.addEventListener('mouseenter', showTooltip);
+  // tooltipButton.addEventListener('mouseleave', hideTooltip);
+
+
   return (
     <>
       <div className="rounded max-w-3xl w-full mx-auto">
@@ -273,6 +290,19 @@ const PostJob = () => {
                 )}
               />
               <label htmlFor="education job post">Describe candidate education</label>
+              <button
+                className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer"
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              >
+                i
+              </button>
+              {showTooltip && (
+                <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center mb-2">
+                  We use this input field data to display in job posting
+                  <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -344,6 +374,19 @@ const PostJob = () => {
                 )}
               />
               <label htmlFor="experience job post">Describe candidate experience</label>
+              <button
+                className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer"
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              >
+                i
+              </button>
+              {showTooltip && (
+                <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center mb-2">
+                  We use this input field data to display in job posting
+                  <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
+                </div>
+              )}
             </div>
           </div>
 
