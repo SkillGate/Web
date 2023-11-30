@@ -1,6 +1,4 @@
-"use client";
-
-import RegisterForm from "../components/signIn/registerForm";
+import RegisterForm from "../../components/signIn/registerForm";
 
 const LoginPage = () => {
   return (

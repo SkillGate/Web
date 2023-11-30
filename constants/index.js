@@ -1,8 +1,7 @@
 export const imageUrl = {
   logoUrl:
     "https://res.cloudinary.com/midefulness/image/upload/v1700239362/SkillGate/new%20logo/SkillGate-logos_black-_1__hj6ddv.svg",
-  hero:
-    "https://res.cloudinary.com/midefulness/image/upload/v1694111829/SkillGate/hero_black.png",
+  hero: "https://res.cloudinary.com/midefulness/image/upload/v1694111829/SkillGate/hero_black.png",
   logoDoubleColor:
     "https://res.cloudinary.com/midefulness/image/upload/v1694111827/SkillGate/logo_pxxasx.png",
   aboutitem1:
@@ -21,17 +20,17 @@ export const imageUrl = {
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645058/SkillGate/xv-logo.png",
   ifslogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645073/SkillGate/ifs-logo.png",
-  directfnlogo: 
+  directfnlogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645188/SkillGate/directfn-logo.png",
-  gtnlogo: 
+  gtnlogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645187/SkillGate/gtn-logo.webp",
-  dialoglogo: 
+  dialoglogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645063/SkillGate/Dialog_Axiata-logo.png",
-  axiatalabslogo: 
+  axiatalabslogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645084/SkillGate/axiata_dialog-logo.png",
-  wealthoslogo: 
+  wealthoslogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645454/SkillGate/wealthos-logo.png",
-  x99logo: 
+  x99logo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645059/SkillGate/99x-logo.png",
 };
 
@@ -47,3 +46,18 @@ export const NAV_LINKS = [
   { href: "/products", key: "products", label: "Products" },
   { href: "/contact", key: "contact_us", label: "Contact Us" },
 ];
+
+export const fetchMethods = {
+  post: "POST",
+  get: "GET",
+};
+
+export const serverUrls = {
+  dev:"http://localhost:3000",
+  auth:"http://localhost:5000",
+  job:"http://localhost:5001"
+}
+
+// export const userData = {
+
+// }

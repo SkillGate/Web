@@ -12,7 +12,7 @@ const SingleJob = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+  const { data: job, loading } = useFetch(`${server("dev")}/api/jobs/${id}`);
 
   const {
     title,

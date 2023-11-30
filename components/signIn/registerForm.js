@@ -1,12 +1,14 @@
-"use client";
-
 import Image from "next/image";
-import { imageUrl } from "../../constants";
+import { fetchMethods, imageUrl, serverUrls } from "../../constants";
 import { useForm, Controller } from "react-hook-form";
 import { auth } from "../../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
+import useFetch from "../../pages/api/useFetch";
+import { server } from "../../config";
+import { useRouter } from "next/router";
+import { Login } from "../../apiCalls/userApiCalls";
 
 const RegisterForm = () => {
   const {
@@ -15,10 +17,7 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    // Handle form submission here
-    console.log(data);
-  };
+  const router = useRouter();
 
   const [user, setUse] = useAuthState(auth);
   const googleAuth = new GoogleAuthProvider();
@@ -29,6 +28,25 @@ const RegisterForm = () => {
   useEffect(() => {
     console.log(user);
   }, [user]);
+
+  const onSubmit = async (data) => {
+    // Handle form submission here
+    console.log(data);
+
+    try {
+      const userData = await Login(data);
+      console.log(userData);
+      if (userData) {
+        router.push("/candidateDashboard");
+      } else {
+        window.alert("User login failed");
+        reset();
+      }
+    } catch (error) {
+      console.error("Error in onSubmit:", error);
+    }
+  };
+
   return (
     <div className="relative flex flex-col md:flex-row items-center justify-center bg-slate-200 h-screen md:gap-8">
       <div className="absolute md:relative block md:basis-1/2 order-1 md:pb-12 md:pt-8 md:py-0 invisible md:visible">
@@ -60,6 +78,7 @@ const RegisterForm = () => {
               <Controller
                 name="email"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <input
                     {...field}
@@ -91,6 +110,7 @@ const RegisterForm = () => {
               <Controller
                 name="password"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <input
                     {...field}
