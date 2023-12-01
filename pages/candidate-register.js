@@ -1,6 +1,10 @@
 "use client";
 
 import { useForm, Controller } from "react-hook-form";
+import PopUpModal from "../components/common/PopUpModal";
+import { useState } from "react";
+import { Register } from "../apiCalls/userApiCalls";
+import { useRouter } from "next/router";
 
 const CandidateRegisterPage = () => {
   const {
@@ -9,41 +13,61 @@ const CandidateRegisterPage = () => {
     formState: { errors },
     watch,
     setError,
-    clearErrors
+    clearErrors,
   } = useForm();
 
-  const password = watch('password', '');
-  const confirmPassword = watch('confirmPassword', '');
+  const password = watch("password", "");
+  const confirmPassword = watch("confirmPassword", "");
 
-  const onSubmit = (data) => {
-    // Handle form submission here
+  const router = useRouter();
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const onSubmit = async (data) => {
     if (password !== confirmPassword) {
-      setError('confirmPassword', {
-        type: 'manual',
-        message: 'Passwords do not match'
+      setError("confirmPassword", {
+        type: "manual",
+        message: "Passwords do not match",
       });
-      return; // Stop form submission
+      return;
     } else {
-      clearErrors('confirmPassword'); // Clear the error if passwords match
-      // Handle form submission here
+      clearErrors("confirmPassword");
       console.log(data);
+      try {
+        const userData = await Register(data);
+        console.log(userData);
+        if (!userData) {
+          setIsModalVisible(true);
+          reset();
+        } else {
+          router.push("/sign-in");
+        }
+      } catch (error) {
+        setIsModalVisible(true);
+        console.error("Error in onSubmit:", error);
+      }
     }
   };
 
   return (
     <div>
+      <PopUpModal
+        isVisible={isModalVisible}
+        title="User registration unsuccessful."
+        toggleVisibility={toggleModal}
+      />
       <div className="flex min-h-full flex-col justify-center px-6 py-6 lg:px-6">
         <div className="register-from-container">
-
           <h2 className="register-from-header">Sign in to your account</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* First Name input */}
             <div className="mb-4">
-              <label
-                htmlFor="firstName"
-                className="register-from-label"
-              >
+              <label htmlFor="firstName" className="register-from-label">
                 First Name
               </label>
               <Controller
@@ -55,16 +79,17 @@ const CandidateRegisterPage = () => {
                     type="text"
                     id="firstName"
                     placeholder="Enter your First Name"
-                    className={`register-from-input ${errors.firstName ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
                 rules={{
-                  required: "First Name is required", 
+                  required: "First Name is required",
                   pattern: {
                     value: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/,
-                    message: 'Invalid First Name format',
-                  }
+                    message: "Invalid First Name format",
+                  },
                 }}
               />
               {errors.firstName && (
@@ -76,10 +101,7 @@ const CandidateRegisterPage = () => {
 
             {/* Last Name input */}
             <div className="mb-4">
-              <label
-                htmlFor="lastName"
-                className="register-from-label"
-              >
+              <label htmlFor="lastName" className="register-from-label">
                 Last Name
               </label>
               <Controller
@@ -91,16 +113,17 @@ const CandidateRegisterPage = () => {
                     type="text"
                     id="lastName"
                     placeholder="Enter your Last Name"
-                    className={`register-from-input ${errors.lastName ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
                 rules={{
-                  required: "Last Name is required", 
+                  required: "Last Name is required",
                   pattern: {
                     value: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/,
-                    message: 'Invalid Last Name format',
-                  }
+                    message: "Invalid Last Name format",
+                  },
                 }}
               />
               {errors.lastName && (
@@ -112,10 +135,7 @@ const CandidateRegisterPage = () => {
 
             {/* Email Address input */}
             <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="register-from-label"
-              >
+              <label htmlFor="email" className="register-from-label">
                 Email Address
               </label>
               <Controller
@@ -127,16 +147,17 @@ const CandidateRegisterPage = () => {
                     type="text"
                     id="email"
                     placeholder="Enter your email"
-                    className={`register-from-input ${errors.email ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.email ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
                 rules={{
-                  required: "Email is required", 
+                  required: "Email is required",
                   pattern: {
                     value: /^\S+@\S+\.\S+$/,
-                    message: 'Please enter a valid email address',
-                  }
+                    message: "Please enter a valid email address",
+                  },
                 }}
               />
               {errors.email && (
@@ -148,10 +169,7 @@ const CandidateRegisterPage = () => {
 
             {/* Contact Number input */}
             <div className="mb-4">
-              <label
-                htmlFor="phone"
-                className="register-from-label"
-              >
+              <label htmlFor="phone" className="register-from-label">
                 Contact Number
               </label>
               <Controller
@@ -163,16 +181,18 @@ const CandidateRegisterPage = () => {
                     type="text"
                     id="phone"
                     placeholder="Enter your Contact Number"
-                    className={`register-from-input ${errors.phone ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.phone ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
-                rules={{
-                  required: "Contact Number is required", pattern: {
-                    value: /^\d{10}$/,
-                    message: 'Please enter a 10-digit phone number',
-                  }
-                }}
+                // rules={{
+                //   required: "Contact Number is required",
+                //   pattern: {
+                //     value: /^\d{10}$/,
+                //     message: "Please enter a 10-digit phone number",
+                //   },
+                // }}
               />
               {errors.phone && (
                 <span className="text-red-500 text-sm">
@@ -183,10 +203,7 @@ const CandidateRegisterPage = () => {
 
             {/* Password input */}
             <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="register-from-label"
-              >
+              <label htmlFor="password" className="register-from-label">
                 Password
               </label>
               <Controller
@@ -198,16 +215,20 @@ const CandidateRegisterPage = () => {
                     type="password"
                     id="password"
                     placeholder="Enter your password"
-                    className={`register-from-input ${errors.password ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.password ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
-                rules={{
-                  required: "Password is required", pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                    message: 'Password must contain at least 8 characters, one uppercase letter, and one number',
-                  }
-                }}
+                // rules={{
+                //   required: "Password is required",
+                //   pattern: {
+                //     value:
+                //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                //     message:
+                //       "Password must contain at least 8 characters, one uppercase letter, and one number",
+                //   },
+                // }}
               />
               {errors.password && (
                 <span className="text-red-500 text-sm">
@@ -218,10 +239,7 @@ const CandidateRegisterPage = () => {
 
             {/* Confirm Password input */}
             <div className="mb-4">
-              <label
-                htmlFor="confirmPassword"
-                className="register-from-label"
-              >
+              <label htmlFor="confirmPassword" className="register-from-label">
                 Confirm Password
               </label>
               <Controller
@@ -233,17 +251,22 @@ const CandidateRegisterPage = () => {
                     type="password"
                     id="confirmPassword"
                     placeholder="Enter your password again..."
-                    className={`register-from-input ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
                   />
                 )}
-                rules={{
-                  required: "Password is required", 
-                  pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                    message: 'Password must contain at least 8 characters, one uppercase letter, and one number',
-                  }
-                }}
+                // rules={{
+                //   required: "Password is required",
+                //   pattern: {
+                //     value:
+                //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                //     message:
+                //       "Password must contain at least 8 characters, one uppercase letter, and one number",
+                //   },
+                // }}
               />
               {errors.confirmPassword && (
                 <span className="text-red-500 text-sm">

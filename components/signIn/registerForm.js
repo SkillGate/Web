@@ -1,15 +1,12 @@
 import Image from "next/image";
-import { fetchMethods, imageUrl, serverUrls } from "../../constants";
+import { imageUrl } from "../../constants";
 import { useForm, Controller } from "react-hook-form";
 import { auth } from "../../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
-import useFetch from "../../pages/api/useFetch";
-import { server } from "../../config";
 import { useRouter } from "next/router";
 import { Login } from "../../apiCalls/userApiCalls";
-import Alerts from "../common/Alerts";
 import TermsOfService from "../common/TermsOfService";
 import PopUpModal from "../common/PopUpModal";
 
