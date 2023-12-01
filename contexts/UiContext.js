@@ -9,13 +9,22 @@ const initialState = {
   isSidebarOpen: false,
   isFilterMenuOpen: false,
   isEventFiltersOpen: false,
+  user: null,
 };
 
 export const UiProvider = ({ children }) => {
   const [ui, dispatch] = useReducer(uiReducer, initialState);
 
+  const loginUser = (userData) => {
+    dispatch({ type: actionTypes.loginUser, payload: userData });
+  };
+
+  const logoutUser = () => {
+    dispatch({ type: actionTypes.logoutUser });
+  };
+
   return (
-    <UiContext.Provider value={{ ...ui, dispatch }}>
+    <UiContext.Provider value={{ ...ui, dispatch, loginUser, logoutUser }}>
       {children}
     </UiContext.Provider>
   );
