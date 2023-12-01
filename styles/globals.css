@@ -293,8 +293,8 @@ input:-webkit-autofill ~ label {
   @apply flex items-center justify-center;
 }
 
-.btn_dark_blue { 
-  @apply  bg-main px-4 py-3 text-white transition-all hover:bg-black
+.btn_dark_blue {
+  @apply bg-main px-4 py-3 text-white transition-all hover:bg-black;
 }
 
 /* START: Hero styles */
@@ -322,3 +322,23 @@ input:-webkit-autofill ~ label {
   @apply absolute xl:-top-24 xl:-right-1/2 -right-1/4 bg-hero-bg bg-repeat-round -z-10 w-full xl:h-screen h-[590px] overflow-hidden;
 }
 /* END: Hero styles */
+
+/* START: register form */
+
+.register-from-container {
+  @apply mt-5 sm:mx-auto sm:w-full sm:max-w-lg max-w-xl p-8 bg-white dark:bg-dark-card rounded shadow-md;
+}
+
+.register-from-header {
+  @apply mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white mb-10;
+}
+
+.register-from-label {
+  @apply block text-gray-700 dark:text-main-white font-bold mb-2 after:content-['*'] after:ml-0.5 after:text-red-500;
+}
+
+.register-from-input {
+  @apply bg-inherit w-full p-2 border dark:border-hover-color rounded;
+}
+
+/* END: register form */

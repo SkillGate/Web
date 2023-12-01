@@ -13,18 +13,18 @@ const EmployerRegisterPage = () => {
   } = useForm();
 
   const password = watch('password', '');
-  const confirmPassword = watch('cpassword', '');
+  const confirmPassword = watch('confirmPassword', '');
 
   const onSubmit = (data) => {
     // Handle form submission here
     if (password !== confirmPassword) {
-      setError('cpassword', {
+      setError('confirmPassword', {
         type: 'manual',
         message: 'Passwords do not match'
       });
       return; // Stop form submission
     } else {
-      clearErrors('cpassword'); // Clear the error if passwords match
+      clearErrors('confirmPassword'); // Clear the error if passwords match
       // Handle form submission here
       console.log(data);
     }
@@ -33,30 +33,30 @@ const EmployerRegisterPage = () => {
   return (
     <div>
       <div className="flex min-h-full flex-col justify-center px-6 py-6 lg:px-6">
-        <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm max-w-lg p-8 bg-white rounded shadow-md">
+        <div className="register-from-container">
 
-          <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 mb-10">Sign in to your account</h2>
+          <h2 className="register-from-header">Sign in to your account</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* First Name input */}
             <div className="mb-4">
               <label
-                htmlFor="firstname"
-                className="block text-gray-700 font-bold mb-2"
+                htmlFor="firstName"
+                className="register-from-label"
               >
                 First Name
               </label>
               <Controller
-                name="firstname"
+                name="firstName"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="text"
-                    id="firstname"
+                    id="firstName"
                     placeholder="Enter your First Name"
-                    className={`w-full p-2 border ${errors.firstname ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                    className={`register-from-input ${errors.firstName ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -67,9 +67,9 @@ const EmployerRegisterPage = () => {
                   }
                 }}
               />
-              {errors.firstname && (
+              {errors.firstName && (
                 <span className="text-red-500 text-sm">
-                  {errors.firstname.message}
+                  {errors.firstName.message}
                 </span>
               )}
             </div>
@@ -77,22 +77,22 @@ const EmployerRegisterPage = () => {
             {/* Last Name input */}
             <div className="mb-4">
               <label
-                htmlFor="lastname"
-                className="block text-gray-700 font-bold mb-2"
+                htmlFor="lastName"
+                className="register-from-label"
               >
                 Last Name
               </label>
               <Controller
-                name="lastname"
+                name="lastName"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="text"
-                    id="lastname"
+                    id="lastName"
                     placeholder="Enter your Last Name"
-                    className={`w-full p-2 border ${errors.lastname ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                    className={`register-from-input ${errors.lastName ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -103,9 +103,9 @@ const EmployerRegisterPage = () => {
                   }
                 }}
               />
-              {errors.lastname && (
+              {errors.lastName && (
                 <span className="text-red-500 text-sm">
-                  {errors.lastname.message}
+                  {errors.lastName.message}
                 </span>
               )}
             </div>
@@ -114,7 +114,7 @@ const EmployerRegisterPage = () => {
             <div className="mb-4">
               <label
                 htmlFor="email"
-                className="block text-gray-700 font-bold mb-2"
+                className="register-from-label"
               >
                 Work Email Address
               </label>
@@ -127,8 +127,8 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="email"
                     placeholder="Enter your email"
-                    className={`w-full p-2 border ${errors.email ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                    className={`register-from-input ${errors.email ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -149,22 +149,22 @@ const EmployerRegisterPage = () => {
             {/* Contact Number input */}
             <div className="mb-4">
               <label
-                htmlFor="contactno"
-                className="block text-gray-700 font-bold mb-2"
+                htmlFor="phone"
+                className="register-from-label"
               >
                 Contact Number
               </label>
               <Controller
-                name="contactno"
+                name="phone"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="text"
-                    id="contactno"
+                    id="phone"
                     placeholder="Enter your Contact Number"
-                    className={`w-full p-2 border ${errors.contactno ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                    className={`register-from-input ${errors.phone ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -174,9 +174,9 @@ const EmployerRegisterPage = () => {
                   }
                 }}
               />
-              {errors.contactno && (
+              {errors.phone && (
                 <span className="text-red-500 text-sm">
-                  {errors.contactno.message}
+                  {errors.phone.message}
                 </span>
               )}
             </div>
@@ -184,22 +184,22 @@ const EmployerRegisterPage = () => {
             {/* Last Name input */}
             <div className="mb-4">
               <label
-                htmlFor="companyname"
-                className="block text-gray-700 font-bold mb-2"
+                htmlFor="companyName"
+                className="register-from-label"
               >
                 Company Name
               </label>
               <Controller
-                name="companyname"
+                name="companyName"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="text"
-                    id="companyname"
+                    id="companyName"
                     placeholder="Enter your Company Name"
-                    className={`w-full p-2 border ${errors.companyname ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                    className={`register-from-input ${errors.companyName ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -210,9 +210,9 @@ const EmployerRegisterPage = () => {
                   }
                 }}
               />
-              {errors.lastname && (
+              {errors.companyName && (
                 <span className="text-red-500 text-sm">
-                  {errors.lastname.message}
+                  {errors.companyName.message}
                 </span>
               )}
             </div>
@@ -221,7 +221,7 @@ const EmployerRegisterPage = () => {
             <div className="mb-4">
               <label
                 htmlFor="password"
-                className="block text-gray-700 font-bold mb-2"
+                className="register-from-label"
               >
                 Password
               </label>
@@ -234,8 +234,8 @@ const EmployerRegisterPage = () => {
                     type="password"
                     id="password"
                     placeholder="Enter your password"
-                    className={`w-full p-2 border ${errors.password ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                    className={`register-from-input ${errors.password ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -255,22 +255,22 @@ const EmployerRegisterPage = () => {
             {/* Confirm Password input */}
             <div className="mb-4">
               <label
-                htmlFor="cpassword"
-                className="block text-gray-700 font-bold mb-2"
+                htmlFor="confirmPassword"
+                className="register-from-label"
               >
                 Confirm Password
               </label>
               <Controller
-                name="cpassword"
+                name="confirmPassword"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="password"
-                    id="cpassword"
-                    placeholder="Enter your password"
-                    className={`w-full p-2 border ${errors.cpassword ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                    id="confirmPassword"
+                    placeholder="Enter your password again..."
+                    className={`register-from-input ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -281,9 +281,9 @@ const EmployerRegisterPage = () => {
                   }
                 }}
               />
-              {errors.cpassword && (
+              {errors.confirmPassword && (
                 <span className="text-red-500 text-sm">
-                  {errors.cpassword.message}
+                  {errors.confirmPassword.message}
                 </span>
               )}
             </div>
