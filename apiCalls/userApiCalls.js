@@ -38,6 +38,7 @@ export const Login = async (User) => {
     return res.data;
   } catch (err) {
     console.error(err);
-    throw new Error(err.message);
+    // throw new Error(err.message);
+    return null;
   }
 };
