@@ -61,12 +61,12 @@ const RegisterForm = () => {
     <div>
       <PopUpModal
         isVisible={isModalVisible}
-        title="Your Modal Title"
+        title="Invalid email or password."
         toggleVisibility={toggleModal}
-        confirmButtonColor="bg-green-500 hover:bg-green-700"
-        cancelButtonColor="bg-red-500 hover:bg-red-700"
-        showConfirmButton={true}
-        showCancelButton={true}
+        confirmButtonColor="text-white bg-green-500 border border-green-500 hover:bg-white hover:text-green-500"
+        cancelButtonColor="border border-red-500 bg-white text-red-500 hover:bg-red-500 hover:text-white"
+        showConfirmButton={false}
+        showCancelButton={false}
         confirmButtonText="Yes, I'm sure"
         cancelButtonText="No, cancel"
       />

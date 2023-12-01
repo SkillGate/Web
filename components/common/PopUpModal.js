@@ -1,4 +1,7 @@
 import React from "react";
+import Warning from "./svg/Warning";
+import Question from "./svg/Question";
+import Cross from "./svg/Cross";
 
 const PopUpModal = ({
   isVisible,
@@ -6,10 +9,11 @@ const PopUpModal = ({
   toggleVisibility,
   confirmButtonColor,
   cancelButtonColor,
-  showConfirmButton=true,
-  showCancelButton=true,
-  confirmButtonText="Confirm",
-  cancelButtonText="Cancel",
+  showConfirmButton = true,
+  showCancelButton = true,
+  confirmButtonText = "Confirm",
+  cancelButtonText = "Cancel",
+  icon = "warning",
 }) => {
   return (
     <div>
@@ -49,28 +53,17 @@ const PopUpModal = ({
             <span className="sr-only">Close modal</span>
           </button>
           <div className="p-4 md:p-5 text-center">
-            <svg
-              className="mx-auto mb-4 text-gray-400 w-12 h-12"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
+            {icon === "warning" && <Warning color={"#967BB6"} />}
+            {icon === "question" && <Question />}
+            {icon === "cross" && <Cross />}
+
             <h3 className="mb-5 text-lg font-normal text-gray-500">{title}</h3>
             <div className="gap-4">
               {showConfirmButton && (
                 <button
                   data-modal-hide="popup-modal"
                   type="button"
-                  className={`text-white ${confirmButtonColor} focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2`}
+                  className={`${confirmButtonColor} focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2`}
                 >
                   {confirmButtonText}
                 </button>
@@ -79,7 +72,7 @@ const PopUpModal = ({
                 <button
                   data-modal-hide="popup-modal"
                   type="button"
-                  className={`text-gray-500 ${cancelButtonColor} focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10`}
+                  className={`${cancelButtonColor} focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10`}
                   onClick={toggleVisibility}
                 >
                   {cancelButtonText}
