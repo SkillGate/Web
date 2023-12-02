@@ -14,7 +14,9 @@ const EmployerDashboard = () => {
   }, [user]);
   return (
     <div className="padding-container">
-      <h1 className="font-bold text-2xl">Welcome, Brian</h1>
+      <h1 className="font-bold text-2xl">
+        Welcome, {user?.firstName + " " + user?.lastName}
+      </h1>
       <p>{formattedDate}</p>
     </div>
   );
