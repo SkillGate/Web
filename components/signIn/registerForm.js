@@ -10,11 +10,11 @@ import { Login } from "../../apiCalls/userApiCalls";
 import TermsOfService from "../common/TermsOfService";
 import PopUpModal from "../common/PopUpModal";
 import Link from "next/link";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useUiContext } from "../../contexts/UiContext";
+import FullPageLoader from "../common/FullPageLoader";
 
 const RegisterForm = () => {
-
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -33,6 +33,7 @@ const RegisterForm = () => {
   } = useForm();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -54,10 +55,11 @@ const RegisterForm = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-
+    setLoading(true);
     try {
-      const userData = await Login(data);
+      const { data: userData, loading } = await Login(data);
       console.log(userData);
+      setLoading(loading);
       if (!userData) {
         setIsModalVisible(true);
         reset();
@@ -70,11 +72,12 @@ const RegisterForm = () => {
         }
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error in onSubmit:", error);
     }
   };
 
-  return (
+  return !loading ? (
     <div>
       <PopUpModal
         isVisible={isModalVisible}
@@ -97,7 +100,7 @@ const RegisterForm = () => {
               width={700}
               height={700}
               className="feature-phone"
-              style={{ filter: 'hue-rotate(45deg)' }}
+              style={{ filter: "hue-rotate(45deg)" }}
             />
           </div>
         </div>
@@ -121,8 +124,9 @@ const RegisterForm = () => {
                       type="text"
                       id="email"
                       placeholder="Enter your email"
-                      className={`register-from-input ${errors.email ? "border-red-500" : "border-gray-300"
-                        }`}
+                      className={`register-from-input ${
+                        errors.email ? "border-red-500" : "border-gray-300"
+                      }`}
                     />
                   )}
                   rules={{
@@ -148,24 +152,40 @@ const RegisterForm = () => {
                   defaultValue=""
                   render={({ field }) => (
                     <>
-                    <div style={{ position: 'relative' }}>
-                      <input
-                        {...field}
-                        type={passwordVisible ? 'text' : 'password'}
-                        id="password"
-                        placeholder="Enter your password"
-                        className={`register-from-input ${errors.password ? "border-red-500" : "border-gray-300"
+                      <div style={{ position: "relative" }}>
+                        <input
+                          {...field}
+                          type={passwordVisible ? "text" : "password"}
+                          id="password"
+                          placeholder="Enter your password"
+                          className={`register-from-input ${
+                            errors.password
+                              ? "border-red-500"
+                              : "border-gray-300"
                           }`}
-                        onChange={(e) => handlePasswordChange(e, field)}
-                        style={{ paddingRight: '40px' }}
-                      />
-                      <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
-                        {passwordVisible ? (
-                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
-                        ) : (
-                          <FaEye onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
-                        )}
-                      </span>
+                          onChange={(e) => handlePasswordChange(e, field)}
+                          style={{ paddingRight: "40px" }}
+                        />
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            right: "10px",
+                            transform: "translateY(-50%)",
+                          }}
+                        >
+                          {passwordVisible ? (
+                            <FaEyeSlash
+                              onClick={togglePasswordVisibility}
+                              style={{ cursor: "pointer" }}
+                            />
+                          ) : (
+                            <FaEye
+                              onClick={togglePasswordVisibility}
+                              style={{ cursor: "pointer" }}
+                            />
+                          )}
+                        </span>
                       </div>
                     </>
                   )}
@@ -214,6 +234,8 @@ const RegisterForm = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <FullPageLoader />
   );
 };
 
