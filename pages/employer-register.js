@@ -5,14 +5,14 @@ import { Register } from "../apiCalls/userApiCalls";
 import { useState } from "react";
 import PopUpModal from "../components/common/PopUpModal";
 import { useRouter } from "next/router";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { countryCodes } from "../data/countryCodeData";
-import { FaAngleDown } from 'react-icons/fa';
+import { FaAngleDown } from "react-icons/fa";
 
 const EmployerRegisterPage = () => {
-
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmedpasswordVisible, setConfirmedPasswordVisible] = useState(false);
+  const [confirmedpasswordVisible, setConfirmedPasswordVisible] =
+    useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -30,7 +30,11 @@ const EmployerRegisterPage = () => {
     field.onChange(e.target.value);
   };
 
-  const [selectedCountry, setSelectedCountry] = useState({ "name": "Sri Lanka", "dial_code": "+94", "code": "LK" });
+  const [selectedCountry, setSelectedCountry] = useState({
+    name: "Sri Lanka",
+    dial_code: "+94",
+    code: "LK",
+  });
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const handleSelect = (country) => {
@@ -56,6 +60,10 @@ const EmployerRegisterPage = () => {
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
+  };
+
+  const goBack = () => {
+    router.push("/create-account");
   };
 
   const onSubmit = async (data) => {
@@ -86,8 +94,6 @@ const EmployerRegisterPage = () => {
     }
   };
 
-
-
   return (
     <div>
       <PopUpModal
@@ -95,7 +101,7 @@ const EmployerRegisterPage = () => {
         title="User registration unsuccessful."
         toggleVisibility={toggleModal}
       />
-      <div className="flex min-h-full flex-col justify-center px-6 py-6 lg:px-6">
+      <div className="flex h-screen flex-col justify-center items-center px-6 py-6 lg:px-6">
         <div className="register-from-container">
           <h2 className="register-from-header">Sign up to your account</h2>
 
@@ -114,8 +120,9 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="firstName"
                     placeholder="Enter your First Name"
-                    className={`register-from-input ${errors.firstName ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
                 rules={{
@@ -147,8 +154,9 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="lastName"
                     placeholder="Enter your Last Name"
-                    className={`register-from-input ${errors.lastName ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
                 rules={{
@@ -180,8 +188,9 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="email"
                     placeholder="Enter your email"
-                    className={`register-from-input ${errors.email ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.email ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
                 rules={{
@@ -205,8 +214,8 @@ const EmployerRegisterPage = () => {
                 Contact Number
               </label>
 
-              <div className="mt-4 flex flex-row" >
-                <div className="flex mb-4 lg:mb-0" >
+              <div className="mt-4 flex flex-row">
+                <div className="flex mb-4 lg:mb-0">
                   <div className="relative">
                     <button
                       onClick={() => setDropdownVisible(!dropdownVisible)}
@@ -214,13 +223,17 @@ const EmployerRegisterPage = () => {
                     >
                       {selectedCountry ? (
                         <div className="flex items-center">
-                          <img src={`https://flagsapi.com/${selectedCountry.code}/flat/64.png`} alt="" className="w-6 h-6 ml-2 mr-2" />
+                          <img
+                            src={`https://flagsapi.com/${selectedCountry.code}/flat/64.png`}
+                            alt=""
+                            className="w-6 h-6 ml-2 mr-2"
+                          />
                           <span>({selectedCountry.dial_code})</span>
                         </div>
                       ) : (
-                        '+94'
+                        "+94"
                       )}
-                      <FaAngleDown className="ml-2 mr-2"/>
+                      <FaAngleDown className="ml-2 mr-2" />
                     </button>
 
                     {dropdownVisible && (
@@ -228,7 +241,9 @@ const EmployerRegisterPage = () => {
                         {countryCodes.map(({ name, dial_code, code }) => (
                           <button
                             key={dial_code}
-                            onClick={() => handleSelect({ name, dial_code, code })}
+                            onClick={() =>
+                              handleSelect({ name, dial_code, code })
+                            }
                             className="flex items-center w-50 px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
                           >
                             {dial_code && (
@@ -237,7 +252,8 @@ const EmployerRegisterPage = () => {
                                 alt=""
                                 className="w-6 h-6 mr-2"
                               />
-                            )}<span>{dial_code}</span>
+                            )}
+                            <span>{dial_code}</span>
                           </button>
                         ))}
                       </div>
@@ -254,17 +270,18 @@ const EmployerRegisterPage = () => {
                         type="tele"
                         id="phone"
                         placeholder="Enter your Contact Number"
-                        className={`bg-inherit w-full p-2 border dark:border-hover-color rounded-tr-md rounded-br-md ${errors.phone ? "border-red-500" : "border-gray-300"
-                          }`}
+                        className={`bg-inherit w-full p-2 border dark:border-hover-color rounded-tr-md rounded-br-md ${
+                          errors.phone ? "border-red-500" : "border-gray-300"
+                        }`}
                       />
                     )}
-                  // rules={{
-                  //   required: "Contact Number is required",
-                  //   pattern: {
-                  //     value: /^\d{9}$/,
-                  //     message: "Please enter a valid number of digit phone number",
-                  //   },
-                  // }}
+                    // rules={{
+                    //   required: "Contact Number is required",
+                    //   pattern: {
+                    //     value: /^\d{9}$/,
+                    //     message: "Please enter a valid number of digit phone number",
+                    //   },
+                    // }}
                   />
                 </div>
               </div>
@@ -289,8 +306,9 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="companyName"
                     placeholder="Enter your Company Name"
-                    className={`register-from-input ${errors.companyName ? "border-red-500" : "border-gray-300"
-                      }`}
+                    className={`register-from-input ${
+                      errors.companyName ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 )}
                 rules={{
@@ -318,36 +336,50 @@ const EmployerRegisterPage = () => {
                 control={control}
                 render={({ field }) => (
                   <>
-                    <div style={{ position: 'relative' }}>
+                    <div style={{ position: "relative" }}>
                       <input
                         {...field}
-                        type={passwordVisible ? 'text' : 'password'}
+                        type={passwordVisible ? "text" : "password"}
                         id="password"
                         placeholder="Enter your password"
-                        className={`register-from-input ${errors.password ? "border-red-500" : "border-gray-300"
-                          }`}
+                        className={`register-from-input ${
+                          errors.password ? "border-red-500" : "border-gray-300"
+                        }`}
                         onChange={(e) => handlePasswordChange(e, field)}
-                        style={{ paddingRight: '40px' }}
+                        style={{ paddingRight: "40px" }}
                       />
-                      <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          right: "10px",
+                          transform: "translateY(-50%)",
+                        }}
+                      >
                         {passwordVisible ? (
-                          <FaEye onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                          <FaEye
+                            onClick={togglePasswordVisibility}
+                            style={{ cursor: "pointer" }}
+                          />
                         ) : (
-                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                          <FaEyeSlash
+                            onClick={togglePasswordVisibility}
+                            style={{ cursor: "pointer" }}
+                          />
                         )}
                       </span>
                     </div>
                   </>
                 )}
-              // rules={{
-              //   required: "Password is required",
-              //   pattern: {
-              //     value:
-              //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-              //     message:
-              //       "Password must contain at least 8 characters, one uppercase letter, and one number",
-              //   },
-              // }}
+                // rules={{
+                //   required: "Password is required",
+                //   pattern: {
+                //     value:
+                //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                //     message:
+                //       "Password must contain at least 8 characters, one uppercase letter, and one number",
+                //   },
+                // }}
               />
               {errors.password && (
                 <span className="text-red-500 text-sm">
@@ -366,38 +398,54 @@ const EmployerRegisterPage = () => {
                 control={control}
                 render={({ field }) => (
                   <>
-                    <div style={{ position: 'relative' }}>
+                    <div style={{ position: "relative" }}>
                       <input
                         {...field}
-                        type={confirmedpasswordVisible ? 'text' : 'password'}
+                        type={confirmedpasswordVisible ? "text" : "password"}
                         id="confirmPassword"
                         placeholder="Enter your password again..."
-                        className={`register-from-input ${errors.confirmPassword
-                          ? "border-red-500"
-                          : "border-gray-300"
-                          }`}
-                        onChange={(e) => handleConfirmedPasswordChange(e, field)}
-                        style={{ paddingRight: '40px' }}
+                        className={`register-from-input ${
+                          errors.confirmPassword
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        }`}
+                        onChange={(e) =>
+                          handleConfirmedPasswordChange(e, field)
+                        }
+                        style={{ paddingRight: "40px" }}
                       />
-                      <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          right: "10px",
+                          transform: "translateY(-50%)",
+                        }}
+                      >
                         {confirmedpasswordVisible ? (
-                          <FaEye onClick={toggleConfirmedPasswordVisibility} style={{ cursor: 'pointer' }} />
+                          <FaEye
+                            onClick={toggleConfirmedPasswordVisibility}
+                            style={{ cursor: "pointer" }}
+                          />
                         ) : (
-                          <FaEyeSlash onClick={toggleConfirmedPasswordVisibility} style={{ cursor: 'pointer' }} />
+                          <FaEyeSlash
+                            onClick={toggleConfirmedPasswordVisibility}
+                            style={{ cursor: "pointer" }}
+                          />
                         )}
                       </span>
                     </div>
                   </>
                 )}
-              // rules={{
-              //   required: "Password is required",
-              //   pattern: {
-              //     value:
-              //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-              //     message:
-              //       "Password must contain at least 8 characters, one uppercase letter, and one number",
-              //   },
-              // }}
+                // rules={{
+                //   required: "Password is required",
+                //   pattern: {
+                //     value:
+                //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                //     message:
+                //       "Password must contain at least 8 characters, one uppercase letter, and one number",
+                //   },
+                // }}
               />
               {errors.confirmPassword && (
                 <span className="text-red-500 text-sm">
@@ -407,12 +455,25 @@ const EmployerRegisterPage = () => {
             </div>
 
             {/* Submit button */}
-            <button
-              type="submit"
-              className="w-full btn-primary-light text-white p-2 rounded"
-            >
-              Create Profile
-            </button>
+            <div className="flex flex-row items-center justify-center gap-4">
+              <div className="basis-1/2">
+                <button
+                  type="button"
+                  className="w-full btn-primary-light text-white p-2 rounded"
+                  onClick={goBack}
+                >
+                  Cancel
+                </button>
+              </div>
+              <div className="basis-1/2">
+                <button
+                  type="submit"
+                  className="w-full btn-primary-light text-white p-2 rounded"
+                >
+                  Create Profile
+                </button>
+              </div>
+            </div>
           </form>
         </div>
       </div>

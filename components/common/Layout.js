@@ -56,11 +56,20 @@ const Layout = ({ children }) => {
       <Meta />
       {showLoader && <Loader />}
       <BackToTopButton showButton={showButton} />
-      {!(currentPath == "/sign-in" || currentPath == "/create-account") &&
-        (userType == "hj" ? <MainNavbar /> : <Navbar />)}
+      {!(
+        currentPath == "/sign-in" ||
+        currentPath == "/create-account" ||
+        currentPath == "/candidate-register" ||
+        currentPath == "/employer-register"
+      ) && (userType == null ? <MainNavbar /> : <Navbar />)}
       <div
         className={`${
-          !(currentPath === "/sign-in" || currentPath === "/create-account")
+          !(
+            currentPath === "/sign-in" ||
+            currentPath === "/create-account" ||
+            currentPath === "/candidate-register" ||
+            currentPath === "/employer-register"
+          )
             ? "px-[2%] md:px-[6%] 2xl:container 2xl:mx-auto pt-20 min-h-screen"
             : ""
         } `}
@@ -71,8 +80,8 @@ const Layout = ({ children }) => {
       {!(
         currentPath == "/sign-in" ||
         currentPath == "/create-account" ||
-        currentPath == "candidate-register" ||
-        currentPath == "employer-register"
+        currentPath == "/candidate-register" ||
+        currentPath == "/employer-register"
       ) && <Footer />}
     </>
   );
