@@ -12,6 +12,7 @@ import { getAllJob, getJob } from "../../apiCalls/jobApiCalls";
 import { useUiContext } from "../../contexts/UiContext";
 import Back from "../../components/common/Back";
 import { userTypes } from "../../constants";
+import FullPageLoader from "../../components/common/FullPageLoader";
 
 const SingleJob = () => {
   const router = useRouter();
@@ -214,9 +215,7 @@ const SingleJob = () => {
       </div>
     </div>
   ) : (
-    <div className="min-h-screen flex-center-center">
-      <div className="loader" />
-    </div>
+    <FullPageLoader />
   );
 };
 
