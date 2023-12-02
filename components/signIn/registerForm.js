@@ -161,9 +161,9 @@ const RegisterForm = () => {
                       />
                       <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
                         {passwordVisible ? (
-                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
-                        ) : (
                           <FaEye onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        ) : (
+                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
                         )}
                       </span>
                       </div>
