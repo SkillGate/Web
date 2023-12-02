@@ -1,8 +1,9 @@
-import { publicRequest } from "../constants/requestMethods";
+import { publicJobRequest } from "../constants/requestMethods";
+
 
 export const Register = async (User, token) => {
   try {
-    const res = await publicRequest.post(`/auth/register`, User, {
+    const res = await publicJobRequest.post(`/auth/register`, User, {
       headers: {
         token: `Bearer ${token}`,
       },

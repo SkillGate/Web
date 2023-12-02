@@ -1,8 +1,8 @@
-import { publicRequest } from "../constants/requestMethods";
+import { publicAuthRequest } from "../constants/requestMethods";
 
 export const Register = async (User) => {
   try {
-    const res = await publicRequest.post(`/auth/register`, User);
+    const res = await publicAuthRequest.post(`/auth/register`, User);
     console.log(res);
     return res.data;
   } catch (err) {
@@ -13,7 +13,7 @@ export const Register = async (User) => {
 
 export const Login = async (User) => {
   try {
-    const res = await publicRequest.post(`/auth/login`, User);
+    const res = await publicAuthRequest.post(`/auth/login`, User);
     console.log(res);
     return res.data;
   } catch (err) {
