@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { Login } from "../../apiCalls/userApiCalls";
 import TermsOfService from "../common/TermsOfService";
 import PopUpModal from "../common/PopUpModal";
+import { useUiContext } from "../../contexts/UiContext";
 
 const RegisterForm = () => {
   const {
@@ -25,6 +26,8 @@ const RegisterForm = () => {
   };
 
   const router = useRouter();
+
+  const { loginUser } = useUiContext();
 
   const [user, setUse] = useAuthState(auth);
   const googleAuth = new GoogleAuthProvider();
@@ -46,6 +49,7 @@ const RegisterForm = () => {
         setIsModalVisible(true);
         reset();
       } else {
+        loginUser(userData);
         if (userData.userType === userTypes.candidate) {
           router.push("/candidateDashboard");
         } else {

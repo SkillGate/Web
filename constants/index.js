@@ -52,10 +52,8 @@ export const fetchMethods = {
   get: "GET",
 };
 
-export const serverUrls = {
-  dev:"http://localhost:3000",
-  auth:"http://localhost:5000",
-  job:"http://localhost:5001"
+export const userImage = {
+  imageUrl: "https://res.cloudinary.com/midefulness/image/upload/v1701515657/SkillGate/profile_ofqaog.png"
 }
 
 // export const userData = {

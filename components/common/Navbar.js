@@ -13,16 +13,16 @@ import Notifications from "./Notifications";
 import Dropdown from "./Dropdown";
 import ActiveLink from "./ActiveLink";
 import useDarkMode from "../../helpers/useDarkMode";
-import { imageUrl, userTypes } from "../../constants";
+import { imageUrl, userImage, userTypes } from "../../constants";
 
 const Navbar = () => {
-  const [userType, setUserType] = useState("Candidate");
+  const [userType, setUserType] = useState("");
   const [search, setSearch] = useState("");
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
   const [showSearchBar, setShowSearchBar] = useState(false);
   const router = useRouter();
 
-  const { dispatch, isSidebarOpen } = useUiContext();
+  const { user, dispatch, isSidebarOpen } = useUiContext();
 
   const handleDropdown = () => {
     dispatch({ type: actioTypes.toggleDropdown });
@@ -53,6 +53,10 @@ const Navbar = () => {
       router.push(`/jobs/search/${search}`);
     }
   };
+
+  useEffect(()=>{
+    setUserType(user.userType);
+  },[userType]);
 
   const logoUrl = imageUrl.logoDoubleColor;
 
@@ -188,8 +192,8 @@ const Navbar = () => {
           onClick={handleDropdown}
         >
           <motion.img
-            src="/images/avatar.png"
-            alt=""
+            src={ user?.avatar ? user.avatar : userImage.imageUrl}
+            alt="User Image"
             className="w-8 h-8 rounded-full sm:cursor-pointer dropdown-btn"
             whileTap={{ scale: 0.5 }}
           />

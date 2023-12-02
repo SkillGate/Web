@@ -13,9 +13,11 @@ const Layout = ({ children }) => {
   const { dispatch } = useUiContext();
   const [showButton, setShowButton] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
-  const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState(null);
 
   const [currentPath, setCurrentPath] = useState("");
+
+  const { user } = useUiContext();
 
   const handleCloseDropdown = (e) => {
     dispatch({ type: actioTypes.closeDropdown });
@@ -31,8 +33,12 @@ const Layout = ({ children }) => {
     setCurrentPath(pathName);
     console.log(currentPath);
 
+    console.log(user);
+    user?.userType ? setUserType(user?.userType) : setUserType(null);
+    ;
+
     // Other logic or side effects
-  }, [router.pathname]);
+  }, [router.pathname, user]);
 
   // Loader when page is loading
   if (typeof window !== "undefined") {
@@ -51,8 +57,12 @@ const Layout = ({ children }) => {
       <Meta />
       {showLoader && <Loader />}
       <BackToTopButton showButton={showButton} />
-      {!(currentPath == "/sign-in" || currentPath == "/create-account") &&
-        (userType == "" ? <MainNavbar /> : <Navbar />)}
+      {!(
+        currentPath == "/sign-in" ||
+        currentPath == "/create-account" ||
+        currentPath == "candidate-register" ||
+        currentPath == "employer-register"
+      ) && (userType == null ? <MainNavbar /> : <Navbar />)}
       <div
         className={`${
           !(currentPath === "/sign-in" || currentPath === "/create-account")
@@ -63,9 +73,12 @@ const Layout = ({ children }) => {
       >
         {children}
       </div>
-      {!(currentPath == "/sign-in" || currentPath == "/create-account") && (
-        <Footer />
-      )}
+      {!(
+        currentPath == "/sign-in" ||
+        currentPath == "/create-account" ||
+        currentPath == "candidate-register" ||
+        currentPath == "employer-register"
+      ) && <Footer />}
     </>
   );
 };

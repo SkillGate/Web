@@ -1,9 +1,18 @@
 import { BiBriefcase, BiLogOut, BiUser, BiUserCircle } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { useUiContext } from "../../contexts/UiContext";
+import { useRouter } from "next/router";
 
 const Dropdown = () => {
-  const { isDropdownOpen } = useUiContext();
+  const { logoutUser, isDropdownOpen } = useUiContext();
+
+  const router = useRouter();
+
+  const userLogout = () => {
+    logoutUser();
+    router.push("/");
+  }
+
   return (
     <>
       {isDropdownOpen && (
@@ -24,7 +33,7 @@ const Dropdown = () => {
             <BiBriefcase className="text-muted" />
             <span className="text-muted">My Jobs</span>
           </div>
-          <div className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg">
+          <div className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg" onClick={userLogout}>
             <BiLogOut className="text-muted" />
             <span className="text-muted">Sign out</span>
           </div>
