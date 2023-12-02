@@ -50,6 +50,7 @@ const RegisterForm = () => {
     const result = await signInWithPopup(auth, googleAuth);
   };
   useEffect(() => {
+    setLoading(false);
     console.log(user);
   }, [user]);
 
