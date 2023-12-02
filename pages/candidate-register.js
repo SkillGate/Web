@@ -5,8 +5,26 @@ import PopUpModal from "../components/common/PopUpModal";
 import { useState } from "react";
 import { Register } from "../apiCalls/userApiCalls";
 import { useRouter } from "next/router";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const CandidateRegisterPage = () => {
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmedpasswordVisible, setConfirmedPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = (key) => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleConfirmedPasswordVisibility = (key) => {
+    setConfirmedPasswordVisible(!confirmedpasswordVisible);
+  };
+
+  const handlePasswordChange = (e, field) => {
+    field.onChange(e.target.value);
+  };
+
+
   const {
     handleSubmit,
     control,
@@ -210,15 +228,28 @@ const CandidateRegisterPage = () => {
                 name="password"
                 control={control}
                 render={({ field }) => (
+                  <>
+                  <div style={{ position: 'relative' }}>
                   <input
                     {...field}
-                    type="password"
+                    type={passwordVisible ? 'text' : 'password'}
                     id="password"
                     placeholder="Enter your password"
                     className={`register-from-input ${
                       errors.password ? "border-red-500" : "border-gray-300"
                     }`}
+                    onChange={(e) => handlePasswordChange(e, field)}
+                    style={{ paddingRight: '40px' }}
                   />
+                  <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                        {passwordVisible ? (
+                          <FaEye onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        ) : (
+                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        )}
+                      </span>
+                  </div>
+                  </>
                 )}
                 // rules={{
                 //   required: "Password is required",
@@ -246,9 +277,11 @@ const CandidateRegisterPage = () => {
                 name="confirmPassword"
                 control={control}
                 render={({ field }) => (
+                  <>
+                  <div style={{ position: 'relative' }}>
                   <input
                     {...field}
-                    type="password"
+                    type={confirmedpasswordVisible ? 'text' : 'password'}
                     id="confirmPassword"
                     placeholder="Enter your password again..."
                     className={`register-from-input ${
@@ -256,7 +289,18 @@ const CandidateRegisterPage = () => {
                         ? "border-red-500"
                         : "border-gray-300"
                     }`}
+                    onChange={(e) => handlePasswordChange(e, field)}
+                    style={{ paddingRight: '40px' }}
                   />
+                  <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                        {confirmedpasswordVisible ? (
+                          <FaEye onClick={toggleConfirmedPasswordVisibility} style={{ cursor: 'pointer' }} />
+                        ) : (
+                          <FaEyeSlash onClick={toggleConfirmedPasswordVisibility} style={{ cursor: 'pointer' }} />
+                        )}
+                      </span>
+                  </div>
+                  </>
                 )}
                 // rules={{
                 //   required: "Password is required",

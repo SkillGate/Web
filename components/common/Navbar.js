@@ -18,7 +18,7 @@ import DesktopMenu from "./DesktopMenu";
 import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
-  const [userType, setUserType] = useState(null);
+  const [userType, setUserType] = useState("Employer");
   const [search, setSearch] = useState("");
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -57,7 +57,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    setUserType(user.userType);
+    setUserType(user?.userType);
   }, [userType]);
 
   const logoUrl = imageUrl.logoDoubleColor;

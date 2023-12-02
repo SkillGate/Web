@@ -163,29 +163,16 @@ const RegisterForm = () => {
                               ? "border-red-500"
                               : "border-gray-300"
                           }`}
-                          onChange={(e) => handlePasswordChange(e, field)}
-                          style={{ paddingRight: "40px" }}
-                        />
-                        <span
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            right: "10px",
-                            transform: "translateY(-50%)",
-                          }}
-                        >
-                          {passwordVisible ? (
-                            <FaEyeSlash
-                              onClick={togglePasswordVisibility}
-                              style={{ cursor: "pointer" }}
-                            />
-                          ) : (
-                            <FaEye
-                              onClick={togglePasswordVisibility}
-                              style={{ cursor: "pointer" }}
-                            />
-                          )}
-                        </span>
+                        onChange={(e) => handlePasswordChange(e, field)}
+                        style={{ paddingRight: '40px' }}
+                      />
+                      <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                        {passwordVisible ? (
+                          <FaEye onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        ) : (
+                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        )}
+                      </span>
                       </div>
                     </>
                   )}
