@@ -81,7 +81,7 @@ const JobList = ({ jobs, loading, userType }) => {
                     message
                   </button> */}
                   {userType && (
-                    <Link href={`/apply/${job?.id}`}>
+                    <Link href={`/apply/${job?._id}`}>
                       <a className="btn btn-primary flex-shrink-0">apply now</a>
                     </Link>
                   )}

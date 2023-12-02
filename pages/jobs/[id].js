@@ -199,7 +199,7 @@ const SingleJob = () => {
                 >
                   apply now
                 </Link> */}
-                  <Link href={`/apply/${job?.id}`}>
+                  <Link href={`/apply/${job?._id}`}>
                     <a className="btn btn-primary-outline flex-shrink-0">
                       apply now
                     </a>
