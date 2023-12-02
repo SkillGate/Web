@@ -58,11 +58,11 @@ export const candidateLinks = [
     linkText: "History",
     url: "/history",
   },
-  // {
-  //   id: 6,
-  //   linkText: "Events",
-  //   url: "/events",
-  // },
+  {
+    id: 6,
+    linkText: "Events",
+    url: "/events",
+  },
 ];
 
 
@@ -82,11 +82,12 @@ export const employerLinks = [
     linkText: "Talent",
     url: "/talent",
   },
-  // {
-  //   id: 4,
-  //   linkText: "Schedule",
-  //   url: "/schedule",
-  // },
+  // Calender can be used in employerDashboard
+  {
+    id: 4,
+    linkText: "Schedule",
+    url: "/schedule",
+  },
   {
     id: 5,
     linkText: "History",

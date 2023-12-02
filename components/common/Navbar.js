@@ -8,15 +8,17 @@ import { actioTypes } from "../../reducers/uiReducer";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import { links } from "../../data/links";
+import { candidateLinks, employerLinks, links } from "../../data/links";
 import Notifications from "./Notifications";
 import Dropdown from "./Dropdown";
 import ActiveLink from "./ActiveLink";
 import useDarkMode from "../../helpers/useDarkMode";
 import { imageUrl, userImage, userTypes } from "../../constants";
+import DesktopMenu from "./DesktopMenu";
+import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
-  const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState(null);
   const [search, setSearch] = useState("");
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -54,9 +56,9 @@ const Navbar = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setUserType(user.userType);
-  },[userType]);
+  }, [userType]);
 
   const logoUrl = imageUrl.logoDoubleColor;
 
@@ -65,7 +67,13 @@ const Navbar = () => {
       className="navbar fixed w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.5rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
       onClick={handleClose}
     >
-      <Link href={userType ? "/candidateDashboard" : "/employerDashboard"}>
+      <Link
+        href={
+          userType == userTypes.candidate
+            ? "/candidateDashboard"
+            : "/employerDashboard"
+        }
+      >
         <a className="hidden md:block flex-shrink-0">
           <div className="image-wrapper">
             <Image
@@ -77,20 +85,23 @@ const Navbar = () => {
           </div>
         </a>
       </Link>
-      <Link href={userType ? "/candidateDashboard" : "/employerDashboard"}>
+      <Link
+        href={
+          userType == userTypes.candidate
+            ? "/candidateDashboard"
+            : "/employerDashboard"
+        }
+      >
         <a className="md:hidden">
           <Image src={logoUrl} alt="logo" width={32} height={32} />
         </a>
       </Link>
 
       {/*-------------------------------------- Desktop Menu------------------------------------- */}
-      <ul className="hidden md:flex-align-center space-x-3 lg:space-x-6">
-        {links.map(({ id, linkText, url }) => (
-          <ActiveLink href={url} key={id}>
-            {linkText}
-          </ActiveLink>
-        ))}
-      </ul>
+      {userType == userTypes.candidate && (
+        <DesktopMenu links={candidateLinks} />
+      )}
+      {userType == userTypes.employer && <DesktopMenu links={employerLinks} />}
 
       {/*---------------------------------------- Mobile Menu------------------------------------- */}
       <div
@@ -113,13 +124,12 @@ const Navbar = () => {
               <FiDelete />
             </div>
           </div>
-          {links.map(({ id, linkText, url }) => (
-            <Link key={id} href={url} end>
-              <a onClick={() => dispatch({ type: actioTypes.closeSidebar })}>
-                {linkText}
-              </a>
-            </Link>
-          ))}
+          {userType == userTypes.candidate && (
+            <MobileMenu links={candidateLinks} />
+          )}
+          {userType == userTypes.employer && (
+            <MobileMenu links={employerLinks} />
+          )}
         </ul>
       </div>
 
@@ -192,7 +202,7 @@ const Navbar = () => {
           onClick={handleDropdown}
         >
           <motion.img
-            src={ user?.avatar ? user.avatar : userImage.imageUrl}
+            src={user?.avatar ? user.avatar : userImage.imageUrl}
             alt="User Image"
             className="w-8 h-8 rounded-full sm:cursor-pointer dropdown-btn"
             whileTap={{ scale: 0.5 }}
