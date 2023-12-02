@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { Login } from "../../apiCalls/userApiCalls";
 import TermsOfService from "../common/TermsOfService";
 import PopUpModal from "../common/PopUpModal";
+import Link from "next/link";
 
 const RegisterForm = () => {
   const {
@@ -178,7 +179,7 @@ const RegisterForm = () => {
             <p className="mt-8 text-center text-sm text-gray-500">
               New to SkillGate?
               <button className="text-purple-500 font-bold py-2 px-4 rounded-lg">
-                Register
+                <Link href="/create-account">Register</Link>
               </button>
             </p>
           </div>
