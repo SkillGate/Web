@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { imageUrl } from "../../constants";
+import { imageUrl, userTypes } from "../../constants";
 import { useForm, Controller } from "react-hook-form";
 import { auth } from "../../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -37,7 +37,6 @@ const RegisterForm = () => {
   }, [user]);
 
   const onSubmit = async (data) => {
-    // Handle form submission here
     console.log(data);
 
     try {
@@ -45,9 +44,13 @@ const RegisterForm = () => {
       console.log(userData);
       if (!userData) {
         setIsModalVisible(true);
-        reset(); // Optionally, you can clear the form values
+        reset();
       } else {
-        router.push("/candidateDashboard");
+        if (userData.userType === userTypes.candidate) {
+          router.push("/candidateDashboard");
+        } else {
+          router.push("/employerDashboard");
+        }
       }
     } catch (error) {
       console.error("Error in onSubmit:", error);
@@ -68,7 +71,7 @@ const RegisterForm = () => {
         cancelButtonText="No, cancel"
       />
 
-      <div className="relative flex flex-col md:flex-row items-center justify-center bg-slate-200 h-screen md:gap-8">
+      <div className="sign-in-container">
         <div className="absolute md:relative block md:basis-1/2 order-1 md:pb-12 md:pt-8 md:py-0 invisible md:visible">
           <div className="flex flex-1 lg:min-h-[900px] text-center justify-center">
             <Image
@@ -81,18 +84,13 @@ const RegisterForm = () => {
           </div>
         </div>
         <div className="basis-100 md:basis-1/2 order-2 md:max-w-xl">
-          <div className="p-8 mx-0 md:mx-10 bg-white rounded shadow-md">
-            <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 mb-10">
-              Sign in to your account
-            </h2>
+          <div className="sign-in-form-container">
+            <h2 className="register-from-header">Sign in to your account</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Email input */}
               <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-gray-700 font-bold mb-2"
-                >
+                <label htmlFor="email" className="register-from-label">
                   Email
                 </label>
                 <Controller
@@ -105,9 +103,9 @@ const RegisterForm = () => {
                       type="text"
                       id="email"
                       placeholder="Enter your email"
-                      className={`w-full p-2 border ${
+                      className={`register-from-input ${
                         errors.email ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                      }`}
                     />
                   )}
                   rules={{
@@ -124,10 +122,7 @@ const RegisterForm = () => {
 
               {/* Password input */}
               <div className="mb-4">
-                <label
-                  htmlFor="password"
-                  className="block text-gray-700 font-bold mb-2"
-                >
+                <label htmlFor="password" className="register-from-label">
                   Password
                 </label>
                 <Controller
@@ -140,9 +135,9 @@ const RegisterForm = () => {
                       type="password"
                       id="password"
                       placeholder="Enter your password"
-                      className={`w-full p-2 border ${
+                      className={`register-from-input ${
                         errors.password ? "border-red-500" : "border-gray-300"
-                      } rounded`}
+                      }`}
                     />
                   )}
                   rules={{ required: "Password is required" }}
