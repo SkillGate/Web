@@ -10,8 +10,20 @@ import { Login } from "../../apiCalls/userApiCalls";
 import TermsOfService from "../common/TermsOfService";
 import PopUpModal from "../common/PopUpModal";
 import Link from "next/link";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const RegisterForm = () => {
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const handlePasswordChange = (e, field) => {
+    field.onChange(e.target.value);
+  };
+
   const {
     handleSubmit,
     control,
@@ -81,6 +93,7 @@ const RegisterForm = () => {
               width={700}
               height={700}
               className="feature-phone"
+              style={{ filter: 'hue-rotate(45deg)' }}
             />
           </div>
         </div>
@@ -104,9 +117,8 @@ const RegisterForm = () => {
                       type="text"
                       id="email"
                       placeholder="Enter your email"
-                      className={`register-from-input ${
-                        errors.email ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`register-from-input ${errors.email ? "border-red-500" : "border-gray-300"
+                        }`}
                     />
                   )}
                   rules={{
@@ -131,15 +143,27 @@ const RegisterForm = () => {
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <input
-                      {...field}
-                      type="password"
-                      id="password"
-                      placeholder="Enter your password"
-                      className={`register-from-input ${
-                        errors.password ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
+                    <>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        {...field}
+                        type={passwordVisible ? 'text' : 'password'}
+                        id="password"
+                        placeholder="Enter your password"
+                        className={`register-from-input ${errors.password ? "border-red-500" : "border-gray-300"
+                          }`}
+                        onChange={(e) => handlePasswordChange(e, field)}
+                        style={{ paddingRight: '40px' }}
+                      />
+                      <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                        {passwordVisible ? (
+                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        ) : (
+                          <FaEye onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        )}
+                      </span>
+                      </div>
+                    </>
                   )}
                   rules={{ required: "Password is required" }}
                 />
