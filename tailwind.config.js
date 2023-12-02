@@ -42,6 +42,7 @@ module.exports = {
         "hover-color": "#2d2d39",
         "dark-light": "#393948",
         "purple-haze":"#EFDCF9",
+        "main-white": "#ccc",
       },
       backgroundColor: {
         main: "#f5f5f9",
