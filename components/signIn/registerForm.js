@@ -52,7 +52,7 @@ const RegisterForm = () => {
   useEffect(() => {
     setLoading(false);
     console.log(user);
-  }, [user]);
+  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
