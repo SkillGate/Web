@@ -5,8 +5,39 @@ import { Register } from "../apiCalls/userApiCalls";
 import { useState } from "react";
 import PopUpModal from "../components/common/PopUpModal";
 import { useRouter } from "next/router";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { countryCodes } from "../data/countryCodeData";
+import { FaAngleDown } from 'react-icons/fa';
 
 const EmployerRegisterPage = () => {
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmedpasswordVisible, setConfirmedPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleConfirmedPasswordVisibility = (key) => {
+    setConfirmedPasswordVisible(!confirmedpasswordVisible);
+  };
+
+  const handlePasswordChange = (e, field) => {
+    field.onChange(e.target.value);
+  };
+
+  const handleConfirmedPasswordChange = (e, field) => {
+    field.onChange(e.target.value);
+  };
+
+  const [selectedCountry, setSelectedCountry] = useState({ "name": "Sri Lanka", "dial_code": "+94", "code": "LK" });
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const handleSelect = (country) => {
+    setSelectedCountry(country);
+    setDropdownVisible(false);
+  };
+
   const {
     handleSubmit,
     control,
@@ -37,6 +68,7 @@ const EmployerRegisterPage = () => {
     } else {
       clearErrors("confirmPassword");
       data.userType = "Employer";
+      data.phone = selectedCountry.dial_code + data.phone;
       console.log(data);
       try {
         const userData = await Register(data);
@@ -54,6 +86,8 @@ const EmployerRegisterPage = () => {
     }
   };
 
+
+
   return (
     <div>
       <PopUpModal
@@ -63,7 +97,7 @@ const EmployerRegisterPage = () => {
       />
       <div className="flex min-h-full flex-col justify-center px-6 py-6 lg:px-6">
         <div className="register-from-container">
-          <h2 className="register-from-header">Sign in to your account</h2>
+          <h2 className="register-from-header">Sign up to your account</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* First Name input */}
@@ -80,9 +114,8 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="firstName"
                     placeholder="Enter your First Name"
-                    className={`register-from-input ${
-                      errors.firstName ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`register-from-input ${errors.firstName ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -114,9 +147,8 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="lastName"
                     placeholder="Enter your Last Name"
-                    className={`register-from-input ${
-                      errors.lastName ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`register-from-input ${errors.lastName ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -148,9 +180,8 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="email"
                     placeholder="Enter your email"
-                    className={`register-from-input ${
-                      errors.email ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`register-from-input ${errors.email ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -173,28 +204,70 @@ const EmployerRegisterPage = () => {
               <label htmlFor="phone" className="register-from-label">
                 Contact Number
               </label>
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="text"
-                    id="phone"
-                    placeholder="Enter your Contact Number"
-                    className={`register-from-input ${
-                      errors.phone ? "border-red-500" : "border-gray-300"
-                    }`}
+
+              <div className="mt-4 flex flex-row" >
+                <div className="flex mb-4 lg:mb-0" >
+                  <div className="relative">
+                    <button
+                      onClick={() => setDropdownVisible(!dropdownVisible)}
+                      className="inline-flex items-center justify-center w-full py-2 text-sm font-medium border border-gray-300 rounded-tl-md rounded-bl-md bg-white focus:outline-none focus:border-primary dark:bg-dark-card dark:border-hover-color"
+                    >
+                      {selectedCountry ? (
+                        <div className="flex items-center">
+                          <img src={`https://flagsapi.com/${selectedCountry.code}/flat/64.png`} alt="" className="w-6 h-6 ml-2 mr-2" />
+                          <span>({selectedCountry.dial_code})</span>
+                        </div>
+                      ) : (
+                        '+94'
+                      )}
+                      <FaAngleDown className="ml-2 mr-2"/>
+                    </button>
+
+                    {dropdownVisible && (
+                      <div className="absolute mt-2 max-w-full max-h-60 overflow-auto bg-white border border-gray-300 rounded-md shadow-lg z-10 dark:bg-dark-main">
+                        {countryCodes.map(({ name, dial_code, code }) => (
+                          <button
+                            key={dial_code}
+                            onClick={() => handleSelect({ name, dial_code, code })}
+                            className="flex items-center w-50 px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
+                          >
+                            {dial_code && (
+                              <img
+                                src={`https://flagsapi.com/${code}/flat/64.png`}
+                                alt=""
+                                className="w-6 h-6 mr-2"
+                              />
+                            )}<span>{dial_code}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex-auto mb-4 lg:mb-0">
+                  <Controller
+                    name="phone"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type="tele"
+                        id="phone"
+                        placeholder="Enter your Contact Number"
+                        className={`bg-inherit w-full p-2 border dark:border-hover-color rounded-tr-md rounded-br-md ${errors.phone ? "border-red-500" : "border-gray-300"
+                          }`}
+                      />
+                    )}
+                  // rules={{
+                  //   required: "Contact Number is required",
+                  //   pattern: {
+                  //     value: /^\d{9}$/,
+                  //     message: "Please enter a valid number of digit phone number",
+                  //   },
+                  // }}
                   />
-                )}
-                // rules={{
-                //   required: "Contact Number is required",
-                //   pattern: {
-                //     value: /^\d{10}$/,
-                //     message: "Please enter a 10-digit phone number",
-                //   },
-                // }}
-              />
+                </div>
+              </div>
               {errors.phone && (
                 <span className="text-red-500 text-sm">
                   {errors.phone.message}
@@ -202,7 +275,7 @@ const EmployerRegisterPage = () => {
               )}
             </div>
 
-            {/* Last Name input */}
+            {/* Company input */}
             <div className="mb-4">
               <label htmlFor="companyName" className="register-from-label">
                 Company Name
@@ -216,9 +289,8 @@ const EmployerRegisterPage = () => {
                     type="text"
                     id="companyName"
                     placeholder="Enter your Company Name"
-                    className={`register-from-input ${
-                      errors.companyName ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`register-from-input ${errors.companyName ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                 )}
                 rules={{
@@ -245,25 +317,37 @@ const EmployerRegisterPage = () => {
                 name="password"
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    className={`register-from-input ${
-                      errors.password ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
+                  <>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        {...field}
+                        type={passwordVisible ? 'text' : 'password'}
+                        id="password"
+                        placeholder="Enter your password"
+                        className={`register-from-input ${errors.password ? "border-red-500" : "border-gray-300"
+                          }`}
+                        onChange={(e) => handlePasswordChange(e, field)}
+                        style={{ paddingRight: '40px' }}
+                      />
+                      <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                        {passwordVisible ? (
+                          <FaEye onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        ) : (
+                          <FaEyeSlash onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+                        )}
+                      </span>
+                    </div>
+                  </>
                 )}
-                // rules={{
-                //   required: "Password is required",
-                //   pattern: {
-                //     value:
-                //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                //     message:
-                //       "Password must contain at least 8 characters, one uppercase letter, and one number",
-                //   },
-                // }}
+              // rules={{
+              //   required: "Password is required",
+              //   pattern: {
+              //     value:
+              //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              //     message:
+              //       "Password must contain at least 8 characters, one uppercase letter, and one number",
+              //   },
+              // }}
               />
               {errors.password && (
                 <span className="text-red-500 text-sm">
@@ -281,27 +365,39 @@ const EmployerRegisterPage = () => {
                 name="confirmPassword"
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Enter your password again..."
-                    className={`register-from-input ${
-                      errors.confirmPassword
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                  />
+                  <>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        {...field}
+                        type={confirmedpasswordVisible ? 'text' : 'password'}
+                        id="confirmPassword"
+                        placeholder="Enter your password again..."
+                        className={`register-from-input ${errors.confirmPassword
+                          ? "border-red-500"
+                          : "border-gray-300"
+                          }`}
+                        onChange={(e) => handleConfirmedPasswordChange(e, field)}
+                        style={{ paddingRight: '40px' }}
+                      />
+                      <span style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+                        {confirmedpasswordVisible ? (
+                          <FaEye onClick={toggleConfirmedPasswordVisibility} style={{ cursor: 'pointer' }} />
+                        ) : (
+                          <FaEyeSlash onClick={toggleConfirmedPasswordVisibility} style={{ cursor: 'pointer' }} />
+                        )}
+                      </span>
+                    </div>
+                  </>
                 )}
-                // rules={{
-                //   required: "Password is required",
-                //   pattern: {
-                //     value:
-                //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                //     message:
-                //       "Password must contain at least 8 characters, one uppercase letter, and one number",
-                //   },
-                // }}
+              // rules={{
+              //   required: "Password is required",
+              //   pattern: {
+              //     value:
+              //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              //     message:
+              //       "Password must contain at least 8 characters, one uppercase letter, and one number",
+              //   },
+              // }}
               />
               {errors.confirmPassword && (
                 <span className="text-red-500 text-sm">

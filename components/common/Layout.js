@@ -56,12 +56,8 @@ const Layout = ({ children }) => {
       <Meta />
       {showLoader && <Loader />}
       <BackToTopButton showButton={showButton} />
-      {!(
-        currentPath == "/sign-in" ||
-        currentPath == "/create-account" ||
-        currentPath == "candidate-register" ||
-        currentPath == "employer-register"
-      ) && (userType == null ? <MainNavbar /> : <Navbar />)}
+      {!(currentPath == "/sign-in" || currentPath == "/create-account") &&
+        (userType == "hj" ? <MainNavbar /> : <Navbar />)}
       <div
         className={`${
           !(currentPath === "/sign-in" || currentPath === "/create-account")
