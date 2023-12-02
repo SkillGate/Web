@@ -5,8 +5,8 @@ import { FaBookmark } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Skeleton from "../loading-skeleton/Skeleton";
 import { useState } from "react";
-const JobList = ({ jobs, loading }) => {
-  const [userType, setUserType] = useState("Candidate");
+const JobList = ({ jobs, loading, userType }) => {
+  // const [userType, setUserType] = useState("Candidate");
   return !loading ? (
     <>
       {jobs.length > 0 ? (
@@ -30,7 +30,7 @@ const JobList = ({ jobs, loading }) => {
                     className="w-14 rounded-lg"
                   />
                   <div>
-                    <Link href="/jobs/[id]" as={`/jobs/${job?.id}`}>
+                    <Link href="/jobs/[id]" as={`/jobs/${job?._id}`}>
                       <a className="group-hover:text-primary transition-a">
                         <h1 className="text-xl font-semibold">{job?.title}</h1>
                       </a>

@@ -62,6 +62,10 @@ footer a:hover {
   @apply bg-primary text-white hover:bg-hover-btn-color;
 }
 
+.btn-primary-outline {
+  @apply border border-primary text-primary bg-white hover:text-white hover:bg-hover-btn-color;
+}
+
 .btn-primary-light {
   @apply bg-primary text-purple-haze hover:bg-hover-btn-color;
 }
