@@ -11,6 +11,7 @@ import TermsOfService from "../common/TermsOfService";
 import PopUpModal from "../common/PopUpModal";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useUiContext } from "../../contexts/UiContext";
 
 const RegisterForm = () => {
 
@@ -39,6 +40,8 @@ const RegisterForm = () => {
 
   const router = useRouter();
 
+  const { loginUser } = useUiContext();
+
   const [user, setUse] = useAuthState(auth);
   const googleAuth = new GoogleAuthProvider();
   const login = async () => {
@@ -59,6 +62,7 @@ const RegisterForm = () => {
         setIsModalVisible(true);
         reset();
       } else {
+        loginUser(userData);
         if (userData.userType === userTypes.candidate) {
           router.push("/candidateDashboard");
         } else {

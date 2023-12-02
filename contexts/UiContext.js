@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { uiReducer } from "../reducers/uiReducer";
+import { actioTypes, uiReducer } from "../reducers/uiReducer";
 
 export const UiContext = createContext();
 
@@ -16,11 +16,11 @@ export const UiProvider = ({ children }) => {
   const [ui, dispatch] = useReducer(uiReducer, initialState);
 
   const loginUser = (userData) => {
-    dispatch({ type: actionTypes.loginUser, payload: userData });
+    dispatch({ type: actioTypes.loginUser, payload: userData });
   };
 
   const logoutUser = () => {
-    dispatch({ type: actionTypes.logoutUser });
+    dispatch({ type: actioTypes.logoutUser });
   };
 
   return (
