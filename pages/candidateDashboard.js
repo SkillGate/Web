@@ -17,9 +17,10 @@ import { actioTypes } from "../reducers/uiReducer";
 import useFetch from "./api/useFetch";
 import { server } from "../config";
 import formattedDate from "./../components/common/CurrentDate";
+import { useRouter } from "next/router";
 
 const CandidateDashboard = () => {
-  const { isFilterMenuOpen, dispatch } = useUiContext();
+  const { user, isFilterMenuOpen, dispatch } = useUiContext();
   const handleCloseFiltermenu = (e) => {
     if (e.target.classList.contains("filter-modal"))
       dispatch({ type: actioTypes.closeFilterMenu });
@@ -27,6 +28,15 @@ const CandidateDashboard = () => {
   const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
 
   const [selectedFilters, setSelectedFilters] = useState({});
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if(!user?.userType){
+      router.push('/');
+    }
+  }, [user])
+  
 
   /* Set selected filters i.e => {
   "type_of_employment": ["Full Time", "Part Time"],

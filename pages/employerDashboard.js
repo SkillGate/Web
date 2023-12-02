@@ -1,13 +1,23 @@
-import React from 'react'
-import formattedDate from '../components/common/CurrentDate';
+import React, { useEffect } from "react";
+import formattedDate from "../components/common/CurrentDate";
+import { useRouter } from "next/router";
+import { useUiContext } from "../contexts/UiContext";
 
 const EmployerDashboard = () => {
+  const { user } = useUiContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user?.userType) {
+      router.push("/");
+    }
+  }, [user]);
   return (
-    <div className='padding-container'>
-        <h1 className="font-bold text-2xl">Welcome, Brian</h1>
+    <div className="padding-container">
+      <h1 className="font-bold text-2xl">Welcome, Brian</h1>
       <p>{formattedDate}</p>
     </div>
-  )
-}
+  );
+};
 
-export default EmployerDashboard
+export default EmployerDashboard;

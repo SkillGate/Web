@@ -35,7 +35,6 @@ const Layout = ({ children }) => {
 
     console.log(user);
     user?.userType ? setUserType(user?.userType) : setUserType(null);
-    ;
 
     // Other logic or side effects
   }, [router.pathname, user]);
