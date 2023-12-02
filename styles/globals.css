@@ -342,3 +342,16 @@ input:-webkit-autofill ~ label {
 }
 
 /* END: register form */
+
+/* START: sign-in form */
+
+.sign-in-container {
+  @apply relative flex flex-col md:flex-row items-center justify-center bg-slate-200 h-screen md:gap-8 dark:bg-dark-main;
+}
+
+.sign-in-form-container {
+  @apply p-8 mx-0 md:mx-10 bg-white rounded shadow-md dark:bg-dark-card;
+}
+
+
+/* END: sign-in form */
