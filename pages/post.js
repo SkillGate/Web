@@ -86,7 +86,7 @@ const PostJob = () => {
       <div className="rounded max-w-3xl w-full mx-auto">
         {/*---------------------------------------- Back to home button------------------------------------- */}
         <button className="btn bg-slate-200 hover:bg-slate-300 dark:bg-dark-card dark:hover:bg-hover-color">
-          <Link href="/">
+          <Link href="/employerDashboard">
             <a className="flex-align-center gap-2">
               <FiChevronLeft />
               <span>back</span>
