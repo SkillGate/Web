@@ -17,16 +17,40 @@ import { actioTypes } from "../reducers/uiReducer";
 import useFetch from "./api/useFetch";
 import { server } from "../config";
 import formattedDate from "./../components/common/CurrentDate";
+import { useRouter } from "next/router";
+import { getAllJob, getJobByUser } from "../apiCalls/jobApiCalls";
 
 const CandidateDashboard = () => {
-  const { isFilterMenuOpen, dispatch } = useUiContext();
+  const { user, isFilterMenuOpen, dispatch } = useUiContext();
   const handleCloseFiltermenu = (e) => {
     if (e.target.classList.contains("filter-modal"))
       dispatch({ type: actioTypes.closeFilterMenu });
   };
-  const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
+  // const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
 
   const [selectedFilters, setSelectedFilters] = useState({});
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user?.userType) {
+      router.push("/sign-in");
+    }
+    const fetchData = async () => {
+      try {
+        const { data: jobData = [], loading } = await getAllJob(user?.accessToken);
+        console.log(jobData);
+        setJobs(jobData);
+        setLoading(loading);
+      } catch (error) {
+        console.error("Error job fetching:", error);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [user]);
 
   /* Set selected filters i.e => {
   "type_of_employment": ["Full Time", "Part Time"],
@@ -204,7 +228,10 @@ const CandidateDashboard = () => {
     <div className="padding-container">
       {/*---------------------------------------- Top Banner with Search filters------------------------------------- */}
       <div
-        style={{ background: "url('https://res.cloudinary.com/midefulness/image/upload/v1700258375/SkillGate/33003_cvtlei.jpg')" }}
+        style={{
+          background:
+            "url('https://res.cloudinary.com/midefulness/image/upload/v1700258375/SkillGate/33003_cvtlei.jpg')",
+        }}
         className="bg-no-repeat bg-cover rounded-lg text-slate-300"
       >
         <div className="px-6 pt-4">
@@ -276,7 +303,7 @@ const CandidateDashboard = () => {
               </div>
             </div>
             <div className="mt-4">
-              <JobList jobs={currentJobs} loading={loading} />
+              <JobList jobs={currentJobs} loading={loading} userType={user?.userType} />
             </div>
             {!loading && (
               <div className="mt-5">
