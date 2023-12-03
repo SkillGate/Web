@@ -3,12 +3,8 @@ import PopUpModal from "../components/common/PopUpModal";
 import { useState } from "react";
 import { Register } from "../apiCalls/userApiCalls";
 import { useRouter } from "next/router";
-<<<<<<< HEAD
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FaAngleDown } from 'react-icons/fa';
-=======
-import { FaEye, FaEyeSlash } from "react-icons/fa";
->>>>>>> main
 
 const CandidateRegisterPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
