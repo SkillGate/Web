@@ -1,9 +1,8 @@
-import React from 'react'
-import Image from 'next/image';
-import Link from 'next/link';
-import { imageUrl } from '../../constants';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { imageUrl } from "../../constants";
 const Homes = () => {
-
   return (
     <div className="hero">
       <div className="flex-1 pt-36 padding-x">
@@ -24,7 +23,12 @@ const Homes = () => {
 
       <div className="hero__image-container pt-5">
         <div className="hero__image">
-          <Image src={imageUrl.hero} alt="hero" layout='fill' className="object-contain" />
+          <Image
+            src={imageUrl.hero}
+            alt="hero"
+            layout="fill"
+            className="object-contain"
+          />
         </div>
 
         <div className="hero__image-overlay" />
