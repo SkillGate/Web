@@ -120,9 +120,9 @@ const MainNavbar = () => {
         <div className="pl-2">
           <Link href="/sign-in">
             <a
-              className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
+              className={`btn !p-2 md:!px-4 btn-primary-outline flex-align-center gap-x-2`}
             >
-              <CiLogin /> <span className="hidden md:block">Sign In</span>
+              <span>Sign In</span>
             </a>
           </Link>
         </div>
@@ -132,7 +132,7 @@ const MainNavbar = () => {
             <a
               className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
             >
-              <CiLogin /> <span className="hidden md:block">Register</span>
+              <span>Register</span>
             </a>
           </Link>
         </div>
