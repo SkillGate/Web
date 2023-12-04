@@ -7,7 +7,7 @@ const AboutItem = ({ data }) => {
   return (
     <div>
       <div className='p-4'>
-        <div className='group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50' >
+        <div className='group relative flex gap-x-6 rounded-lg p-4 transition-transform ease-in-out duration-300 hover:scale-125 hover:shadow-lg hover:shadow-purple-400/50' >
           <div >
             <Image
               className='mb-10'
