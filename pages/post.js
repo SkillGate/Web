@@ -132,7 +132,7 @@ const PostJob = () => {
             )}
           </div>
         </div>
-        <h1 className="text-2xl font-bold mt-10">Fill the form</h1>
+        <h1 className="text-lg mt-10">Provide company persona and job post details</h1>
 
         {/*----------------------------------------Begin Form------------------------------------- */}
 
