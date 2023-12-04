@@ -5,6 +5,7 @@ import { Register } from "../apiCalls/userApiCalls";
 import { useRouter } from "next/router";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FaAngleDown } from 'react-icons/fa';
+import { countryCodes } from "../data/countryCodeData";
 
 const CandidateRegisterPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);

@@ -1,13 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
-import { BiFile, BiLink } from "react-icons/bi";
-import { FaLinkedin } from "react-icons/fa";
+import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
 import { userTypes } from "../../constants";
 import useFetch from "../api/useFetch";
 import { server } from "../../config";
+import Table from "../../components/table/Table";
 
 const ApplyJob = ({ candidate }) => {
     const router = useRouter();
@@ -23,54 +22,36 @@ const ApplyJob = ({ candidate }) => {
         setActiveTab(tabNumber);
     };
 
-    const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+    const allApplicantsRows = [
+        { id: 1, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 2, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 3, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 4, name: 'Sathya Karunankalage', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 5, name: 'Haitha Jayaweera', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 6, name: 'Roneki Manamperi', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 7, name: 'Madhuni Tharukshi', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 8, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 9, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com" },
+        { id: 10, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com" },
+    ];
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6;
-    const displayData = () => {
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        return rows.slice(start, end).map((row) => (
-            <tr key={row}>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">John Brown</td>
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                    <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-1">View</button>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                    <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-1">View</button>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                    <button type="button" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-1">View</button>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                    <button type="button" class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-1">View</button>
-                </td>
-            </tr>
-        ));
-    };
+    const shortlistApplicantsRows = [
+        { id: 1, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 2, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 3, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 4, name: 'Sathya Karunankalage', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 5, name: 'Haitha Jayaweera', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 6, name: 'Roneki Manamperi', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 7, name: 'Madhuni Tharukshi', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 8, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 9, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 10, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com"},
+    ];
 
-    const pageCount = Math.ceil(rows.length / itemsPerPage);
-
-    const changePage = (page) => {
-        setCurrentPage(page);
-    };
-
-    const pagination = () => {
-        const pageButtons = [];
-        for (let i = 1; i <= pageCount; i++) {
-            pageButtons.push(
-                <button
-                    key={i}
-                    className={`px-3 py-1 mx-1 ${currentPage === i ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800'
-                        }`}
-                    onClick={() => changePage(i)}
-                >
-                    {i}
-                </button>
-            );
-        }
-        return pageButtons;
-    };
+    const allApplicantsHeads = [{ name: "Applicant Name", col: 1 }, { name: "Contact Number", col: 1 }, { name: "Email", col: 1 }, { name: "Actions", col: 4 },];
+    const shortlistApplicantsHeads = [{ name: "Applicant Name", col: 1 },{ name: "Contact Number", col: 1 }, { name: "Email", col: 1 }, { name: "Actions", col: 5 },];
+    const actions = [{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
+    const shrtlistactions = [{ name: "Reason", title: "View reason for shortlisting", icon: "BsBookmarkCheck", color:"pink" },{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
 
     return (
         <div>
@@ -93,7 +74,7 @@ const ApplyJob = ({ candidate }) => {
             <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-card rounded-lg p-8 mt-5">
                 <nav className="flex space-x-10 mb-8" aria-label="Tabs" role="tablist">
                     <button
-                        className={`tab-button ${activeTab === 1 ? 'hs-tab-active font-semibold text-primary border-primary' : ''}`}
+                        className={`tab-button border border-primary rounded p-2 ${activeTab === 1 ? 'hs-tab-active btn-primary-light text-white p-2 rounded' : ''}`}
                         onClick={() => handleTabClick(1)}
                         aria-controls="tabs-with-icons-1"
                         role="tab"
@@ -101,7 +82,7 @@ const ApplyJob = ({ candidate }) => {
                         All Aplications
                     </button>
                     <button
-                        className={`tab-button ${activeTab === 2 ? 'hs-tab-active font-semibold text-primary border-primary' : ''}`}
+                        className={`tab-button border border-primary rounded p-2 ${activeTab === 2 ? 'hs-tab-active btn-primary-light text-white p-2 rounded' : ''}`}
                         onClick={() => handleTabClick(2)}
                         aria-controls="tabs-with-icons-2"
                         role="tab"
@@ -115,23 +96,7 @@ const ApplyJob = ({ candidate }) => {
                         <div class="flex flex-col">
                             <div class="-m-1.5 overflow-x-auto">
                                 <div class="p-1.5 min-w-full inline-block align-middle">
-                                    <div class="overflow-hidden">
-                                        <table class="min-w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-white uppercase bg-primary border border-gray-300 dark:border-gray-500">Applicant Name</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300 dark:border-gray-500">View CV</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300 dark:border-gray-500">View contributions in GitHub</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300 dark:border-gray-500">View skills endrosements</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300 dark:border-gray-500">View blog articles</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                                {displayData()}
-                                            </tbody>
-                                        </table>
-                                        <div className="flex justify-center mt-2">{pagination()}</div>
-                                    </div>
+                                    <Table rows={allApplicantsRows} heads={allApplicantsHeads} actions={actions} />
                                 </div>
                             </div>
                         </div>
@@ -140,23 +105,7 @@ const ApplyJob = ({ candidate }) => {
                         <div class="flex flex-col">
                             <div class="-m-1.5 overflow-x-auto">
                                 <div class="p-1.5 min-w-full inline-block align-middle">
-                                    <div class="overflow-hidden">
-                                        <table class="min-w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-white uppercase bg-primary border border-gray-300">Applicant Name</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300">View CV</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300">View contributions in GitHub</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300">View skills endrosements</th>
-                                                    <th scope="col" class="px-6 py-3 w-40 text-end text-xs font-medium text-white uppercase bg-primary border border-gray-300">View blog articles</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                                {displayData()}
-                                            </tbody>
-                                        </table>
-                                        <div className="flex justify-center mt-2">{pagination()}</div>
-                                    </div>
+                                    <Table rows={shortlistApplicantsRows} heads={shortlistApplicantsHeads} actions={shrtlistactions} />
                                 </div>
                             </div>
                         </div>
