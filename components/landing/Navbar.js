@@ -45,7 +45,7 @@ const MainNavbar = () => {
 
   return (
     <div
-      className="navbar fixed w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.5rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
+      className="relative navbar w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.5rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
       onClick={handleClose}
     >
       <Link href="/">

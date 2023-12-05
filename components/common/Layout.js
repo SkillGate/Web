@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import BackToTopButton from "./BackToTopButton";
 import MainNavbar from "./../landing/Navbar";
 import { useRouter } from "next/router";
+import Header from "../landing/Header";
 
 const Layout = ({ children }) => {
   const { dispatch } = useUiContext();
@@ -56,6 +57,11 @@ const Layout = ({ children }) => {
       <Meta />
       {showLoader && <Loader />}
       <BackToTopButton showButton={showButton} />
+      {currentPath === "/" && (
+        <div className="invisible sm:visible absolute sm:relative z-50">
+          <Header />
+        </div>
+      )}
       {!(
         currentPath == "/sign-in" ||
         currentPath == "/create-account" ||
@@ -63,6 +69,7 @@ const Layout = ({ children }) => {
         currentPath == "/employer-register"
       ) && (userType == null ? <MainNavbar /> : <Navbar />)}
       <div
+        //  pt-20 px-[2%] md:px-[6%] 2xl:container
         className={`${
           !(
             currentPath === "/sign-in" ||
@@ -70,7 +77,7 @@ const Layout = ({ children }) => {
             currentPath === "/candidate-register" ||
             currentPath === "/employer-register"
           )
-            ? "px-[2%] md:px-[6%] 2xl:container 2xl:mx-auto pt-20 min-h-screen"
+            ? "2xl:mx-auto pt-18 min-h-screen"
             : ""
         } `}
         onClick={handleCloseDropdown}
