@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { FiDelete, FiMoon, FiPlus, FiSun } from "react-icons/fi";
+import { FiDelete, FiMoon, FiSun } from "react-icons/fi";
 import { BiBell, BiChevronDown, BiSearch, BiMenu } from "react-icons/bi";
 import { CiLogin } from "react-icons/ci";
 import { useUiContext } from "../../contexts/UiContext";
@@ -9,17 +8,16 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "../../data/links";
-import Dropdown from "../common/Dropdown";
-import ActiveLink from "../common/ActiveLink";
 import useDarkMode from "../../helpers/useDarkMode";
-import { imageUrl, userTypes } from "../../constants";
-import { NAV_LINKS } from "./../../constants/index";
+import { imageUrl } from "../../constants";
+import ActiveLink from "./ActiveLink";
 
 const MainNavbar = () => {
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
   const router = useRouter();
 
   const currentPath = router.pathname;
+  console.log(currentPath);
 
   const { dispatch, isSidebarOpen } = useUiContext();
 
