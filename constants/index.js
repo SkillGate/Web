@@ -5,13 +5,13 @@ export const imageUrl = {
   logoDoubleColor:
     "https://res.cloudinary.com/midefulness/image/upload/v1694111827/SkillGate/logo_pxxasx.png",
   aboutitem1:
-    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700802305/SkillGate/deal2.svg",
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1701764909/deal2.svg",
   aboutitem2:
-    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700802305/SkillGate/timer2.svg",
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1701765073/timer2.svg",
   aboutitem3:
-    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700802305/SkillGate/innovation2.svg",
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1701765067/innovation2.svg",
   aboutitem4:
-    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700802305/SkillGate/diversity2.svg",
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1701765078/diversity.svg",
   google:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700118695/SkillGate/google_icon.png",
   signInPageImage:
