@@ -18,9 +18,9 @@ const Advertisement = () => {
   return (
     <section id='advertisement' className='relative isolate overflow-hidden'>
       <div className="relative isolate overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center mt-5 text-lg">
-            <div className="min-h-60 flex flex-col items-center justify-start py-10 px-8" >
+        <div className="">
+          <div className="text-center text-lg">
+            <div className="flex flex-col items-center justify-start px-2" >
               <div className="flex items-center justify-center">
                 <h2 className="font-primary font-bold text-5xl text-center">Advertisements</h2>
               </div>
@@ -36,7 +36,7 @@ const Advertisement = () => {
                     direction="left"
                   >
                     {advertisementtData.map(({ name, position, image }) => (
-                      <div className="shadow-lg rounded-lg w-60 h-70 m-8 flex flex-col items-center justify-center p-2 transition-transform ease-in-out duration-300 hover:scale-125 shadow-purple-400/50 hover:shadow-lg hover:shadow-purple-400/50" key={name}>
+                      <div className="shadow-lg rounded-lg w-60 h-70 m-8 flex flex-col items-center justify-center p-8 transition-transform ease-in-out duration-300 hover:scale-125 shadow-purple-400/50 hover:shadow-lg hover:shadow-purple-400/50" key={name}>
                         {/* <img src={image} alt="image" className='w-40 p-6'/> */}
                         <div className="w-40 h-40 flex items-center justify-center">
                           <img src={image} alt="logo"/>
