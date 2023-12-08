@@ -14,6 +14,7 @@ import Homes from "../components/landing/Home";
 import Advertisement from "../components/landing/Advertisement";
 import Contact from "../components/landing/Contact";
 import Hero from "../components/landing/Hero";
+import HeroSection from "../components/landing/HeroSection";
 
 const Home = () => {
   const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
@@ -74,7 +75,8 @@ const Home = () => {
     <div className="overflow-hidden">
       <div>
         {/* <Homes /> */}
-        <Hero />
+        {/* <Hero /> */}
+        <HeroSection />
         <About />
         <Advertisement />
         <Contact />

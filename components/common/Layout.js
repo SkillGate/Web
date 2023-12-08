@@ -8,7 +8,6 @@ import Navbar from "./Navbar";
 import BackToTopButton from "./BackToTopButton";
 import MainNavbar from "./../landing/Navbar";
 import { useRouter } from "next/router";
-import Header from "../landing/Header";
 
 const Layout = ({ children }) => {
   const { dispatch } = useUiContext();
@@ -57,11 +56,6 @@ const Layout = ({ children }) => {
       <Meta />
       {showLoader && <Loader />}
       <BackToTopButton showButton={showButton} />
-      {currentPath === "/" && (
-        <div className="invisible sm:visible absolute sm:relative z-50">
-          <Header />
-        </div>
-      )}
       <div className="relative">
         {!(
           currentPath === "/sign-in" ||
