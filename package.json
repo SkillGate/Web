@@ -20,6 +20,7 @@
     "nprogress": "^0.2.0",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.1",
+    "react-awesome-reveal": "^4.2.7",
     "react-calendar": "^4.0.0",
     "react-datepicker": "^4.23.0",
     "react-dom": "18.2.0",
