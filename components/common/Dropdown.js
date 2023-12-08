@@ -1,9 +1,25 @@
 import { BiBriefcase, BiLogOut, BiUser, BiUserCircle } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { useUiContext } from "../../contexts/UiContext";
+import { useRouter } from "next/router";
+import { userTypes } from "../../constants";
 
 const Dropdown = () => {
-  const { isDropdownOpen } = useUiContext();
+  const { user, logoutUser, isDropdownOpen } = useUiContext();
+
+  const router = useRouter();
+
+  const userLogout = () => {
+    logoutUser();
+    router.push("/");
+  };
+
+  const userProfile = () => {
+    user?.userType == userTypes.candidate
+      ? router.push("/candidate-persona")
+      : router.push("/employer-persona");
+  };
+
   return (
     <>
       {isDropdownOpen && (
@@ -12,7 +28,10 @@ const Dropdown = () => {
           initial={{ scale: 0.6, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
         >
-          <div className="flex-align-center space-x-3 p-2  sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg">
+          <div
+            className="flex-align-center space-x-3 p-2  sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg"
+            onClick={userProfile}
+          >
             <BiUserCircle className="text-muted" />
             <span className="text-muted">My Profile</span>
           </div>
@@ -24,7 +43,10 @@ const Dropdown = () => {
             <BiBriefcase className="text-muted" />
             <span className="text-muted">My Jobs</span>
           </div>
-          <div className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg">
+          <div
+            className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg"
+            onClick={userLogout}
+          >
             <BiLogOut className="text-muted" />
             <span className="text-muted">Sign out</span>
           </div>

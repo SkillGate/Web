@@ -10,6 +10,10 @@ import { server } from "../config";
 import useFetch from "./api/useFetch";
 import Skeleton from "../components/loading-skeleton/Skeleton";
 import About from "../components/landing/About";
+import Homes from "../components/landing/Home";
+import Advertisement from "../components/landing/Advertisement";
+import Contact from "../components/landing/Contact";
+import Hero from "../components/landing/Hero";
 
 const Home = () => {
   const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
@@ -67,9 +71,13 @@ const Home = () => {
     //   </div>
     // </div>
 
-    <div>
+    <div className="overflow-hidden">
       <div>
+        {/* <Homes /> */}
+        <Hero />
         <About />
+        <Advertisement />
+        <Contact />
       </div>
     </div>
   );

@@ -58,11 +58,11 @@ export const candidateLinks = [
     linkText: "History",
     url: "/history",
   },
-  // {
-  //   id: 6,
-  //   linkText: "Events",
-  //   url: "/events",
-  // },
+  {
+    id: 6,
+    linkText: "Events",
+    url: "/events",
+  },
 ];
 
 
@@ -82,11 +82,12 @@ export const employerLinks = [
     linkText: "Talent",
     url: "/talent",
   },
-  // {
-  //   id: 4,
-  //   linkText: "Schedule",
-  //   url: "/schedule",
-  // },
+  // Calender can be used in employerDashboard
+  {
+    id: 4,
+    linkText: "Schedule",
+    url: "/schedule",
+  },
   {
     id: 5,
     linkText: "History",
@@ -103,21 +104,21 @@ export const navLinks = [
   {
     id: 1,
     linkText: "Home",
-    url: "#home",
+    url: "/",
   },
   {
     id: 2,
     linkText: "About Us",
-    url: "#about",
+    url: "/#about",
   },
   {
     id: 3,
     linkText: "Advertisement",
-    url: "#advertisement",
+    url: "/#advertisement",
   },
   {
     id: 4,
     linkText: "Contact Us",
-    url: "#contact",
+    url: "/#contact",
   },
 ];

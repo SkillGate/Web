@@ -62,6 +62,10 @@ footer a:hover {
   @apply bg-primary text-white hover:bg-hover-btn-color;
 }
 
+.btn-primary-outline {
+  @apply border border-primary text-primary bg-white hover:text-white hover:bg-hover-btn-color;
+}
+
 .btn-primary-light {
   @apply bg-primary text-purple-haze hover:bg-hover-btn-color;
 }
@@ -293,6 +297,77 @@ input:-webkit-autofill ~ label {
   @apply flex items-center justify-center;
 }
 
-.btn_dark_blue { 
-  @apply  bg-main px-4 py-3 text-white transition-all hover:bg-black
+.btn_dark_blue {
+  @apply bg-main px-4 py-3 text-white transition-all hover:bg-black;
 }
+
+/* START: Hero styles */
+.hero {
+  @apply flex xl:flex-row flex-col gap-5 relative z-0 max-w-[1440px] mx-auto min-h-screen;
+}
+
+.hero__title {
+  @apply 2xl:text-[70px] sm:text-[54px] text-[40px] font-extrabold;
+}
+
+.hero__subtitle {
+  @apply text-[27px] text-gray-100 font-light mt-5;
+}
+
+.hero__image-container {
+  @apply xl:flex-[1.5] flex justify-end items-end w-full xl:h-screen;
+}
+
+.hero__image {
+  @apply relative xl:w-full w-[90%] xl:h-full h-[590px] z-0;
+}
+
+.hero__image-overlay {
+  @apply absolute xl:-top-24 xl:-right-1/2 -right-1/4 bg-hero-bg bg-repeat-round -z-10 w-full xl:h-screen h-[590px] overflow-hidden;
+}
+/* END: Hero styles */
+
+/* START: register form */
+
+.register-from-container {
+  @apply mt-5 sm:mx-auto sm:w-full sm:max-w-lg max-w-xl p-8 bg-white dark:bg-dark-card rounded shadow-md;
+}
+
+.register-from-header {
+  @apply mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white mb-10;
+}
+
+.register-from-label {
+  @apply block text-gray-700 dark:text-main-white font-bold mb-2 after:content-['*'] after:ml-0.5 after:text-red-500;
+}
+
+.register-from-input {
+  @apply bg-inherit w-full p-2 border dark:border-hover-color rounded;
+}
+
+/* END: register form */
+
+/* START: sign-in form */
+
+.sign-in-container {
+  @apply relative flex flex-col md:flex-row items-center justify-center bg-slate-200 h-screen overflow-hidden md:gap-8 dark:bg-dark-main;
+}
+
+.sign-in-form-container {
+  @apply p-8 mx-0 md:mx-10 bg-white rounded shadow-md dark:bg-dark-card;
+}
+
+
+/* END: sign-in form */
+
+/* START: create account form */
+
+.create-account-container {
+  @apply relative flex flex-col md:flex-row items-center justify-center bg-slate-200 h-screen md:gap-8 dark:bg-dark-main;
+}
+
+.create-account-form-container {
+  @apply p-8 mx-0 md:mx-10 bg-white rounded shadow-md dark:bg-dark-card;
+}
+
+/* END: create account form */

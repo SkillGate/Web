@@ -42,11 +42,16 @@ module.exports = {
         "hover-color": "#2d2d39",
         "dark-light": "#393948",
         "purple-haze":"#EFDCF9",
+        "main-white": "#ccc",
       },
       backgroundColor: {
         main: "#f5f5f9",
         "dark-main": "#13131A",
         "dark-card": "#1C1C24",
+      },
+      backgroundImage: {
+        pattern: "url('/pattern.png')",
+        "hero-bg": "url('https://res.cloudinary.com/midefulness/image/upload/v1694111835/SkillGate/hero-bg.png')",
       },
     },
   },
