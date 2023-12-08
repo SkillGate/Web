@@ -220,7 +220,7 @@ const PostJob = () => {
                       <select
                         {...field}
                         id="dropdown"
-                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 p-2">
+                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2">
                         <option value="">Select...</option>
                         <option value="Bachelor s degree">Bachelor s degree</option>
                         <option value="Master s degree">Master s degree</option>
@@ -323,7 +323,7 @@ const PostJob = () => {
                       <select
                         {...field}
                         id="dropdown"
-                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 p-2">
+                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2">
                         <option value="">Select...</option>
                         <option value="Less than 1 Year">Less than 1 Year</option>
                         <option value="+ 1 Year">+ 1 Year</option>
