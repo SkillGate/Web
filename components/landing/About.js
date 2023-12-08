@@ -41,7 +41,7 @@ const About = () => {
             <p>Our mission is to bridge the gap between top-notch talent and exceptional opportunities. We strive to revolutionize the recruitment process and make hiring efficient, effective, and enjoyable for both employers and candidates.</p>
           </div>
           <div className='relative mx-auto max-w-c-1400 px-4 md:px-8 xl:px-0 mt-12'>
-            <div className='grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-4 xl:gap-10 py-4'>
+            <div className='grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-7 lg:grid-cols-4 lg:gap-7'>
               {data?.map((item) => <AboutItem key={item.id} data={item} />)}
             </div>
           </div>
