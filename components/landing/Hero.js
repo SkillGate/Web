@@ -75,7 +75,7 @@ const Hero = () => {
       spaceBetween={0}
       centeredSlides={true}
       autoplay={{
-        delay: 3000,
+        delay: 12000,
         disableOnInteraction: false,
       }}
       navigation={false}
@@ -98,14 +98,14 @@ const Hero = () => {
               className="brightness-50 opacity-100"
             />
             <div
-              className={`padding-container text-main z-50 transition-opacity duration-500 ${
-                currentSlide === index ? "slider-transition" : ""
-              }`}
+              className={`padding-container text-main z-50 transition-opacity duration-500 ${currentSlide === index ? "slider-transition" : ""
+                }`}
             >
-              <h2 className="text-xl md:text-3xl font-semibold text-white uppercase">
-                {slide.title}
-              </h2>
-              <h2 className="text-5xl md:text-6xl font-bold text-white uppercase py-8">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <h2 className="text-xl lg:w-1/3 md:text-3xl font-bold text-white uppercase">
+                  {slide.title}
+                </h2>
+                {/* <h2 className="text-5xl md:text-6xl font-bold text-white uppercase py-8">
                 {index % 2 === 0 ? (
                   <>
                     Pelican<span className="text-primary"> Holdings</span>
@@ -118,10 +118,11 @@ const Hero = () => {
                     Products
                   </>
                 )}
-              </h2>
-              <p className="text-md text-lg text-white font-semibold px-6">
-                {slide.description}
-              </p>
+              </h2> */}
+                <p className="text-md lg:w-2/3 text-2xl bg-dark-card border border-gray-800 rounded-2xl text-purple-400 px-6 p-10">
+                  {slide.description}
+                </p>
+              </div>
             </div>
           </div>
         </SwiperSlide>

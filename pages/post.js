@@ -176,9 +176,8 @@ const PostJob = () => {
               name="abouthtejob"
               control={control}
               render={({ field }) => (
-                <input
+                <textarea
                   {...field}
-                  type="textarea"
                   id="aboutthejob"
                   className="input !h-28 pt-2"
                   required
@@ -192,9 +191,8 @@ const PostJob = () => {
               name="resposibilities"
               control={control}
               render={({ field }) => (
-                <input
+                <textarea
                   {...field}
-                  type="textarea"
                   id="resposibilities"
                   className="input !h-28 pt-2"
                   required
@@ -220,7 +218,7 @@ const PostJob = () => {
                       <select
                         {...field}
                         id="dropdown"
-                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 p-2">
+                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2">
                         <option value="">Select...</option>
                         <option value="Bachelor s degree">Bachelor s degree</option>
                         <option value="Master s degree">Master s degree</option>
@@ -280,18 +278,17 @@ const PostJob = () => {
                 name="education job post"
                 control={control}
                 render={({ field }) => (
-                  <input
+                  <textarea
                     {...field}
-                    type="textarea"
                     id="education job post"
                     className="input !h-28 pt-2"
                     required
                   />
                 )}
               />
-              <label htmlFor="education job post">Describe candidate education</label>
+              <label htmlFor="education job post cursor-pointer" >Describe candidate education 
               <button
-                className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer"
+                className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer ml-2"
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
@@ -303,6 +300,7 @@ const PostJob = () => {
                   <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
                 </div>
               )}
+              </label>
             </div>
           </div>
 
@@ -323,7 +321,7 @@ const PostJob = () => {
                       <select
                         {...field}
                         id="dropdown"
-                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 p-2">
+                        className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2">
                         <option value="">Select...</option>
                         <option value="Less than 1 Year">Less than 1 Year</option>
                         <option value="+ 1 Year">+ 1 Year</option>
@@ -342,9 +340,8 @@ const PostJob = () => {
                       name={`experience[${index}].experiencedArea`}
                       control={control}
                       render={({ field }) => (
-                        <input
+                        <textarea
                           {...field}
-                          type="textarea"
                           id="experiencedArea"
                           className="input !h-28 pt-2"
                           required
@@ -364,9 +361,8 @@ const PostJob = () => {
                 name="experience job post"
                 control={control}
                 render={({ field }) => (
-                  <input
+                  <textarea
                     {...field}
-                    type="textarea"
                     id="experience job post"
                     className="input !h-28 pt-2"
                     required
