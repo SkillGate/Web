@@ -350,7 +350,7 @@ input:-webkit-autofill ~ label {
 /* START: sign-in form */
 
 .sign-in-container {
-  @apply relative flex flex-col md:flex-row items-center justify-center bg-slate-200 h-screen md:gap-8 dark:bg-dark-main;
+  @apply relative flex flex-col md:flex-row items-center justify-center bg-slate-200 h-screen overflow-hidden md:gap-8 dark:bg-dark-main;
 }
 
 .sign-in-form-container {

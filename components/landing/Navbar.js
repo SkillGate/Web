@@ -42,101 +42,102 @@ const MainNavbar = () => {
   const logoUrl = imageUrl.logoDoubleColor;
 
   return (
-    <div
-      className="relative navbar w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.5rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
-      onClick={handleClose}
-    >
-      <Link href="/">
-        <a className="hidden md:block flex-shrink-0">
-          <div className="image-wrapper">
-            <Image
-              src={logoUrl}
-              alt="logo"
-              layout="fill"
-              className="!object-contain !h-10 !w-20 !relative bg-white rounded"
-            />
-          </div>
-        </a>
-      </Link>
-      <Link href="/">
-        <a className="md:hidden">
-          <Image src={logoUrl} alt="logo" width={32} height={32} />
-        </a>
-      </Link>
-
-      {/*-------------------------------------- Desktop Menu------------------------------------- */}
-      <ul className="hidden md:flex-align-center space-x-3 lg:space-x-6">
-        {navLinks.map(({ id, linkText, url }) => (
-          <ActiveLink href={url} key={id}>
-            {linkText}
-          </ActiveLink>
-        ))}
-      </ul>
-
-      {/*---------------------------------------- Mobile Menu------------------------------------- */}
+    <div className="relative">
       <div
-        className={`mobile-modal fixed w-screen h-screen top-0 left-0 bg-black/50 z-10 opacity-0 pointer-events-none transition-a ${
-          isSidebarOpen && "open"
-        }`}
-        onClick={handleCloseSidebar}
+        className="fixed navbar w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.5rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
+        onClick={handleClose}
       >
-        <ul
-          className={`mobile-dialog absolute flex flex-col space-y-4 p-3 bg-white dark:bg-dark-card h-screen max-w-[300px] w-full -translate-x-[500px] transition-a ${
-            isSidebarOpen && "open"
-          }`}
-        >
-          <div className="flex-center-between border-b dark:border-slate-800">
-            <p className="uppercase">menu</p>
-            <div
-              className="icon-box md:hidden"
-              onClick={() => dispatch({ type: actioTypes.closeSidebar })}
-            >
-              <FiDelete />
+        <Link href="/">
+          <a className="hidden md:block flex-shrink-0">
+            <div className="image-wrapper">
+              <Image
+                src={logoUrl}
+                alt="logo"
+                layout="fill"
+                className="!object-contain !h-10 !w-20 !relative bg-white rounded"
+              />
             </div>
-          </div>
+          </a>
+        </Link>
+        <Link href="/">
+          <a className="md:hidden">
+            <Image src={logoUrl} alt="logo" width={32} height={32} />
+          </a>
+        </Link>
+
+        {/*-------------------------------------- Desktop Menu------------------------------------- */}
+        <ul className="hidden md:flex-align-center space-x-3 lg:space-x-6">
           {navLinks.map(({ id, linkText, url }) => (
-            <Link key={id} href={url} end>
-              <a onClick={() => dispatch({ type: actioTypes.closeSidebar })}>
-                {linkText}
-              </a>
-            </Link>
+            <ActiveLink href={url} key={id}>
+              {linkText}
+            </ActiveLink>
           ))}
         </ul>
-      </div>
 
-      <div className="flex-align-center space-x-2">
-        {/*----------------------------- Dark mode toggle-------------------------------------------------- */}
-        <motion.div
-          className="icon-box bg-slate-100 dark:bg-[#2b2b35] mr-2"
-          onClick={toggleMode}
-          whileTap={{ scale: 0.5 }}
+        {/*---------------------------------------- Mobile Menu------------------------------------- */}
+        <div
+          className={`mobile-modal fixed w-screen h-screen top-0 left-0 bg-black/50 z-10 opacity-0 pointer-events-none transition-a ${
+            isSidebarOpen && "open"
+          }`}
+          onClick={handleCloseSidebar}
         >
-          {mode === "dark" ? <FiSun /> : <FiMoon />}
-        </motion.div>
-        <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-700"></div>
-
-        <div className="pl-2">
-          <Link href="/sign-in">
-            <a
-              className={`btn !p-2 md:!px-4 btn-primary-outline flex-align-center gap-x-2`}
-            >
-              <span>Sign In</span>
-            </a>
-          </Link>
+          <ul
+            className={`mobile-dialog absolute flex flex-col space-y-4 p-3 bg-white dark:bg-dark-card h-screen max-w-[300px] w-full -translate-x-[500px] transition-a ${
+              isSidebarOpen && "open"
+            }`}
+          >
+            <div className="flex-center-between border-b dark:border-slate-800">
+              <p className="uppercase">menu</p>
+              <div
+                className="icon-box md:hidden"
+                onClick={() => dispatch({ type: actioTypes.closeSidebar })}
+              >
+                <FiDelete />
+              </div>
+            </div>
+            {navLinks.map(({ id, linkText, url }) => (
+              <Link key={id} href={url} end>
+                <a onClick={() => dispatch({ type: actioTypes.closeSidebar })}>
+                  {linkText}
+                </a>
+              </Link>
+            ))}
+          </ul>
         </div>
 
-        <div>
-          <Link href="/create-account">
-            <a
-              className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
-            >
-              <span>Register</span>
-            </a>
-          </Link>
-        </div>
+        <div className="flex-align-center space-x-2">
+          {/*----------------------------- Dark mode toggle-------------------------------------------------- */}
+          <motion.div
+            className="icon-box bg-slate-100 dark:bg-[#2b2b35] mr-2"
+            onClick={toggleMode}
+            whileTap={{ scale: 0.5 }}
+          >
+            {mode === "dark" ? <FiSun /> : <FiMoon />}
+          </motion.div>
+          <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-700"></div>
 
-        {/*---------------------- Notifications toggle------------------------------------------------ */}
-        {/* <div
+          <div className="pl-2">
+            <Link href="/sign-in">
+              <a
+                className={`btn !p-2 md:!px-4 btn-primary-outline flex-align-center gap-x-2`}
+              >
+                <span>Sign In</span>
+              </a>
+            </Link>
+          </div>
+
+          <div>
+            <Link href="/create-account">
+              <a
+                className={`btn !p-2 md:!px-4 btn-primary-light flex-align-center gap-x-2`}
+              >
+                <span>Register</span>
+              </a>
+            </Link>
+          </div>
+
+          {/*---------------------- Notifications toggle------------------------------------------------ */}
+          {/* <div
           className={`icon-box !opacity-100 relative notification-btn ${
             showSearchBar && "!hidden"
           }`}
@@ -149,8 +150,8 @@ const MainNavbar = () => {
           <Notifications />
         </div> */}
 
-        {/*----------------------------- search Bar----------------------------------------------------- */}
-        {/* <form onSubmit={handleSearch}>
+          {/*----------------------------- search Bar----------------------------------------------------- */}
+          {/* <form onSubmit={handleSearch}>
           <div
             className={`flex-align-center relative h-9 w-9 transition-a  border-slate-300 dark:border-hover-color rounded-full ${
               showSearchBar && "!w-[150px] md:!w-[200px] border"
@@ -174,8 +175,8 @@ const MainNavbar = () => {
           </div>
         </form> */}
 
-        {/*------------------------------- Profile Dropdown toggle-------------------------------------------- */}
-        {/* <div
+          {/*------------------------------- Profile Dropdown toggle-------------------------------------------- */}
+          {/* <div
           className="dropdown-btn flex-align-center space-x-1  md:pl-4 flex-shrink-0 relative"
           onClick={handleDropdown}
         >
@@ -189,14 +190,15 @@ const MainNavbar = () => {
           <Dropdown />
         </div> */}
 
-        {/*------------------------------- Mobile Menu Toogle------------------------- */}
-        <motion.div
-          className="icon-box md:hidden"
-          onClick={() => dispatch({ type: actioTypes.openSidebar })}
-          whileTap={{ scale: 0.5 }}
-        >
-          <BiMenu />
-        </motion.div>
+          {/*------------------------------- Mobile Menu Toogle------------------------- */}
+          <motion.div
+            className="icon-box md:hidden"
+            onClick={() => dispatch({ type: actioTypes.openSidebar })}
+            whileTap={{ scale: 0.5 }}
+          >
+            <BiMenu />
+          </motion.div>
+        </div>
       </div>
     </div>
   );

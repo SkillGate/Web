@@ -62,12 +62,15 @@ const Layout = ({ children }) => {
           <Header />
         </div>
       )}
-      {!(
-        currentPath == "/sign-in" ||
-        currentPath == "/create-account" ||
-        currentPath == "/candidate-register" ||
-        currentPath == "/employer-register"
-      ) && (userType == null ? <MainNavbar /> : <Navbar />)}
+      <div className="relative">
+        {!(
+          currentPath === "/sign-in" ||
+          currentPath === "/create-account" ||
+          currentPath === "/candidate-register" ||
+          currentPath === "/employer-register"
+        ) && (userType == null ? <MainNavbar /> : <Navbar />)}
+      </div>
+
       <div
         //  pt-20 px-[2%] md:px-[6%] 2xl:container
         className={`${
@@ -75,9 +78,10 @@ const Layout = ({ children }) => {
             currentPath === "/sign-in" ||
             currentPath === "/create-account" ||
             currentPath === "/candidate-register" ||
-            currentPath === "/employer-register"
+            currentPath === "/employer-register" ||
+            currentPath === "/"
           )
-            ? "2xl:mx-auto pt-18 min-h-screen"
+            ? "px-[2%] md:px-[6%] 2xl:container 2xl:mx-auto pt-20 min-h-screen"
             : ""
         } `}
         onClick={handleCloseDropdown}
