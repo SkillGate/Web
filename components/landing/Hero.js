@@ -23,7 +23,6 @@ import "swiper/css/effect-fade";
 import "swiper/css/zoom";
 import "swiper/css/effect-fade";
 import { slidesData } from "../../data/sidesData";
-import Typist from 'react-typist';
 
 const useViewport = () => {
   const [width, setWidth] = useState(0);
