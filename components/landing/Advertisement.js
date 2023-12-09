@@ -43,7 +43,7 @@ const Advertisement = () => {
                   >
                     {advertisementtData.map(({ name, position, image }) => (
                       <div
-                        className="shadow-lg bg-white dark:bg-dark-card rounded-lg w-66 h-70 m-8 flex flex-col items-center justify-center p-8 transition-transform ease-in-out duration-300 hover:scale-125 shadow-purple-400/50 hover:shadow-lg hover:shadow-purple-400/50"
+                        className="shadow-lg bg-white dark:bg-dark-card rounded-lg w-66 h-70 m-8 flex flex-col items-center justify-center p-8 transition-transform ease-in-out duration-300 hover:scale-110 shadow-purple-400/50 hover:shadow-lg hover:shadow-purple-400/50"
                         key={name}
                       >
                         {/* <img src={image} alt="image" className='w-40 p-6'/> */}

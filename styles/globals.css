@@ -103,12 +103,12 @@ footer a:hover {
   @apply text-sm relative transition-a w-fit;
 }
 .navbar ul a {
-  @apply before:absolute before:w-full before:h-[2px] before:left-0 before:-bottom-2 md:before:-bottom-4 before:bg-primary before:scale-0 before:transition-a;
+  @apply before:absolute before:w-full before:h-[2px] before:left-0 before:-bottom-2 md:before:-bottom-4 before:bg-primary dark:before:bg-hover-btn-color2 before:scale-0 before:transition-a;
 }
 
 .navbar ul a.active,
 .navbar ul a:hover {
-  @apply text-primary before:scale-100;
+  @apply text-primary dark:text-hover-btn-color2 font-semibold before:scale-100;
 }
 
 .mobile-modal.open,
