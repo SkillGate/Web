@@ -103,12 +103,12 @@ footer a:hover {
   @apply text-sm relative transition-a w-fit;
 }
 .navbar ul a {
-  @apply before:absolute before:w-full before:h-[2px] before:left-0 before:-bottom-2 md:before:-bottom-4 before:bg-primary before:scale-0 before:transition-a;
+  @apply before:absolute before:w-full before:h-[2px] before:left-0 before:-bottom-2 md:before:-bottom-4 before:bg-primary dark:before:bg-hover-btn-color2 before:scale-0 before:transition-a;
 }
 
 .navbar ul a.active,
 .navbar ul a:hover {
-  @apply text-primary before:scale-100;
+  @apply text-primary dark:text-hover-btn-color2 font-semibold before:scale-100;
 }
 
 .mobile-modal.open,
@@ -357,7 +357,6 @@ input:-webkit-autofill ~ label {
   @apply p-8 mx-0 md:mx-10 bg-white rounded shadow-md dark:bg-dark-card;
 }
 
-
 /* END: sign-in form */
 
 /* START: create account form */
@@ -371,3 +370,27 @@ input:-webkit-autofill ~ label {
 }
 
 /* END: create account form */
+
+/* START: Landing Services */
+.cardPseudo {
+  position: relative;
+  /* z-index: 5; */
+}
+
+.cardPseudo::after {
+  content: "";
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  width: 80px;
+  height: 80px;
+  border-radius: 1.5rem 0 1rem 0;
+  z-index: -1;
+  transition: 300ms cubic-bezier(1, 0, 0, 1);
+}
+
+.cardPseudo:hover::after {
+  bottom: -1.5rem;
+  left: -1.5rem;
+}
+/* END: Landing Services */
