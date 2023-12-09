@@ -43,6 +43,7 @@ module.exports = {
         "dark-light": "#393948",
         "purple-haze":"#EFDCF9",
         "main-white": "#ccc",
+        "text-color": "#152F37"
       },
       backgroundColor: {
         main: "#f5f5f9",
