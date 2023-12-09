@@ -18,7 +18,7 @@ const Services = () => {
     }
   }, []);
   return (
-    <section className="w-full h-auto flex flex-col items-center justify-center relative lg:px-24 md:px-20 px-6">
+    <section id="services" className="w-full h-auto flex flex-col items-center justify-center relative lg:px-24 md:px-20 px-6">
       <div className="absolute top-0 right-4 lg:h-36 h-24">
         <img
           src={ServiceImages.groupOfPlus}
@@ -40,18 +40,18 @@ const Services = () => {
               className="w-full bg-white dark:bg-dark-card flex flex-col items-center justify-center py-6 cursor-pointer transition duration-300 hover:shadow-xl px-5 rounded-xl cardPseudo after:bg-primary"
               key={index}
             >
-              <div className="w-16 h-16 mb-8 relative z-10 before:content-[''] before:absolute before:top-3 before:right-3 before:w-16 before:h-16 before:bg-secondaryLightGreen/30 before:-z-10 before:rounded-tl-3xl before:rounded-br-3xl">
+              <div className="w-16 h-16 mb-8 relative z-10 before:content-[''] before:absolute before:top-3 before:right-3 before:w-16 before:h-16 before:bg-secondaryLightGreen/30 dark:before:bg-dark-main/90 before:-z-10 before:rounded-tl-3xl before:rounded-br-3xl">
                 <img
                   src={renderServiceIcon(index)}
                   alt={card.firstText}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover z-30"
                 />
               </div>
               <div className="w-full flex flex-col items-center gap-2">
-                <h4 className="text-base rounded font-bold text-text-color">
+                <h4 className="text-base rounded font-bold">
                   {card.firstText}
                 </h4>
-                <p className="text-sm font-light text-center text-text-color">
+                <p className="text-sm font-light text-center">
                   {card.secondText}
                 </p>
               </div>

@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
 import { FiDelete, FiMoon, FiSun } from "react-icons/fi";
-import { BiBell, BiChevronDown, BiSearch, BiMenu } from "react-icons/bi";
-import { CiLogin } from "react-icons/ci";
+import { BiMenu } from "react-icons/bi";
 import { useUiContext } from "../../contexts/UiContext";
 import { actioTypes } from "../../reducers/uiReducer";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "../../data/links";
@@ -15,13 +13,9 @@ import { useEffect, useState } from "react";
 
 const MainNavbar = () => {
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
-  const router = useRouter();
 
   const [navbarFixed, setNavbarFixed] = useState();
   const [navBarColor, setNavBarColor] = useState(false);
-
-  const currentPath = router.pathname;
-  console.log(currentPath);
 
   const { dispatch, isSidebarOpen } = useUiContext();
 
@@ -69,7 +63,7 @@ const MainNavbar = () => {
 
   return (
     <div
-      className={`navbar fixed w-full z-10 top-0 left-0 px-[2%] md:px-[6%] flex-center-between py-[0.5rem] ${navBarColor ? "bg-white dark:bg-dark-card" : "bg-transparent"}`}
+      className={`navbar fixed w-full z-50 top-0 left-0 px-[2%] md:px-[6%] flex-center-between py-[0.5rem] ${navBarColor ? "bg-white dark:bg-dark-card" : "bg-transparent"}`}
       onClick={handleClose}
     >
       <Link href="/">
