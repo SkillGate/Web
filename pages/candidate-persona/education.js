@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import { EducationPopup } from './project-model';
+import { EducationPopup } from './model';
 
 const Education = () => {
 
