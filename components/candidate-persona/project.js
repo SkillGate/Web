@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import ProjectPopup from './project-model';
+import ProjectPopup from './models/project-model';
 
-const Project = () => {
+const Project = ({details}) => {
 
     const [isProjectOpen, setProjectIsOpen] = useState(false);
     const handleProjectOpen = () => {
@@ -19,7 +19,7 @@ const Project = () => {
                 <h1 className="text-lg font-semibold mb-3">Projects</h1>
                 <div>
                     <button onClick={handleProjectOpen}><IoMdAdd size={25} className="text-gray-400" /></button>
-                    {isProjectOpen && <ProjectPopup onClose={handleProjectClose} details="" />}
+                    {isProjectOpen && <ProjectPopup onClose={handleProjectClose} details={details} />}
                 </div>
             </div>
             <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -36,7 +36,7 @@ const Project = () => {
                 </div>
                 <div>
                     <button onClick={handleProjectOpen}><MdEdit size={20} className="text-gray-400" /></button>
-                    {isProjectOpen && <ProjectPopup onClose={handleProjectClose} details="" />}
+                    {isProjectOpen && <ProjectPopup onClose={handleProjectClose} details={details} />}
                 </div>
             </div>
             <div className="my-3">
