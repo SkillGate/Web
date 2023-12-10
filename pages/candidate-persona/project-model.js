@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 import { useState } from 'react';
 
-export const ProjectPopup = ({ onClose, details }) => {
+const ProjectPopup = ({ onClose, details }) => {
 
     const years = Array.from({ length: 50 }, (_, index) => `${new Date().getFullYear() - index}`);
 
@@ -285,3 +285,5 @@ export const ProjectPopup = ({ onClose, details }) => {
         </div>
     );
 };
+
+export default ProjectPopup;
