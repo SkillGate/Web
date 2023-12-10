@@ -1,15 +1,15 @@
 export const HeroTexts = {
-  firstText: "BEST DESITNATIONS AROUND THE WORLD",
-  secondText: "Travel, enjoy and live a new and full life.",
+  firstText: "Discover Exceptional Career Opportunities",
+  secondText: "Transform your career journey with us.",
   thirdText:
-    "Built Wicket longer admire do barton vantity itself do in it. Preferred to sportsmen it engrossed listening. Park gate sell they west hard for the.",
+    "Join us at SkillGate, where careers thrive. Tailored opportunities for candidates and simplified talent acquisition for companies. Shape a successful future.",
   firstButton: "Find out more",
   secondButton: "Play Demo",
 };
 
 export const HeroImages = {
   backgroundImage:
-    "https://res.cloudinary.com/midefulness/image/upload/v1702072049/SkillGate/Hero/HeroVector_rnr4ny.png",
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702198771/SkillGate/image_hwtvfu.png",
   heroImage:
     "https://res.cloudinary.com/midefulness/image/upload/v1694111829/SkillGate/hero_ql7s61.png",
 };
