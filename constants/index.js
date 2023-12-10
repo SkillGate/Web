@@ -20,8 +20,8 @@ export const imageUrl = {
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645058/SkillGate/xv-logo.png",
   ifslogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645073/SkillGate/ifs-logo.png",
-  directfnlogo:
-    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645188/SkillGate/directfn-logo.png",
+  creativesoftwarelogo:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702202649/SkillGate/creative%20software.png",
   gtnlogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645187/SkillGate/gtn-logo.webp",
   dialoglogo:
