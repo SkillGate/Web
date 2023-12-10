@@ -3,14 +3,13 @@ import { useRouter } from "next/router";
 import useFetch from "../api/useFetch";
 import { server } from "../../config";
 import { MdEdit } from "react-icons/md";
-import { IoMdAdd } from "react-icons/io";
-import { PersonalInfoPopup, SkillsPopup, ExperiencePopup, EducationPopup } from './model';
-import Biography from './biography';
-import Project from './project';
-import Award from './award';
-import Skill from './skill';
-import Experience from './experience';
-import Education from './education';
+import PersonalInfoPopup from '../../components/candidate-persona/models/personalinfo-model';
+import Biography from '../../components/candidate-persona/biography';
+import Project from '../../components/candidate-persona/project';
+import Award from '../../components/candidate-persona/award';
+import Skill from '../../components/candidate-persona/skill';
+import Experience from '../../components/candidate-persona/experience';
+import Education from '../../components/candidate-persona/education';
 
 const CandidatePersona = () => {
 
@@ -115,12 +114,12 @@ const CandidatePersona = () => {
                                 </div>
                             </div>
                         </div>
-                        <Biography />
-                        <Skill />
-                        <Experience />
-                        <Education />
-                        <Project />
-                        <Award />
+                        <Biography details={user}/>
+                        <Skill details={user}/>
+                        <Experience details={user}/>
+                        <Education details={user}/>
+                        <Project details={user}/>
+                        <Award details={user}/>
                     </div>
                 </div>
             </div>

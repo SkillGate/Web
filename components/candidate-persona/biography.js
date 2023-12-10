@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
-import { BiographyPopup } from './model';
+import BiographyPopup from './models/biography-model';
 
-const Biography = () => {
+const Biography = ({details}) => {
 
     const [isBiographyOpen, setBiographyIsOpen] = useState(false);
     const handleBiographyOpen = () => {
@@ -18,7 +18,7 @@ const Biography = () => {
                 <h1 className="text-lg font-semibold">Biography</h1>
                 <div>
                     <button onClick={handleBiographyOpen}><MdEdit size={20} className="text-gray-400" /></button>
-                    {isBiographyOpen && <BiographyPopup onClose={handleBiographyClose} details={user} />}
+                    {isBiographyOpen && <BiographyPopup onClose={handleBiographyClose} details={details} />}
                 </div>
             </div>
             <p className="text-sm mt-3">
