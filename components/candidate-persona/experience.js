@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import { ExperiencePopup } from './model';
+import ExperiencePopup from './models/experience-model';
 
-const Experience = () => {
+const Experience = ({details}) => {
 
     const [isExperienceOpen, setExperienceIsOpen] = useState(false);
     const handleExperienceOpen = () => {
@@ -19,7 +19,7 @@ const Experience = () => {
                 <h1 className="text-lg font-semibold mb-3">Job Experience</h1>
                 <div>
                     <button onClick={handleExperienceOpen}><IoMdAdd size={25} className="text-gray-400" /></button>
-                    {isExperienceOpen && <ExperiencePopup onClose={handleExperienceClose} details={user} />}
+                    {isExperienceOpen && <ExperiencePopup onClose={handleExperienceClose} details={details} />}
                 </div>
             </div>
             <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -43,7 +43,7 @@ const Experience = () => {
                 </div>
                 <div>
                     <button onClick={handleExperienceOpen}><MdEdit size={20} className="text-gray-400" /></button>
-                    {isExperienceOpen && <ExperiencePopup onClose={handleExperienceClose} details={user} />}
+                    {isExperienceOpen && <ExperiencePopup onClose={handleExperienceClose} details={details} />}
                 </div>
             </div>
             <div className="my-3">

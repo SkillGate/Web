@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
-import { SkillsPopup } from './model';
+import SkillsPopup from './models/skills-model';
 
-const Skill = () => {
+const Skill = ({details}) => {
 
     const [isSkillsOpen, setSkillsIsOpen] = useState(false);
     const handleSkillsOpen = () => {
@@ -18,7 +18,7 @@ const Skill = () => {
                 <h1 className="text-lg font-semibold mb-3">Skills</h1>
                 <div>
                     <button onClick={handleSkillsOpen}><MdEdit size={20} className="text-gray-400" /></button>
-                    {isSkillsOpen && <SkillsPopup onClose={handleSkillsClose} />}
+                    {isSkillsOpen && <SkillsPopup onClose={handleSkillsClose} details={details} />}
                 </div>
             </div>
             <div className="flex-align-center gap-2">

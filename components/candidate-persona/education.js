@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import { EducationPopup } from './model';
+import EducationPopup from './models/education-model';
 
-const Education = () => {
+const Education = ({details}) => {
 
     const [isEducationOpen, setEducationIsOpen] = useState(false);
     const handleEducationOpen = () => {
@@ -19,7 +19,7 @@ const Education = () => {
                 <h1 className="text-lg font-semibold">Education</h1>
                 <div>
                     <button onClick={handleEducationOpen}><IoMdAdd size={25} className="text-gray-400" /></button>
-                    {isEducationOpen && <EducationPopup onClose={handleEducationClose} details={user} />}
+                    {isEducationOpen && <EducationPopup onClose={handleEducationClose} details={details} />}
                 </div>
             </div>
             <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -46,7 +46,7 @@ const Education = () => {
                 </div>
                 <div>
                     <button onClick={handleEducationOpen}><MdEdit size={20} className="text-gray-400" /></button>
-                    {isEducationOpen && <EducationPopup onClose={handleEducationClose} details={user} />}
+                    {isEducationOpen && <EducationPopup onClose={handleEducationClose} details={details} />}
                 </div>
             </div>
         </div>
