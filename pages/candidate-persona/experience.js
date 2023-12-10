@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import { ExperiencePopup } from './project-model';
+import { ExperiencePopup } from './model';
 
 const Experience = () => {
 

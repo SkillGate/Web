@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
-import { SkillsPopup } from './project-model';
+import { SkillsPopup } from './model';
 
 const Skill = () => {
 
