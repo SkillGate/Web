@@ -16,23 +16,23 @@ export const ServiceTexts = {
   secondText: "We Offer Best Services",
   cards: [
     {
-      firstText: "Calculated Weather",
+      firstText: "Personalized Candidate Profiles",
       secondText:
-        "Built Wicket longer admire do barton vantity itself do in it.",
+        "Candidates can create personalized profiles to showcase their skills and experience.",
     },
     {
-      firstText: "Best Flight",
-      secondText: "engrossed listening. Park gate sell they west hard for the.",
+      firstText: "Job Application Platform",
+      secondText: "Effortlessly apply for jobs matching individual qualifications and preferences.",
     },
     {
-      firstText: "Local Events",
+      firstText: "Efficient Job Posting",
       secondText:
-        "barton vantity itself do in it.Preferred to men it engrossed listening.",
+        "Companies can post job openings, reaching a pool of qualified candidates.",
     },
     {
-      firstText: "Customizition",
+      firstText: "Automated Candidate Shortlisting",
       secondText:
-        "We deliver outsourced aviation services for military customers.",
+        "Automated system shortlists candidates, simplifying the hiring process for companies.",
     },
   ],
 };

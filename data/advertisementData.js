@@ -22,9 +22,9 @@ export const advertisementtData = [
         image: imageUrl.axiatalabslogo,
     },
     {
-        name: "DirectFN",
+        name: "Creative Software",
         position : "Software Engineer",
-        image: imageUrl.directfnlogo,
+        image: imageUrl.creativesoftwarelogo,
     },
     {
         name: "GTN",
