@@ -32,6 +32,8 @@ export const imageUrl = {
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645454/SkillGate/wealthos-logo.png",
   x99logo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645059/SkillGate/99x-logo.png",
+  ucsclogo:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702273476/SkillGate/ucsc.png",
 };
 
 export const userTypes = {

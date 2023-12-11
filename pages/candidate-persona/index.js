@@ -11,6 +11,7 @@ import Skill from '../../components/candidate-persona/skill';
 import Experience from '../../components/candidate-persona/experience';
 import Education from '../../components/candidate-persona/education';
 import { server } from '../../config';
+import Volunteering from '../../components/candidate-persona/volunteer';
 
 const CandidatePersona = () => {
 
@@ -123,6 +124,7 @@ const CandidatePersona = () => {
                         <Education details={user} />
                         <Project details={user} />
                         <Award details={user} />
+                        <Volunteering details={user} />
                     </div>
                 </div>
             </div>
