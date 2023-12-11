@@ -232,7 +232,7 @@ const PostJob = () => {
                                 computerScience: e.target.checked,
                               });
                             }}
-                            class="checkbox"
+                            class="checkbox mr-2"
                           />
                           <label htmlFor="computerscince">Computer Science</label>
                         </div>
@@ -247,7 +247,9 @@ const PostJob = () => {
                                 softwareEngineering: e.target.checked,
                               });
                             }}
-                            class="checkbox"/>
+                            class="checkbox mr-2"
+                            />
+                            <label htmlFor="softwareEngineer">Software Engineer</label>
                         </div>
                       </>
                     )}
