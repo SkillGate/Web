@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 
-const EducationPopup = ({ onClose, details }) => {
+const VolunteeringPopup = ({ onClose, details }) => {
 
     const years = Array.from({ length: 50 }, (_, index) => `${new Date().getFullYear() - index}`);
 
@@ -25,7 +25,7 @@ const EducationPopup = ({ onClose, details }) => {
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity z-50">
             <div className="bg-white dark:bg-dark-main w-full h-2/3 sm:w-1/3 rounded-lg p-4 flex flex-col">
                 <div className="flex justify-between items-center mb-5">
-                    <h2 className="text-xl font-bold">Education</h2>
+                    <h2 className="text-xl font-bold">Volunteering</h2>
                     <button className="text-gray-500" onClick={onClose}>
                         <IoMdClose />
                     </button>
@@ -47,7 +47,7 @@ const EducationPopup = ({ onClose, details }) => {
                                     />
                                 )}
                             />
-                            <label htmlFor="jobrole">University</label>
+                            <label htmlFor="jobrole">Organization name</label>
                         </div>
                         <div className="form-input w-full sm:flex-1 relative">
                             <Controller
@@ -64,7 +64,7 @@ const EducationPopup = ({ onClose, details }) => {
                                     />
                                 )}
                             />
-                            <label htmlFor="employeetype">Degree</label>
+                            <label htmlFor="employeetype">Position</label>
                         </div>
                         <div className="form-input w-full sm:flex-1 relative">
                             <Controller
@@ -75,39 +75,13 @@ const EducationPopup = ({ onClose, details }) => {
                                         {...field}
                                         type="text"
                                         id="companyname"
-                                        className="input"
+                                        className="input !h-44 pt-2"
                                         defaultValue=""
                                         required
                                     />
                                 )}
                             />
-                            <label htmlFor="companyname">Class of Degree</label>
-                        </div>
-                        <div className="form-input w-full sm:flex-1 relative mb-5">
-                            <Controller
-                                name="duration.ongoing"
-                                control={control}
-                                defaultValue={{ computerScience: false, softwareEngineer: false }}
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <div className="mb-2">
-                                            <input
-                                                type="checkbox"
-                                                id="computerscience"
-                                                value="computerScience"
-                                                onChange={(e) => {
-                                                    onChange({
-                                                        ...value,
-                                                        computerScience: e.target.checked,
-                                                    });
-                                                }}
-                                                class="ml-[1rem] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
-                                            />
-                                            <label htmlFor="computerscince" className="ml-[2rem]">I am currently studing in this university</label>
-                                        </div>
-                                    </>
-                                )}
-                            />
+                            <label htmlFor="companyname">Event name</label>
                         </div>
                         <div className="form-input w-full sm:flex-1 relative">
                             <h2>Start Date</h2>
@@ -204,4 +178,4 @@ const EducationPopup = ({ onClose, details }) => {
     );
 };
 
-export default EducationPopup;
+export default VolunteeringPopup;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useRouter } from "next/router";
-import useFetch from "../api/useFetch";
-import { server } from "../../config";
+import { useUiContext } from '../../contexts/UiContext';
+import { useRouter } from 'next/router';
+import useFetch from '../api/useFetch';
 import { MdEdit } from "react-icons/md";
 import PersonalInfoPopup from '../../components/candidate-persona/models/personalinfo-model';
 import Biography from '../../components/candidate-persona/biography';
@@ -10,6 +10,7 @@ import Award from '../../components/candidate-persona/award';
 import Skill from '../../components/candidate-persona/skill';
 import Experience from '../../components/candidate-persona/experience';
 import Education from '../../components/candidate-persona/education';
+import { server } from '../../config';
 import Volunteering from '../../components/candidate-persona/volunteer';
 
 const CandidatePersona = () => {
@@ -22,11 +23,13 @@ const CandidatePersona = () => {
         setPersonalInfoIsOpen(false);
     };
 
-    const router = useRouter();
-    const { id } = router.query;
-    const { data: user, loading } = useFetch(`${server}/api/users/${id}`);
+    const { user } = useUiContext();
 
-    return !loading ? (
+    const router = useRouter();
+    // const { id } = router.query;
+    // const { data: user, loading } = useFetch(`${server}/api/users/${id}`);
+
+    return (
         <div className="padding-container max-w-5xl w-full mx-auto">
             <div className="h-fit md:sticky top-0">
                 <div className="card overflow-hidden">
@@ -45,7 +48,7 @@ const CandidatePersona = () => {
                     <div className="pt-14 px-6 pb-6">
                         <div className="flex-center-between">
                             <h1 className="text-xl font-semibold">
-                                {user?.name} (${user?.hourly_rate}/hr)
+                                {user?.firstName + " " + user?.lastName} (${user?.hourly_rate}/hr)
                             </h1>
                             <div className="flex-align-center gap-x-2">
                                 <button className="btn btn-primary flex-shrink-0">
@@ -115,20 +118,16 @@ const CandidatePersona = () => {
                                 </div>
                             </div>
                         </div>
-                        <Biography details={user}/>
-                        <Skill details={user}/>
-                        <Experience details={user}/>
-                        <Education details={user}/>
-                        <Project details={user}/>
-                        <Award details={user}/>
-                        <Volunteering details={user}/>
+                        <Biography details={user} />
+                        <Skill details={user} />
+                        <Experience details={user} />
+                        <Education details={user} />
+                        <Project details={user} />
+                        <Award details={user} />
+                        <Volunteering details={user} />
                     </div>
                 </div>
             </div>
-        </div>
-    ) : (
-        <div className="min-h-screen flex-center-center">
-            <div className="loader" />
         </div>
     );
 };
