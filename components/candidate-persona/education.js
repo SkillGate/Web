@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import EducationPopup from './models/education-model';
+import { imageUrl } from '../../constants';
 
 const Education = ({details}) => {
 
@@ -25,7 +26,7 @@ const Education = ({details}) => {
             <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <div className="flex gap-3">
                     <img
-                        src="/images/Mak-Logo.png"
+                        src={imageUrl.ucsclogo}
                         alt=""
                         className="flex-shrink-0 w-10 h-10 object-contain"
                     />

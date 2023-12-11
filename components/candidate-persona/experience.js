@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import ExperiencePopup from './models/experience-model';
+import { imageUrl } from '../../constants';
 
 const Experience = ({details}) => {
 
@@ -25,11 +26,11 @@ const Experience = ({details}) => {
             <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <div className="flex gap-3">
                     <div>
-                        <img src="/images/whatsapp.png" alt="" className="w-10" />
+                        <img src={imageUrl.gtnlogo} alt="" className="w-10 h-10 object-contain" />
                     </div>
                     <div>
                         <h1 className="text-md font-semiBold capitalize">
-                            WhatsApp Inc.
+                            X-Venture Global Solutions
                         </h1>
                         <p className="text-sm">
                             <span className="text-sm">Software Engineer</span>{" "}

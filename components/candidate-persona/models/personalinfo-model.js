@@ -16,12 +16,14 @@ const PersonalInfoPopup = ({ onClose, details }) => {
 
     return (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-30 dark:bg-opacity-30 transition-opacity z-50">
-            <div className="bg-white dark:bg-dark-main w-full sm:w-1/3 rounded-lg p-4">
-                <button className="float-right text-gray-500" onClick={onClose}>
-                    <IoMdClose />
-                </button>
-                <h2 className="text-xl font-bold mb-8">Personal Information</h2>
-                <div className=''>
+            <div className="bg-white dark:bg-dark-main w-full h-2/3 sm:w-1/3 rounded-lg p-4 flex flex-col">
+            <div className="flex justify-between items-center mb-5">
+                    <h2 className="text-xl font-bold">Personal Information</h2>
+                    <button className="text-gray-500" onClick={onClose}>
+                        <IoMdClose />
+                    </button>
+                </div>
+                <div className="flex-1 overflow-y-auto pr-10 pt-5">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="form-input w-full sm:flex-1 relative">
                             <Controller
@@ -33,7 +35,7 @@ const PersonalInfoPopup = ({ onClose, details }) => {
                                         type="text"
                                         id="name"
                                         className="input"
-                                        defaultValue={details.name}
+                                        defaultValue=""
                                         required
                                     />
                                 )}

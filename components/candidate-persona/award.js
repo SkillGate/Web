@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import ProjectPopup from './models/project-model';
+import AwardPopup from './models/award-model';
 
 const Award = ({details}) => {
 
-    const [isProjectOpen, setProjectIsOpen] = useState(false);
-    const handleProjectOpen = () => {
-        setProjectIsOpen(true);
+    const [isAwardOpen, setAwardIsOpen] = useState(false);
+    const handleAwardOpen = () => {
+        setAwardIsOpen(true);
     };
-    const handleProjectClose = () => {
-        setProjectIsOpen(false);
+    const handleAwardClose = () => {
+        setAwardIsOpen(false);
     };
 
     return (
@@ -18,8 +18,8 @@ const Award = ({details}) => {
             <div className="flex justify-between">
                 <h1 className="text-lg font-semibold mb-3">Awards</h1>
                 <div>
-                    <button onClick={handleProjectOpen}><IoMdAdd size={25} className="text-gray-400" /></button>
-                    {isProjectOpen && <ProjectPopup onClose={handleProjectClose} details={details} />}
+                    <button onClick={handleAwardOpen}><IoMdAdd size={25} className="text-gray-400" /></button>
+                    {isAwardOpen && <AwardPopup onClose={handleAwardClose} details={details} />}
                 </div>
             </div>
             <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -37,8 +37,8 @@ const Award = ({details}) => {
                     </div>
                 </div>
                 <div>
-                    <button onClick={handleProjectOpen}><MdEdit size={20} className="text-gray-400" /></button>
-                    {isProjectOpen && <ProjectPopup onClose={handleProjectClose} details={details} />}
+                    <button onClick={handleAwardOpen}><MdEdit size={20} className="text-gray-400" /></button>
+                    {isAwardOpen && <AwardPopup onClose={handleAwardClose} details={details} />}
                 </div>
             </div>
             <div className="my-3">
