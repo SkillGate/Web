@@ -174,7 +174,7 @@ input:-webkit-autofill:active {
 }
 
 .form-input .input {
-  @apply outline-none h-8 border border-slate-300  dark:border-hover-color bg-main dark:bg-dark-main  rounded-md px-[0.8rem] w-full text-base mb-5;
+  @apply outline-none h-8 border border-slate-300  dark:border-hover-color bg-inherit rounded-md px-[0.8rem] w-full text-base mb-5;
 }
 
 .form-input label,
@@ -190,7 +190,7 @@ input:-webkit-autofill:active {
 
 .form-input .input:focus ~ label,
 .form-input .input:valid ~ label {
-  @apply -top-[12px] left-[15px] text-sm text-primary bg-main dark:bg-dark-main;
+  @apply -top-[12px] left-[15px] text-sm text-primary bg-white dark:bg-dark-card;
 }
 
 .form-input .input:-webkit-autofill {
@@ -198,7 +198,7 @@ input:-webkit-autofill:active {
 }
 
 input:-webkit-autofill ~ label {
-  @apply -top-[12px] left-[15px] text-sm text-primary bg-main dark:bg-dark-main;
+  @apply -top-[12px] left-[15px] text-sm text-primary bg-white dark:bg-dark-card;
 }
 
 /* -------------------------PAGINATION---------------------- */
@@ -299,6 +299,10 @@ input:-webkit-autofill ~ label {
 
 .btn_dark_blue {
   @apply bg-main px-4 py-3 text-white transition-all hover:bg-black;
+}
+
+.required-style {
+  @apply after:content-['*'] after:ml-0.5 after:text-red-500;
 }
 
 /* START: Hero styles */
