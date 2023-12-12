@@ -66,7 +66,7 @@ const CandidatePersona = () => {
                     onClick={() => fileInput.current.click()}
                   >
                     <BiLink />
-                    <span>Attach Resume/CV</span>
+                    <span>Upload Resume/CV</span>
                   </button>
                 </div>
               </div>
