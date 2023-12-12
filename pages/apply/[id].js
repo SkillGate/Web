@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
 import { BiFile, BiLink } from "react-icons/bi";
 import { FaLinkedin } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
