@@ -57,6 +57,8 @@ const SingleJob = () => {
     description,
     requirements_and_responsibilities,
     logo_url,
+    banner_url,
+    userId,
   } = job;
 
   // const { data: jobs } = useFetch(`${server}/api/jobs`);
@@ -96,13 +98,13 @@ const SingleJob = () => {
           <div className="card overflow-hidden">
             <div className="relative">
               <img
-                src="https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"
+                src={banner_url || "https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"}
                 alt="job-header-image"
                 className="h-full sm:h-[200px] object-cover w-full"
               />
               <img
                 src={logo_url || "/images/photo-3.jpg"}
-                alt=""
+                alt="company-logo"
                 className="w-16 left-10 -bottom-8 absolute rounded-xl"
               />
             </div>
