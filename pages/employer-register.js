@@ -101,7 +101,7 @@ const EmployerRegisterPage = () => {
         title="User registration unsuccessful."
         toggleVisibility={toggleModal}
       />
-      <div className="flex h-screen flex-col justify-center items-center px-6 py-6 lg:px-6">
+      <div className="flex flex-col justify-center items-center px-6 py-6 lg:px-6">
         <div className="register-from-container">
           <h2 className="register-from-header">Sign up to your account</h2>
 
