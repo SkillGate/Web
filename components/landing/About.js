@@ -37,7 +37,10 @@ const About = () => {
   return (
     <section id='about' >
       <div className="relative isolate overflow-hidden container mx-auto">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-10 sm:py-20">
+        <div className="mx-auto max-w-7xl padding-container py-10 sm:py-20">
+
+
+          
           <div className="flex flex-col sm:flex-row gap-10">
             <div className='relative max-w-4xl mt-12'>
               <div className="flex gap-2 mb-5 items-start"><FaArrowAltCircleRight style={{ color: 'purple', width: '50px' }}/><p className="text-lg font-semiBold">We offer an AI-powered recruitment system connecting HR managers and candidates seamlessly.</p></div>
