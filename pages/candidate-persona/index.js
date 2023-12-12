@@ -37,7 +37,7 @@ const CandidatePersona = () => {
         <div className="card overflow-hidden">
           <div className="relative">
             <img
-              src="/images/talent.jpg"
+              src="https://res.cloudinary.com/midefulness/image/upload/v1700258375/SkillGate/33003_cvtlei.jpg"
               alt=""
               className="h-full sm:h-[200px] object-cover w-full"
             />
