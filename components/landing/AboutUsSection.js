@@ -7,9 +7,9 @@ const AboutUsSection = () => {
       <div className="padding-container mx-auto flex flex-col-reverse md:flex-row items-center">
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           <img
-            src="https://res.cloudinary.com/midefulness/image/upload/v1702371275/SkillGate/4161376-removebg_nx7vyv.png"
+            src="https://res.cloudinary.com/dsqosc2ig/image/upload/v1702403838/SkillGate/5351347-removebg-preview_gmirp9.png"
             alt="Square Image"
-            className="w-full"
+            className=""
           />
         </div>
 
