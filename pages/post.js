@@ -60,25 +60,12 @@ const PostJob = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       addSkill();
     }
   };
 
   const [showTooltip, setShowTooltip] = useState(false);
-
-  // const tooltipButton = document.getElementById('tooltipbutton');
-  // const tooltip = document.getElementById('tooltip');
-
-  // function showTooltip() {
-  //   tooltip.classList.remove('hidden');
-  // }
-
-  // function hideTooltip() {
-  //   tooltip.classList.add('hidden');
-  // }
-
-  // tooltipButton.addEventListener('mouseenter', showTooltip);
-  // tooltipButton.addEventListener('mouseleave', hideTooltip);
 
 
   return (
@@ -132,7 +119,7 @@ const PostJob = () => {
             )}
           </div>
         </div>
-        <h1 className="text-lg mt-10">Provide company persona and job post details</h1>
+        <h1 className="text-xl font-bold mt-10 pt-5">Provide company persona and job post details</h1>
 
         {/*----------------------------------------Begin Form------------------------------------- */}
 
@@ -201,11 +188,11 @@ const PostJob = () => {
             />
             <label htmlFor="resposibilities">Resposibilities</label>
           </div>
-          <h3>Requirements</h3>
+          <h2 className="text-lg font-bold mb-5">Requirements</h2>
 
           {/*----------------------------------------Begin education section------------------------------------- */}
 
-          <h6 className="mt-2">Education</h6>
+          <h3 className="text-md font-bold mt-2">Education</h3>
           <div>
             {Array.from({ length: educationFields }, (_, index) => (
               <div key={index} className="mt-4 flex flex-col lg:flex-row gap-4">
@@ -245,7 +232,7 @@ const PostJob = () => {
                                 computerScience: e.target.checked,
                               });
                             }}
-                            class="float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+                            class="checkbox mr-2"
                           />
                           <label htmlFor="computerscince">Computer Science</label>
                         </div>
@@ -260,9 +247,9 @@ const PostJob = () => {
                                 softwareEngineering: e.target.checked,
                               });
                             }}
-                            class="float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
-                          />
-                          <label className="mt-5" htmlFor="softwareengineering">Software Engineer</label>
+                            class="checkbox mr-2"
+                            />
+                            <label htmlFor="softwareEngineer">Software Engineer</label>
                         </div>
                       </>
                     )}
@@ -271,7 +258,7 @@ const PostJob = () => {
               </div>
             ))}
             <div>
-              <button onClick={handleAddEducationField}><IoMdAdd size={25} className="text-gray-400" /></button>
+              <button type="button" onClick={handleAddEducationField}><IoMdAdd size={25} className="text-gray-400" /></button>
             </div>
             <div className="form-input w-full sm:flex-1 relative mt-5">
               <Controller
@@ -286,7 +273,7 @@ const PostJob = () => {
                   />
                 )}
               />
-              <label htmlFor="education job post cursor-pointer" >Describe candidate education 
+              <label htmlFor="education job post cursor-pointer" >Summarize the preferred candidates educational requirements using bullet points, please</label>
               <button
                 className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer ml-2"
                 onMouseEnter={() => setShowTooltip(true)}
@@ -300,7 +287,6 @@ const PostJob = () => {
                   <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
                 </div>
               )}
-              </label>
             </div>
           </div>
 
@@ -308,7 +294,7 @@ const PostJob = () => {
 
           {/*----------------------------------------Begin experience section------------------------------------- */}
 
-          <h6 className="mt-2">Experience</h6>
+          <h3 className="text-md font-bold mt-10">Experience</h3>
           <div>
             {Array.from({ length: experienceFields }, (_, index) => (
               <div key={index} className="mt-4 flex flex-col lg:flex-row gap-4">
@@ -354,7 +340,7 @@ const PostJob = () => {
               </div>
             ))}
             <div>
-              <button onClick={handleAddExperienceField}><IoMdAdd size={25} className="text-gray-400" /></button>
+              <button type="button" onClick={handleAddExperienceField}><IoMdAdd size={25} className="text-gray-400" /></button>
             </div>
             <div className="form-input w-full sm:flex-1 relative mt-5">
               <Controller
@@ -369,9 +355,9 @@ const PostJob = () => {
                   />
                 )}
               />
-              <label htmlFor="experience job post">Describe candidate experience</label>
+              <label htmlFor="experience job post">Summarize the preferred candidates experience using bullet points, please</label>
               <button
-                className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer"
+                className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer -mt-[0.75rem]"
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
@@ -416,7 +402,7 @@ const PostJob = () => {
                   <input
                     {...field}
                     type="text"
-                    placeholder="Enter skill"
+                    placeholder="Enter skills"
                     value={newSkill}
                     onChange={(e) => setNewSkill(e.target.value)}
                     onKeyPress={handleKeyPress}
@@ -446,7 +432,71 @@ const PostJob = () => {
             <label htmlFor="email">Email Address</label>
           </div>
 
-          <button className="btn btn-primary w-full mt-4">post job</button>
+          {/*----------------------------------------Begin checkbox section------------------------------------- */}
+
+          <h2 className="text-md text-justify font-bold mt-5 mb-5">Please check the boxes if you wish to view visual or other analyses of candidates GitHub, LinkedIn, and Blogs.</h2>
+          <div className="form-input w-full sm:flex-1 relative mb-5">
+            <Controller
+              name=""
+              control={control}
+              defaultValue={{ computerScience: false, softwareEngineer: false }}
+              render={({ field: { onChange, value } }) => (
+                <>
+                  <div className="flex flex-col sm:flex-row justify-center gap-10">
+                    <div className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        id="computerscience"
+                        value="computerScience"
+                        onChange={(e) => {
+                          onChange({
+                            ...value,
+                            computerScience: e.target.checked,
+                          });
+                        }}
+                        class="checkbox mr-3"
+                      />
+                      <h2 htmlFor="computerscince" >GitHub</h2>
+                    </div>
+                    <div className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        id="softwareengineer"
+                        value="softwareEngineer"
+                        onChange={(e) => {
+                          onChange({
+                            ...value,
+                            softwareEngineering: e.target.checked,
+                          });
+                        }}
+                        class="checkbox mr-3"
+                      />
+                      <h2 htmlFor="softwareengineering" className="min-w-max">LinkedIn</h2>
+                    </div>
+                    <div className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        id="softwareengineer"
+                        value="softwareEngineer"
+                        onChange={(e) => {
+                          onChange({
+                            ...value,
+                            softwareEngineering: e.target.checked,
+                          });
+                        }}
+                        class="checkbox mr-3"
+                      />
+                      <h2 htmlFor="softwareengineering" className="min-w-max">Blogs</h2>
+                    </div>
+                  </div>
+                </>
+              )}
+            />
+          </div>
+
+          {/*----------------------------------------End checkbox section------------------------------------- */}
+
+          <button type="submit" className="btn btn-primary w-full mt-4">post job</button>
 
         </form>
 
