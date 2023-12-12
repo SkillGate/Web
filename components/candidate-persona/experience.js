@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import ExperiencePopup from './models/experience-model';
-import { imageUrl } from '../../constants';
+import { imageUrl, skillIconUrl } from '../../constants';
 
 const Experience = ({details}) => {
 
@@ -30,7 +30,7 @@ const Experience = ({details}) => {
                     </div>
                     <div>
                         <h1 className="text-md font-semiBold capitalize">
-                            X-Venture Global Solutions
+                            GTN Technology
                         </h1>
                         <p className="text-sm">
                             <span className="text-sm">Software Engineer</span>{" "}
@@ -50,10 +50,10 @@ const Experience = ({details}) => {
             <div className="my-3">
                 <p className="text-sm mt-3">Skills</p>
                 <div className="flex-align-center gap-2">
-                    <img src="/images/html5.png" alt="" className="w-6" />
-                    <img src="/images/css3.png" alt="" className="w-6" />
-                    <img src="/images/javascript.png" alt="" className="w-6" />
-                    <img src="/images/react.png" alt="" className="w-6" />
+                    <img src={skillIconUrl.htmlIcon} alt="" className="w-6" />
+                    <img src={skillIconUrl.cssIcon} alt="" className="w-6" />
+                    <img src={skillIconUrl.jsIcon} alt="" className="w-6" />
+                    <img src={skillIconUrl.reactIcon} alt="" className="w-6" />
                 </div>
                 <p class="text-sm mt-2">
                     Developed scalable web applications using React.js and Node.js, contributing to a 30% increase in overall website performance.Collaborated with cross-functional teams to deliver high-quality software solutions within tight deadlines.
