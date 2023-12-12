@@ -113,11 +113,16 @@ export const navLinks = [
   },
   {
     id: 3,
+    linkText: "Services",
+    url: "/#services",
+  },
+  {
+    id: 4,
     linkText: "Advertisement",
     url: "/#advertisement",
   },
   {
-    id: 4,
+    id: 5,
     linkText: "Contact Us",
     url: "/#contact",
   },
