@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import ProjectPopup from './models/project-model';
+import { skillIconUrl } from '../../constants';
 
 const Project = ({details}) => {
 
@@ -45,10 +46,10 @@ const Project = ({details}) => {
                 </p>
                 <h2 className="text-md font-semibold mt-3 mb-2">Skills</h2>
                 <div className="flex-align-center gap-2">
-                    <img src="/images/html5.png" alt="" className="w-6" />
-                    <img src="/images/css3.png" alt="" className="w-6" />
-                    <img src="/images/javascript.png" alt="" className="w-6" />
-                    <img src="/images/react.png" alt="" className="w-6" />
+                    <img src={skillIconUrl.htmlIcon} alt="" className="w-6" />
+                    <img src={skillIconUrl.cssIcon} alt="" className="w-6" />
+                    <img src={skillIconUrl.jsIcon} alt="" className="w-6" />
+                    <img src={skillIconUrl.reactIcon} alt="" className="w-6" />
                 </div>
                 <h2 className="text-md font-semibold mt-3 mb-2">Contribution</h2>
                 <p className="text-sm">Developed scalable web applications using React.js and Node.js, contributing to a 30% increase in overall website performance.Collaborated with cross-functional teams to deliver high-quality software solutions within tight deadlines.</p>

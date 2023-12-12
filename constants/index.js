@@ -61,3 +61,15 @@ export const userImage = {
 // export const userData = {
 
 // }
+
+export const skillIconUrl = {
+  htmlIcon:"https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381164/skills-icon/html5_auahni.png",
+  sassIcon: "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381248/skills-icon/sass_bmfzj9.png",
+  reactIcon:"https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381246/skills-icon/react_hwngwl.png",
+  jqueryIcon: "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381171/skills-icon/jquery_tvs6tm.png",
+  jsIcon:"https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381167/skills-icon/javascript_jfndp4.png",
+  gitIcon: "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381158/skills-icon/git_smsyel.png",
+  firebaseIcon:"https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381155/skills-icon/firebase_ysbdb4.png",
+  cssIcon:"https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381149/skills-icon/css3_hoj6a0.png",
+  bootstrapIcon:"https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381142/skills-icon/bootstrap_jroje5.png",
+}
