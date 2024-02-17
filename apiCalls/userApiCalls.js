@@ -35,6 +35,7 @@ export const Login = async (User) => {
     // throw new Error(err.message);
     loading = false;
     error = err.message;
+    data = null;
     return { data, loading, error }
   }
 };

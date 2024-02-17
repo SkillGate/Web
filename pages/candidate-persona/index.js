@@ -10,7 +10,6 @@ import Award from "../../components/candidate-persona/award";
 import Skill from "../../components/candidate-persona/skill";
 import Experience from "../../components/candidate-persona/experience";
 import Education from "../../components/candidate-persona/education";
-import { server } from "../../config";
 import Volunteering from "../../components/candidate-persona/volunteer";
 
 const CandidatePersona = () => {
@@ -50,7 +49,7 @@ const CandidatePersona = () => {
           <div className="pt-14 px-6 pb-6">
             <div className="flex-center-between">
               <h1 className="text-xl font-semibold">
-                {user?.firstName + " " + user?.lastName} ({user?.role || "Software Engineer"})
+                {user?.firstName + " " + user?.lastName} ({user?.role || "Add Your Role"})
               </h1>
               <div className="flex-align-center gap-x-2">
                 <div>
@@ -78,7 +77,7 @@ const CandidatePersona = () => {
                   <span className="text-sm text-muted">{user?.location}</span>
                   <span className="text-xl text-muted">.</span>
                   <span className="text-sm text-muted">
-                    {user?.num_of_connections} Conections
+                    {user?.num_of_connections} Connections
                   </span>
                 </div>
               </div>
