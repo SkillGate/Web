@@ -14,16 +14,24 @@ const PersonalInfoPopup = ({ onClose, details }) => {
   } = useForm();
 
   const { loginUser } = useUiContext();
-//   const { user } = useUiContext();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(JSON.parse(storedUserData));
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
 
     setLoading(true);
     try {
-      const { data: userData, loading } = await UpdateUser(loginUser?._id, loginUser?.accessToken, data);
+      const { data: userData, loading } = await UpdateUser(user?._id, user?.accessToken, data);
       console.log(userData);
       setLoading(loading);
       if (!userData) {

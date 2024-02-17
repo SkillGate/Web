@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import formattedDate from "../components/common/CurrentDate";
 import { useRouter } from "next/router";
 import { useUiContext } from "../contexts/UiContext";
@@ -15,16 +15,31 @@ import { server } from "../config";
 import Skeleton from "../components/loading-skeleton/Skeleton";
 
 const EmployerDashboard = () => {
-  const { user } = useUiContext();
+  // const { user } = useUiContext();
   const router = useRouter();
 
   const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
 
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
-    if (!user?.userType) {
-      router.push("/");
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
     }
-  }, [user]);
+  }, []);
+
+  // useEffect(() => {
+  //   alert("Employer Dashboard");
+  //   if (!user?.userType) {
+  //     router.push("/");
+  //   }
+  // }, [user]);
   return (
     <div className="padding-container">
       <h1 className="font-bold text-2xl">

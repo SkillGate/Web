@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useUiContext } from "../../contexts/UiContext";
 import { useRouter } from "next/router";
 import { BiFile, BiLink } from "react-icons/bi";
@@ -14,6 +14,7 @@ import Volunteering from "../../components/candidate-persona/volunteer";
 
 const CandidatePersona = () => {
   const [isPersonalInfoOpen, setPersonalInfoIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const fileInput = useRef(null);
   const [file, setFile] = useState("");
 
@@ -24,7 +25,19 @@ const CandidatePersona = () => {
     setPersonalInfoIsOpen(false);
   };
 
-  const { user } = useUiContext();
+  // const { user } = useUiContext();
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, []);
 
   const router = useRouter();
   // const { id } = router.query;
