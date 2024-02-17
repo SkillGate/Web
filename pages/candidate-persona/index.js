@@ -109,30 +109,30 @@ const CandidatePersona = () => {
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
-                    <p className="text-sm capitalize">Portifolio</p>
+                    <p className="text-sm capitalize">Portfolio</p>
                     <a href="#" className="text-primary">
-                      {user?.portfolio}
+                      {user?.portfolio || "Add Your Portfolio URL"}
                     </a>
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">LinkedIn</p>
                     <a href="#" className="text-primary">
-                      {user?.portfolio}
+                      {user?.linkedIn || "Add Your LinkedIn"}
                     </a>
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">GitHub</p>
                     <a href="#" className="text-primary">
-                      {user?.portfolio}
+                      {user?.gitHub || "Add Your Github Account"}
                     </a>
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">Blog</p>
                     <a href="#" className="text-primary">
-                      {user?.portfolio}
+                      {user?.blog || "Add Your Blog URL"}
                     </a>
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
