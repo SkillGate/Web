@@ -14,9 +14,22 @@ import { getJob } from "../../apiCalls/jobApiCalls";
 const ApplyJob = ({ candidate }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useUiContext();
+  // const { user } = useUiContext();
   const [job, setJob] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, []);
 
   // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
 

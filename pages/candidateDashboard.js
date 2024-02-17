@@ -21,12 +21,25 @@ import { useRouter } from "next/router";
 import { getAllJob, getJobByUser } from "../apiCalls/jobApiCalls";
 
 const CandidateDashboard = () => {
-  const { user, isFilterMenuOpen, dispatch } = useUiContext();
+  const { isFilterMenuOpen, dispatch } = useUiContext();
+  const [user, setUser] = useState(null);
   const handleCloseFiltermenu = (e) => {
     if (e.target.classList.contains("filter-modal"))
       dispatch({ type: actioTypes.closeFilterMenu });
   };
   // const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, []);
 
   const [selectedFilters, setSelectedFilters] = useState({});
   const [jobs, setJobs] = useState([]);
@@ -35,9 +48,9 @@ const CandidateDashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user?.userType) {
-      router.push("/sign-in");
-    }
+    // if (!user?.userType) {
+    //   router.push("/sign-in");
+    // }
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getAllJob(user?.accessToken);

@@ -17,7 +17,21 @@ const Layout = ({ children }) => {
 
   const [currentPath, setCurrentPath] = useState("");
 
-  const { user } = useUiContext();
+  const { loginUser } = useUiContext();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, [loginUser]);
 
   const handleCloseDropdown = (e) => {
     dispatch({ type: actioTypes.closeDropdown });
@@ -37,7 +51,7 @@ const Layout = ({ children }) => {
     user?.userType ? setUserType(user?.userType) : setUserType(null);
 
     // Other logic or side effects
-  }, [router.pathname, user]);
+  }, [currentPath, router.pathname, user]);
 
   // Loader when page is loading
   if (typeof window !== "undefined") {
