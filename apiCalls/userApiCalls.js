@@ -45,11 +45,14 @@ export const UpdateUser = async (userId, token, User) => {
   let error = null;
   let data = [];
   if (!(userId && token && User)) {
+    console.log("User ID "+ userId);
+    console.log("Token "+ token);
+    console.log("User "+ User);
     error = "User Id or token or User must be provided";
     return { data, loading, error };
   }
   try {
-    const res = await publicJobRequest.post(`/auth/${userId}`, User, {
+    const res = await publicAuthRequest.put(`/user/${userId}`, User, {
       headers: {
         authorization: `Bearer ${token}`,
       },

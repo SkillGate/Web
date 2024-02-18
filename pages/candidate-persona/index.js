@@ -15,6 +15,7 @@ import Volunteering from "../../components/candidate-persona/volunteer";
 const CandidatePersona = () => {
   const [isPersonalInfoOpen, setPersonalInfoIsOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [change, notChange] = useState(false);
   const fileInput = useRef(null);
   const [file, setFile] = useState("");
 
@@ -23,6 +24,10 @@ const CandidatePersona = () => {
   };
   const handlePersonalInfoClose = () => {
     setPersonalInfoIsOpen(false);
+  };
+
+  const handleUserChangeState = () => {
+    notChange(!change);
   };
 
   // const { user } = useUiContext();
@@ -37,7 +42,7 @@ const CandidatePersona = () => {
       });
       // loginAndPersistUser(JSON.parse(storedUserData));
     }
-  }, []);
+  }, [change]);
 
   const router = useRouter();
   // const { id } = router.query;
@@ -62,7 +67,8 @@ const CandidatePersona = () => {
           <div className="pt-14 px-6 pb-6">
             <div className="flex-center-between">
               <h1 className="text-xl font-semibold">
-                {user?.firstName + " " + user?.lastName} ({user?.role || "Add Your Role"})
+                {/* {user?.firstName + " " + user?.lastName} ({user?.role || "Add Your Role"}) */}
+                {user?.firstName + " " + user?.lastName}
               </h1>
               <div className="flex-align-center gap-x-2">
                 <div>
@@ -87,7 +93,7 @@ const CandidatePersona = () => {
               <div className="mt-4">
                 <p className="text-primary">{user?.role}</p>
                 <div className="flex-align-center gap-2">
-                  <span className="text-sm text-muted">{user?.location}</span>
+                  <span className="text-sm text-muted">{user?.address}</span>
                   <span className="text-xl text-muted">.</span>
                   <span className="text-sm text-muted">
                     {user?.num_of_connections} Connections
@@ -102,6 +108,7 @@ const CandidatePersona = () => {
                   <PersonalInfoPopup
                     onClose={handlePersonalInfoClose}
                     details={user}
+                    onChange={handleUserChangeState}
                   />
                 )}
               </div>

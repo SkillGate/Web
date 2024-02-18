@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { useUiContext } from "../../../contexts/UiContext";
@@ -6,7 +6,7 @@ import FullPageLoader from "../../common/FullPageLoader";
 import PopUpModal from "../../common/PopUpModal";
 import { UpdateUser } from "../../../apiCalls/userApiCalls";
 
-const PersonalInfoPopup = ({ onClose, details }) => {
+const PersonalInfoPopup = ({ onClose, details, onChange }) => {
   const {
     handleSubmit,
     control,
@@ -15,11 +15,12 @@ const PersonalInfoPopup = ({ onClose, details }) => {
 
   const { loginUser } = useUiContext();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
+    const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
       setUser(JSON.parse(storedUserData));
       // loginAndPersistUser(JSON.parse(storedUserData));
@@ -29,16 +30,31 @@ const PersonalInfoPopup = ({ onClose, details }) => {
   const onSubmit = async (data) => {
     console.log(data);
 
+    const presentValues = Object.entries(data)
+      .filter(([key, value]) => value !== undefined)
+      .reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {});
+
+    console.log(presentValues);
     setLoading(true);
     try {
-      const { data: userData, loading } = await UpdateUser(user?._id, user?.accessToken, data);
+      const { data: userData, loading, error } = await UpdateUser(
+        user?._id,
+        user?.accessToken,
+        presentValues
+      );
       console.log(userData);
       setLoading(loading);
-      if (!userData) {
+      if (!userData || userData.length === 0) {
         setIsModalVisible(true);
         reset();
       } else {
+        setIsModalVisibleSuccess(true);
+        userData.accessToken = user.accessToken;
         loginUser(userData);
+        onChange();
       }
     } catch (error) {
       setLoading(false);
@@ -50,12 +66,27 @@ const PersonalInfoPopup = ({ onClose, details }) => {
     setIsModalVisible(!isModalVisible);
   };
 
+  const toggleModalSuccess = () => {
+    setIsModalVisibleSuccess(!isModalVisibleSuccess);
+  };
+
   return !loading ? (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-30 dark:bg-opacity-30 transition-opacity z-50">
       <PopUpModal
         isVisible={isModalVisible}
         title="Personal Information Save Unsuccess!"
         toggleVisibility={toggleModal}
+        confirmButtonColor="text-white bg-green-500 border border-green-500 hover:bg-white hover:text-green-500"
+        cancelButtonColor="border border-red-500 bg-white text-red-500 hover:bg-red-500 hover:text-white"
+        showConfirmButton={false}
+        showCancelButton={false}
+        confirmButtonText="Yes, I'm sure"
+        cancelButtonText="No, cancel"
+      />
+      <PopUpModal
+        isVisible={isModalVisibleSuccess}
+        title="Personal Information Updated!"
+        toggleVisibility={toggleModalSuccess}
         confirmButtonColor="text-white bg-green-500 border border-green-500 hover:bg-white hover:text-green-500"
         cancelButtonColor="border border-red-500 bg-white text-red-500 hover:bg-red-500 hover:text-white"
         showConfirmButton={false}
@@ -106,19 +137,19 @@ const PersonalInfoPopup = ({ onClose, details }) => {
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <Controller
-                name="jobRole"
+                name="role"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="text"
-                    id="jobRole"
+                    id="role"
                     className="input"
                     defaultValue={details?.role}
                   />
                 )}
               />
-              <label htmlFor="jobRole">Job Role</label>
+              <label htmlFor="role">Job Role</label>
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <Controller
@@ -130,7 +161,7 @@ const PersonalInfoPopup = ({ onClose, details }) => {
                     type="text"
                     id="address"
                     className="input"
-                    defaultValue={details?.location}
+                    defaultValue={details?.address}
                   />
                 )}
               />
@@ -186,35 +217,35 @@ const PersonalInfoPopup = ({ onClose, details }) => {
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <Controller
-                name="linkedin"
+                name="linkedIn"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="text"
-                    id="linkedin"
+                    id="linkedIn"
                     className="input"
                     defaultValue={details.linkedIn}
                   />
                 )}
               />
-              <label htmlFor="linkedin">LinkedIn</label>
+              <label htmlFor="linkedIn">LinkedIn</label>
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <Controller
-                name="github"
+                name="gitHub"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="text"
-                    id="github"
+                    id="gitHub"
                     className="input"
                     defaultValue={details?.gitHub}
                   />
                 )}
               />
-              <label htmlFor="github">GitHub</label>
+              <label htmlFor="gitHub">GitHub</label>
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <Controller
