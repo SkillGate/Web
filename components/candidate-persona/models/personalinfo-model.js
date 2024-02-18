@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { useUiContext } from "../../../contexts/UiContext";
-import FullPageLoader from "../../common/FullPageLoader";
-import PopUpModal from "../../common/PopUpModal";
 import { UpdateUser } from "../../../apiCalls/userApiCalls";
 import ModelPopup from "../../common/ModelPopup";
+import Loader from "../../common/Loader";
 
 const PersonalInfoPopup = ({ onClose, details, onChange }) => {
   const {
@@ -276,7 +275,7 @@ const PersonalInfoPopup = ({ onClose, details, onChange }) => {
       </div>
     </div>
   ) : (
-    <FullPageLoader />
+    <Loader />
   );
 };
 

@@ -43,11 +43,11 @@ const Layout = ({ children }) => {
   useEffect(() => {
     // Get the current URL path
     const pathName = router.pathname;
-    console.log(pathName);
+    // console.log(pathName);
     setCurrentPath(pathName);
-    console.log(currentPath);
+    // console.log(currentPath);
 
-    console.log(user);
+    // console.log(user);
     user?.userType ? setUserType(user?.userType) : setUserType(null);
 
     // Other logic or side effects
