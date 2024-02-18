@@ -16,7 +16,7 @@ export const addJob = async (job, token) => {
 };
 
 export const getAllJob = async (token) => {
-  let loading = true;
+  let loading = false;
   let error = null;
   let data = [];
   try {
@@ -26,13 +26,11 @@ export const getAllJob = async (token) => {
       },
     });
     console.log(res.data);
-    loading = false;
     data = res.data;
     // return res.data;
     return { data, loading, error }
   } catch (err) {
     console.error(err);
-    loading = false;
     error = err.message;
     return { data, loading, error }
   }

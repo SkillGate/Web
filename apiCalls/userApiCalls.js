@@ -49,7 +49,7 @@ export const UpdateUser = async (userId, token, User) => {
     return { data, loading, error };
   }
   try {
-    const res = await publicJobRequest.post(`/auth/${userId}`, User, {
+    const res = await publicAuthRequest.put(`/user/${userId}`, User, {
       headers: {
         authorization: `Bearer ${token}`,
       },
