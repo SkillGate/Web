@@ -252,7 +252,7 @@ const CandidatePersona = () => {
                 </div>
               </div>
             </div>
-            <Biography details={user} />
+            <Biography />
             <Skill details={user} />
             <Experience details={user} />
             <Education details={user} />

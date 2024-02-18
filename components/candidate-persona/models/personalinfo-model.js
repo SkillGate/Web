@@ -5,6 +5,7 @@ import { useUiContext } from "../../../contexts/UiContext";
 import FullPageLoader from "../../common/FullPageLoader";
 import PopUpModal from "../../common/PopUpModal";
 import { UpdateUser } from "../../../apiCalls/userApiCalls";
+import ModelPopup from "../../common/ModelPopup";
 
 const PersonalInfoPopup = ({ onClose, details, onChange }) => {
   const {
@@ -72,7 +73,9 @@ const PersonalInfoPopup = ({ onClose, details, onChange }) => {
 
   return !loading ? (
     <div className={`personal-info-model`}>
-      <PopUpModal
+      <ModelPopup isVisible={isModalVisible} title={"Personal Information Update Unsuccess!"} toggleVisibility={toggleModal} />
+      <ModelPopup isVisible={isModalVisibleSuccess} title={"Personal Information Updated!"} toggleVisibility={toggleModalSuccess} />
+      {/* <PopUpModal
         isVisible={isModalVisible}
         title="Personal Information Save Unsuccess!"
         toggleVisibility={toggleModal}
@@ -93,7 +96,7 @@ const PersonalInfoPopup = ({ onClose, details, onChange }) => {
         showCancelButton={false}
         confirmButtonText="Yes, I'm sure"
         cancelButtonText="No, cancel"
-      />
+      /> */}
       <div className="bg-white dark:bg-dark-main w-full h-2/3 sm:w-1/3 rounded-lg p-4 flex flex-col">
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-xl font-bold">Personal Information</h2>
