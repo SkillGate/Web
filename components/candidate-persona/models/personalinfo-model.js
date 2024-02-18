@@ -52,6 +52,7 @@ const PersonalInfoPopup = ({ onClose, details, onChange }) => {
         reset();
       } else {
         setIsModalVisibleSuccess(true);
+        userData.accessToken = user.accessToken;
         loginUser(userData);
         onChange();
       }
