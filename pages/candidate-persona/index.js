@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useUiContext } from "../../contexts/UiContext";
 import { useRouter } from "next/router";
 import { BiFile, BiLink } from "react-icons/bi";
+import { MdOpenInNew } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import PersonalInfoPopup from "../../components/candidate-persona/models/personalinfo-model";
 import Biography from "../../components/candidate-persona/biography";
@@ -30,12 +31,16 @@ const CandidatePersona = () => {
     notChange(!change);
   };
 
+  const handleEmptyValueClick = () => {
+    setPersonalInfoIsOpen(true);
+  };
+
   // const { user } = useUiContext();
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
+    const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
-      setUser(prevUser => {
+      setUser((prevUser) => {
         const userData = JSON.parse(storedUserData);
         // Here you can perform any additional logic before updating the state
         return userData;
@@ -80,7 +85,7 @@ const CandidatePersona = () => {
                   />
                   {/* <p className="required-style">Attach Candidate Profile</p> */}
                   <button
-                    className="btn flex-align-center text-slate-300 gap-2 bg-dark-card hover:bg-hover-color"
+                    className="upload-resume-button"
                     onClick={() => fileInput.current.click()}
                   >
                     <BiLink />
@@ -91,7 +96,7 @@ const CandidatePersona = () => {
             </div>
             <div className="flex justify-between">
               <div className="mt-4">
-                <p className="text-primary">{user?.role}</p>
+                <p className="text-primary dark:text-slate-300 dark:font-semibold">{user?.role}</p>
                 <div className="flex-align-center gap-2">
                   <span className="text-sm text-muted">{user?.address}</span>
                   <span className="text-xl text-muted">.</span>
@@ -130,30 +135,118 @@ const CandidatePersona = () => {
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">Portfolio</p>
-                    <a href="#" className="text-primary">
-                      {user?.portfolio || "Add Your Portfolio URL"}
-                    </a>
+                    {user?.portfolio ? (
+                      <a
+                        href={user?.portfolio}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user.portfolio} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your Portfolio URL
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">LinkedIn</p>
-                    <a href="#" className="text-primary">
-                      {user?.linkedIn || "Add Your LinkedIn"}
-                    </a>
+                    {user?.linkedIn ? (
+                      <a
+                        href={user?.linkedIn}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user?.linkedIn} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your LinkedIn Profile
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">GitHub</p>
-                    <a href="#" className="text-primary">
-                      {user?.gitHub || "Add Your Github Account"}
-                    </a>
+                    {user?.gitHub ? (
+                      <a
+                        href={user?.gitHub}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user.gitHub} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your GitHub Account
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">Blog</p>
-                    <a href="#" className="text-primary">
-                      {user?.blog || "Add Your Blog URL"}
-                    </a>
+                    {user?.blog ? (
+                      <a
+                        href={user?.blog}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user.blog} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your Blog Account
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                 </div>

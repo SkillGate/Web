@@ -71,7 +71,7 @@ const PersonalInfoPopup = ({ onClose, details, onChange }) => {
   };
 
   return !loading ? (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-30 dark:bg-opacity-30 transition-opacity z-50">
+    <div className={`personal-info-model`}>
       <PopUpModal
         isVisible={isModalVisible}
         title="Personal Information Save Unsuccess!"
