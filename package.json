@@ -14,6 +14,7 @@
   "dependencies": {
     "apexcharts": "^3.44.0",
     "axios": "^1.6.2",
+    "chart.js": "^4.4.1",
     "firebase": "^10.6.0",
     "framer-motion": "^7.10.3",
     "next": "12.3.1",
@@ -22,6 +23,7 @@
     "react-apexcharts": "^1.4.1",
     "react-awesome-reveal": "^4.2.7",
     "react-calendar": "^4.0.0",
+    "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^4.23.0",
     "react-dom": "18.2.0",
     "react-fast-marquee": "^1.6.2",
