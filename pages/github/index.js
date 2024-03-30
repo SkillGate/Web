@@ -23,7 +23,7 @@ ChartJS.register(
     Tooltip
 );
 
-import repodata from './data';
+import {repodata} from './data';
 
 const GitHubInfo = () => {
     useEffect(() => {
