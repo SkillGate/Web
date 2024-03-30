@@ -1,4 +1,4 @@
-const repodata = {
+export const repodata = {
     "repositories": [
         {
             "reponame": "client",
@@ -1208,6 +1208,4 @@ const repodata = {
             ]
         }
     ]
-}
-
-export default repodata;
+};
