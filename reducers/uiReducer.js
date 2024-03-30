@@ -15,6 +15,7 @@ export const actioTypes = {
   closeEventFilters: "CLOSE_EVENT_FILTER_MENU",
   loginUser: "LOGIN_USER",
   logoutUser: "LOGOUT_USER",
+  hydrateState: "HYDRATE_STATE",
 };
 
 export const uiReducer = (state, action) => {
@@ -49,6 +50,8 @@ export const uiReducer = (state, action) => {
       return { ...state, user: action.payload };
     case actioTypes.logoutUser:
       return { ...state, user: null };
+    case actioTypes.hydrateState: // Hydrate state from localStorage
+      return { ...state, ...action.payload };
 
     default:
       return state;

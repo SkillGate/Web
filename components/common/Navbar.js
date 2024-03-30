@@ -19,12 +19,25 @@ import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
   const [userType, setUserType] = useState("Employer");
+  const [user, setUser] = useState(null);
   const [search, setSearch] = useState("");
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
   const [showSearchBar, setShowSearchBar] = useState(false);
   const router = useRouter();
 
-  const { user, dispatch, isSidebarOpen } = useUiContext();
+  const { dispatch, isSidebarOpen } = useUiContext();
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, []);
 
   const handleDropdown = () => {
     dispatch({ type: actioTypes.toggleDropdown });

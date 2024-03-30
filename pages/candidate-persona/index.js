@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useUiContext } from "../../contexts/UiContext";
 import { useRouter } from "next/router";
 import { BiFile, BiLink } from "react-icons/bi";
+import { MdOpenInNew } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import PersonalInfoPopup from "../../components/candidate-persona/models/personalinfo-model";
 import Biography from "../../components/candidate-persona/biography";
@@ -10,11 +11,12 @@ import Award from "../../components/candidate-persona/award";
 import Skill from "../../components/candidate-persona/skill";
 import Experience from "../../components/candidate-persona/experience";
 import Education from "../../components/candidate-persona/education";
-import { server } from "../../config";
 import Volunteering from "../../components/candidate-persona/volunteer";
 
 const CandidatePersona = () => {
   const [isPersonalInfoOpen, setPersonalInfoIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [change, notChange] = useState(false);
   const fileInput = useRef(null);
   const [file, setFile] = useState("");
 
@@ -25,7 +27,27 @@ const CandidatePersona = () => {
     setPersonalInfoIsOpen(false);
   };
 
-  const { user } = useUiContext();
+  const handleUserChangeState = () => {
+    notChange(!change);
+  };
+
+  const handleEmptyValueClick = () => {
+    setPersonalInfoIsOpen(true);
+  };
+
+  // const { user } = useUiContext();
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUser((prevUser) => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, [change]);
 
   const router = useRouter();
   // const { id } = router.query;
@@ -50,7 +72,8 @@ const CandidatePersona = () => {
           <div className="pt-14 px-6 pb-6">
             <div className="flex-center-between">
               <h1 className="text-xl font-semibold">
-                {user?.firstName + " " + user?.lastName} ({user?.role || "Software Engineer"})
+                {/* {user?.firstName + " " + user?.lastName} ({user?.role || "Add Your Role"}) */}
+                {user?.firstName + " " + user?.lastName}
               </h1>
               <div className="flex-align-center gap-x-2">
                 <div>
@@ -62,7 +85,7 @@ const CandidatePersona = () => {
                   />
                   {/* <p className="required-style">Attach Candidate Profile</p> */}
                   <button
-                    className="btn flex-align-center text-slate-300 gap-2 bg-dark-card hover:bg-hover-color"
+                    className="upload-resume-button"
                     onClick={() => fileInput.current.click()}
                   >
                     <BiLink />
@@ -73,12 +96,12 @@ const CandidatePersona = () => {
             </div>
             <div className="flex justify-between">
               <div className="mt-4">
-                <p className="text-primary">{user?.role}</p>
+                <p className="text-primary dark:text-slate-300 dark:font-semibold">{user?.role}</p>
                 <div className="flex-align-center gap-2">
-                  <span className="text-sm text-muted">{user?.location}</span>
+                  <span className="text-sm text-muted">{user?.address}</span>
                   <span className="text-xl text-muted">.</span>
                   <span className="text-sm text-muted">
-                    {user?.num_of_connections} Conections
+                    {user?.num_of_connections} Connections
                   </span>
                 </div>
               </div>
@@ -90,6 +113,7 @@ const CandidatePersona = () => {
                   <PersonalInfoPopup
                     onClose={handlePersonalInfoClose}
                     details={user}
+                    onChange={handleUserChangeState}
                   />
                 )}
               </div>
@@ -110,37 +134,125 @@ const CandidatePersona = () => {
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
-                    <p className="text-sm capitalize">Portifolio</p>
-                    <a href="#" className="text-primary">
-                      {user?.portfolio}
-                    </a>
+                    <p className="text-sm capitalize">Portfolio</p>
+                    {user?.portfolio ? (
+                      <a
+                        href={user?.portfolio}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user.portfolio} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your Portfolio URL
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">LinkedIn</p>
-                    <a href="#" className="text-primary">
-                      {user?.portfolio}
-                    </a>
+                    {user?.linkedIn ? (
+                      <a
+                        href={user?.linkedIn}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user?.linkedIn} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your LinkedIn Profile
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">GitHub</p>
-                    <a href="#" className="text-primary">
-                      {user?.portfolio}
-                    </a>
+                    {user?.gitHub ? (
+                      <a
+                        href={user?.gitHub}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user.gitHub} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your GitHub Account
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                   <div className="p-2 w-1/3">
                     <p className="text-sm capitalize">Blog</p>
-                    <a href="#" className="text-primary">
-                      {user?.portfolio}
-                    </a>
+                    {user?.blog ? (
+                      <a
+                        href={user?.blog}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="personal-information-input"
+                      >
+                        <div>{user.blog} </div>
+                        <div>
+                          <MdOpenInNew
+                            style={{
+                              fontSize: "0.8em",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <span
+                        className="personal-information-input-empty"
+                        onClick={handleEmptyValueClick}
+                      >
+                        Add Your Blog Account
+                      </span>
+                    )}
                   </div>
                   <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                 </div>
               </div>
             </div>
-            <Biography details={user} />
+            <Biography />
             <Skill details={user} />
             <Experience details={user} />
             <Education details={user} />
