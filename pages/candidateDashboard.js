@@ -14,8 +14,6 @@ import JobAlert from "../components/search/JobAlert";
 import SearchFilters from "../components/search/SearchFilters";
 import { useUiContext } from "../contexts/UiContext";
 import { actioTypes } from "../reducers/uiReducer";
-import useFetch from "./api/useFetch";
-import { server } from "../config";
 import formattedDate from "./../components/common/CurrentDate";
 import { useRouter } from "next/router";
 import { getAllJob, getJobByUser } from "../apiCalls/jobApiCalls";
@@ -27,6 +25,11 @@ const CandidateDashboard = () => {
     if (e.target.classList.contains("filter-modal"))
       dispatch({ type: actioTypes.closeFilterMenu });
   };
+  const [selectedFilters, setSelectedFilters] = useState({});
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
   // const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
 
   useEffect(() => {
@@ -34,36 +37,33 @@ const CandidateDashboard = () => {
     if (storedUserData) {
       setUser(prevUser => {
         const userData = JSON.parse(storedUserData);
-        // Here you can perform any additional logic before updating the state
+        console.log(userData);
+        fetchData(userData.accessToken);
         return userData;
       });
       // loginAndPersistUser(JSON.parse(storedUserData));
     }
   }, []);
 
-  const [selectedFilters, setSelectedFilters] = useState({});
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const fetchData = async (accessToken) => {
+    try {
+      const { data: jobData = [], loading } = await getAllJob(accessToken);
+      console.log(jobData);
+      setJobs(jobData);
+      setLoading(loading);
+    } catch (error) {
+      console.error("Error job fetching:", error);
+      setLoading(false);
+    }
+  };
 
-  const router = useRouter();
-
-  useEffect(() => {
-    // if (!user?.userType) {
-    //   router.push("/sign-in");
-    // }
-    const fetchData = async () => {
-      try {
-        const { data: jobData = [], loading } = await getAllJob(user?.accessToken);
-        console.log(jobData);
-        setJobs(jobData);
-        setLoading(loading);
-      } catch (error) {
-        console.error("Error job fetching:", error);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [user]);
+  // useEffect(() => {
+  //   // if (!user?.userType) {
+  //   //   router.push("/sign-in");
+  //   // }
+    
+  //   fetchData();
+  // }, [user]);
 
   /* Set selected filters i.e => {
   "type_of_employment": ["Full Time", "Part Time"],
