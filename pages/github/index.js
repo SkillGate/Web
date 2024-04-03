@@ -31,10 +31,10 @@ const GitHubInfo = () => {
 
   return (
     <div>
-      <h1 className="mb-10">Project: SkillGate</h1>
+      <h1 className="mb-10 text-xl font-bold">Project: SkillGate</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {chartData.map((data, index) => (
-          <div key={index} className="rounded-md overflow-hidden border p-4">
+          <div key={index} className="rounded-md overflow-hidden border p-4 bg-white dark:bg-dark-card">
             <h2 className="text-xl font-bold mb-4">{data.repoName}</h2>
             <Line data={data} options={data.options} />
             {renderLegend(data.contributorColors)}

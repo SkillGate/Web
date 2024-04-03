@@ -1,4 +1,4 @@
-export const repodata = [
+export const repodata = 
   {
     repositories: [
       {
@@ -1251,5 +1251,4 @@ export const repodata = [
         ],
       },
     ],
-  },
-];
+  };
