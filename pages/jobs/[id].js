@@ -28,7 +28,10 @@ const SingleJob = () => {
     if (storedUserData) {
       setUser(prevUser => {
         const userData = JSON.parse(storedUserData);
-        // Here you can perform any additional logic before updating the state
+        if (!userData?.userType) {
+          router.push("/sign-in");
+        }
+        fetchData(userData);
         return userData;
       });
       // loginAndPersistUser(JSON.parse(storedUserData));
@@ -37,26 +40,20 @@ const SingleJob = () => {
 
   // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
 
-  useEffect(() => {
-    if (!user?.userType) {
-      router.push("/sign-in");
+  const fetchData = async (userData) => {
+    try {
+      const { data: jobData = [], loading } = await getJob(
+        id,
+        userData?.accessToken
+      );
+      console.log(jobData);
+      setJob(jobData);
+      setLoading(loading);
+    } catch (error) {
+      console.error("Error job fetching:", error);
+      setLoading(false);
     }
-    const fetchData = async () => {
-      try {
-        const { data: jobData = [], loading } = await getJob(
-          id,
-          user?.accessToken
-        );
-        console.log(jobData);
-        setJob(jobData);
-        setLoading(loading);
-      } catch (error) {
-        console.error("Error job fetching:", error);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [user]);
+  };
 
   const {
     title,
