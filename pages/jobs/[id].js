@@ -21,39 +21,31 @@ const SingleJob = () => {
   const [job, setJob] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      setUser(prevUser => {
-        const userData = JSON.parse(storedUserData);
-        if (!userData?.userType) {
-          router.push("/sign-in");
-        }
-        fetchData(userData);
-        return userData;
-      });
-      // loginAndPersistUser(JSON.parse(storedUserData));
-    }
+    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    console.log(storedUserData);
+    const fetchData = async () => {
+      try {
+        const { data: jobData = [], loading } = await getJob(
+          id,
+          storedUserData?.accessToken
+        );
+        console.log(jobData);
+        setJob(jobData);
+        setLoading(loading);
+      } catch (error) {
+        console.error("Error job fetching:", error);
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
 
-  const fetchData = async (userData) => {
-    try {
-      const { data: jobData = [], loading } = await getJob(
-        id,
-        userData?.accessToken
-      );
-      console.log(jobData);
-      setJob(jobData);
-      setLoading(loading);
-    } catch (error) {
-      console.error("Error job fetching:", error);
-      setLoading(false);
-    }
-  };
+  
 
   const {
     title,
@@ -95,7 +87,7 @@ const SingleJob = () => {
   return !loading ? (
     <div>
       <div className="padding-container mb-5">
-      {user?.userType === userTypes.candidate ? (
+      {user?.userType == userTypes.candidate ? (
         <Back url={"/candidateDashboard"} />
       ) : (
         <Back url={"/employerDashboard"} />
