@@ -17,12 +17,14 @@ const ApplyJob = ({ candidate }) => {
   // const { user } = useUiContext();
   const [job, setJob] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  const [user, setUser] = useState({});
   const fileInput = useRef(null);
   const [file, setFile] = useState("");
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    setUser(storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(

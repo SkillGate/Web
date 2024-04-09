@@ -21,11 +21,13 @@ const SingleJob = () => {
   const [job, setJob] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem('userData'));
     console.log(storedUserData);
+    setUser(storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
