@@ -5,14 +5,17 @@ import { useUiContext } from "../../../contexts/UiContext";
 import { UpdateUser } from "../../../apiCalls/userApiCalls";
 import ModelPopup from "../../common/ModelPopup";
 import Loader from "../../common/Loader";
+import { getSkill } from "../../../apiCalls/skillApiCalls";
 
 export const SkillsPopup = ({ user, onClose, onChange }) => {
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
+  const [skillUrls, setSkillsUrls] = useState([]);
   const { loginUser } = useUiContext();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [skillLoading, setSkillLoading] = useState(false);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -46,7 +49,7 @@ export const SkillsPopup = ({ user, onClose, onChange }) => {
         console.error("Error in onSubmit:", error);
       }
     } else {
-      console.log("Empty biography entry");
+      console.log("Empty skill entry");
     }
   };
 
@@ -54,11 +57,33 @@ export const SkillsPopup = ({ user, onClose, onChange }) => {
     setIsModalVisibleSuccess(!isModalVisibleSuccess);
   };
 
-  const handleAddSkill = () => {
+  const handleAddSkill = async () => {
+    console.log(newSkill);
     if (newSkill.trim() !== "") {
-      setSkills([...skills, newSkill]);
+      try {
+        const {
+          data: skillData,
+          loading,
+          error,
+        } = await getSkill(newSkill, user?.accessToken);
+        console.log(skillData);
+        setSkillLoading(loading);
+        if (!skillData || skillData.length === 0) {
+          setIsModalVisible(true);
+        } else {
+          // setIsModalVisibleSuccess(true);
+          skillData.accessToken = user.accessToken;
+          setSkillsUrls((prevSkillsUrls) => [...prevSkillsUrls, skillData]);
+        }
+      } catch (error) {
+        setSkillLoading(false);
+        console.error("Error in onSubmit:", error);
+      }
+      setSkills((prevSkills) => [...prevSkills, newSkill]);
       setNewSkill("");
     }
+    console.log(skills);
+    console.log(skillUrls);
   };
 
   const removeSkill = (skillToRemove) => {
