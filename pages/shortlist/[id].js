@@ -36,20 +36,20 @@ const ApplyJob = ({ candidate }) => {
     ];
 
     const shortlistApplicantsRows = [
-        { id: 1, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 2, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 3, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 4, name: 'Sathya Karunankalage', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 5, name: 'Haitha Jayaweera', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 6, name: 'Roneki Manamperi', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 7, name: 'Madhuni Tharukshi', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 8, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 9, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com"},
-        { id: 10, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com"},
+        { id: 1, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 2, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 3, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 4, name: 'Sathya Karunankalage', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 5, name: 'Haitha Jayaweera', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 6, name: 'Roneki Manamperi', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 7, name: 'Madhuni Tharukshi', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 8, name: 'Ashani Liyanagamage', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 9, name: 'Yohan Nayanajith', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
+        { id: 10, name: 'Roshan Senevirathne', phone:"+94767619989", email:"test@gmail.com",score:"90.00%"},
     ];
 
     const allApplicantsHeads = [{ name: "Applicant Name", col: 1 }, { name: "Contact Number", col: 1 }, { name: "Email", col: 1 }, { name: "Actions", col: 4 },];
-    const shortlistApplicantsHeads = [{ name: "Applicant Name", col: 1 },{ name: "Contact Number", col: 1 }, { name: "Email", col: 1 }, { name: "Actions", col: 5 },];
+    const shortlistApplicantsHeads = [{ name: "Applicant Name", col: 1 },{ name: "Contact Number", col: 1 }, { name: "Email", col: 1 },{ name: "Score", col: 1 }, { name: "Actions", col: 5 },];
     const actions = [{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
     const shrtlistactions = [{ name: "Reason", title: "View reason for shortlisting", icon: "BsBookmarkCheck", color:"pink" },{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
 
