@@ -55,7 +55,7 @@ const Experience = ({details}) => {
                     <img src={skillIconUrl.jsIcon} alt="" className="w-6" />
                     <img src={skillIconUrl.reactIcon} alt="" className="w-6" />
                 </div>
-                <p class="text-sm mt-2">
+                <p className="text-sm mt-2">
                     Developed scalable web applications using React.js and Node.js, contributing to a 30% increase in overall website performance.Collaborated with cross-functional teams to deliver high-quality software solutions within tight deadlines.
                 </p>
             </div>
