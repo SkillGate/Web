@@ -101,7 +101,7 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
   };
 
   return !loading ? (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity z-50">
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity z-40">
       <div className="bg-white dark:bg-dark-main w-full h-2/3 sm:w-1/3 rounded-lg p-4 flex flex-col">
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-xl font-bold">Volunteering test</h2>
