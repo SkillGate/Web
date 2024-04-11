@@ -37,6 +37,7 @@ const RegisterForm = () => {
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
+    console.log("Hiiiii");
   };
 
   const router = useRouter();
