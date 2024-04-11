@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import VolunteeringPopup from "./models/volunteering-model";
+import VolunteeringNewPopup from "./models/volunteering-model-new";
 
 const Volunteering = ({ details }) => {
   const [isVolunteeringOpen, setVolunteeringIsOpen] = useState(false);
+  const [isVolunteeringNewOpen, setVolunteeringNewIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [change, notChange] = useState(false);
+  const [selectedExperience, setSelectedExperience] = useState(null);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -16,15 +19,19 @@ const Volunteering = ({ details }) => {
     }
   }, [change]);
 
-  const handleVolunteeringOpen = () => {
+  const handleVolunteeringOpen = (experience) => {
+    setSelectedExperience(experience);
     setVolunteeringIsOpen(true);
   };
   const handleVolunteeringClose = () => {
     setVolunteeringIsOpen(false);
   };
 
-  const handleEmptyValueClick = () => {
-    setBiographyIsOpen(true);
+  const handleVolunteeringNewOpen = () => {
+    setVolunteeringNewIsOpen(true);
+  };
+  const handleVolunteeringNewClose = () => {
+    setVolunteeringNewIsOpen(false);
   };
 
   const handleUserChangeState = () => {
@@ -46,13 +53,13 @@ const Volunteering = ({ details }) => {
       <div className="flex justify-between">
         <h1 className="text-lg font-semibold mb-3">Volunteering</h1>
         <div>
-          <button onClick={handleVolunteeringOpen}>
+          <button onClick={handleVolunteeringNewOpen}>
             <IoMdAdd size={25} className="text-gray-400" />
           </button>
-          {isVolunteeringOpen && (
-            <VolunteeringPopup
+          {isVolunteeringNewOpen && (
+            <VolunteeringNewPopup
               user={details}
-              onClose={handleVolunteeringClose}
+              onClose={handleVolunteeringNewClose}
               onChange={handleUserChangeState}
             />
           )}
@@ -80,7 +87,7 @@ const Volunteering = ({ details }) => {
                   </div>
                 </div>
                 <div>
-                  <button onClick={handleVolunteeringOpen}>
+                  <button onClick={() => handleVolunteeringOpen(experience)}>
                     <MdEdit size={20} className="text-gray-400" />
                   </button>
                   {isVolunteeringOpen && (
@@ -88,6 +95,7 @@ const Volunteering = ({ details }) => {
                       user={details}
                       onClose={handleVolunteeringClose}
                       onChange={handleUserChangeState}
+                      volunteer={selectedExperience}
                     />
                   )}
                 </div>

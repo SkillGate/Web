@@ -1,37 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
-import { UpdateUser } from "../../../apiCalls/userApiCalls";
+import {
+  UpdateUser,
+  UpdateUserWithStatus,
+} from "../../../apiCalls/userApiCalls";
 import { useUiContext } from "../../../contexts/UiContext";
 import Loader from "../../common/Loader";
 
-const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
+const VolunteeringNewPopup = ({ user, onClose, onChange }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const { loginUser } = useUiContext();
-  const [organizationName, setOrganizationName] = useState(
-    volunteer?.organizationName
-  );
-  const [position, setPosition] = useState(volunteer?.position);
-  const [eventName, setEventName] = useState(volunteer?.eventName);
-  const [endMonth, setEndMonth] = useState(volunteer?.endMonth);
-  const [endYear, setEndYear] = useState(volunteer?.endYear);
-  const [startMonth, setStartMonth] = useState(volunteer?.startMonth);
-  const [startYear, setStartYear] = useState(volunteer?.startYear);
-
-  useEffect(() => {
-    const changeProperties = () => {
-      setOrganizationName((previous) => volunteer?.organizationName);
-      setPosition((previous) => volunteer?.position);
-      setEventName((previous) => volunteer?.eventName);
-      setEndMonth((previous) => volunteer?.endMonth);
-      setEndYear((previous) => volunteer?.endYear);
-      setStartMonth((previous) => volunteer?.startMonth);
-      setStartYear((previous) => volunteer?.startYear);
-    }
-    changeProperties();
-  }, [volunteer]);
 
   const years = Array.from(
     { length: 50 },
@@ -58,24 +39,25 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
     ) {
       setLoading(true);
       const actualData = {
-        volunteering: [
-          {
-            organizationName: data.organizationName,
-            position: data.position,
-            eventName: data.eventName,
-            startYear: data.duration.startYear,
-            startMonth: data.duration.startMonth,
-            endYear: data.duration.endYear,
-            endMonth: data.duration.endMonth,
-          },
-        ],
+        organizationName: data.organizationName,
+        position: data.position,
+        eventName: data.eventName,
+        startYear: data.duration.startYear,
+        startMonth: data.duration.startMonth,
+        endYear: data.duration.endYear,
+        endMonth: data.duration.endMonth,
       };
       try {
         const {
           data: userData,
           loading,
           error,
-        } = await UpdateUser(user?._id, user?.accessToken, actualData);
+        } = await UpdateUserWithStatus(
+          user?._id,
+          user?.accessToken,
+          actualData,
+          "volunteering"
+        );
         console.log(userData);
         setLoading(loading);
         if (!userData || userData.length === 0) {
@@ -100,7 +82,7 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity z-50">
       <div className="bg-white dark:bg-dark-main w-full h-2/3 sm:w-1/3 rounded-lg p-4 flex flex-col">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold">Volunteering test</h2>
+          <h2 className="text-xl font-bold">Add New Volunteer Experience</h2>
           <button className="text-gray-500" onClick={onClose}>
             <IoMdClose />
           </button>
@@ -117,7 +99,7 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
                     type="text"
                     id="organizationName"
                     className="input"
-                    defaultValue={organizationName}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -134,7 +116,7 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
                     type="text"
                     id="position"
                     className="input"
-                    defaultValue={position}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -151,7 +133,7 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
                     type="text"
                     id="eventName"
                     className="input !h-44 pt-2"
-                    defaultValue={eventName}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -165,7 +147,6 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
                   <Controller
                     name="duration.startYear"
                     control={control}
-                    defaultValue={startYear}
                     render={({ field }) => (
                       <select
                         {...field}
@@ -185,7 +166,6 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
                   <Controller
                     name="duration.startMonth"
                     control={control}
-                    defaultValue={startMonth}
                     render={({ field }) => (
                       <select
                         {...field}
@@ -210,7 +190,6 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
                   <Controller
                     name="duration.endYear"
                     control={control}
-                    defaultValue={endYear}
                     render={({ field }) => (
                       <select
                         {...field}
@@ -230,7 +209,6 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
                   <Controller
                     name="duration.endMonth"
                     control={control}
-                    defaultValue={endMonth}
                     render={({ field }) => (
                       <select
                         {...field}
@@ -262,4 +240,4 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
   );
 };
 
-export default VolunteeringPopup;
+export default VolunteeringNewPopup;
