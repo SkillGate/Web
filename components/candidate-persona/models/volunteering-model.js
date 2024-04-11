@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
-import { UpdateUser } from "../../../apiCalls/userApiCalls";
+import {
+  UpdateUser,
+  UpdateUserWithSpecificStatus,
+} from "../../../apiCalls/userApiCalls";
 import { useUiContext } from "../../../contexts/UiContext";
 import Loader from "../../common/Loader";
 
@@ -29,7 +32,7 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
       setEndYear((previous) => volunteer?.endYear);
       setStartMonth((previous) => volunteer?.startMonth);
       setStartYear((previous) => volunteer?.startYear);
-    }
+    };
     changeProperties();
   }, [volunteer]);
 
@@ -53,46 +56,47 @@ const VolunteeringPopup = ({ user, onClose, onChange, volunteer }) => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    if (
-      (data.organizationName && data.position && data.eventName) !== undefined
-    ) {
-      setLoading(true);
-      const actualData = {
-        volunteering: [
-          {
-            organizationName: data.organizationName,
-            position: data.position,
-            eventName: data.eventName,
-            startYear: data.duration.startYear,
-            startMonth: data.duration.startMonth,
-            endYear: data.duration.endYear,
-            endMonth: data.duration.endMonth,
-          },
-        ],
-      };
-      try {
-        const {
-          data: userData,
-          loading,
-          error,
-        } = await UpdateUser(user?._id, user?.accessToken, actualData);
-        console.log(userData);
-        setLoading(loading);
-        if (!userData || userData.length === 0) {
-          setIsModalVisible(true);
-          // reset();
-        } else {
-          setIsModalVisibleSuccess(true);
-          userData.accessToken = user.accessToken;
-          loginUser(userData);
-          onChange();
-        }
-      } catch (error) {
-        setLoading(false);
-        console.error("Error in onSubmit:", error);
+
+    setLoading(true);
+    const actualData = {
+      organizationName: data.organizationName
+        ? data.organizationName
+        : organizationName,
+      position: data.position ? data.position : position,
+      eventName: data.eventName ? data.eventName : eventName,
+      startYear: data.duration.startYear ? data.duration.startYear : startYear,
+      startMonth: data.duration.startMonth ? data.duration.startMonth : startMonth,
+      endYear: data.duration.endYear ? data.duration.endYear : endYear,
+      endMonth: data.duration.endMonth ? data.duration.endMonth : endMonth,
+      "_id": volunteer._id,
+    };
+    console.log(actualData);
+    try {
+      const {
+        data: userData,
+        loading,
+        error,
+      } = await UpdateUserWithSpecificStatus(
+        user?._id,
+        user?.accessToken,
+        actualData,
+        "volunteering"
+      );
+      console.log(userData);
+      setLoading(loading);
+      if (!userData || userData.length === 0) {
+        setIsModalVisible(true);
+        // reset();
+      } else {
+        setIsModalVisibleSuccess(true);
+        userData.accessToken = user.accessToken;
+        loginUser(userData);
+        onChange();
+        onClose();
       }
-    } else {
-      console.log("Empty biography entry");
+    } catch (error) {
+      setLoading(false);
+      console.error("Error in onSubmit:", error);
     }
   };
 
