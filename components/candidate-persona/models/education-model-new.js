@@ -180,7 +180,6 @@ const EducationPopupNew = ({ onClose, details, onChange }) => {
                         {...field}
                         id="dropdown"
                         className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
-                        value={field.value}
                       >
                         {years.map((year) => (
                           <option key={year} value={year}>
@@ -200,7 +199,6 @@ const EducationPopupNew = ({ onClose, details, onChange }) => {
                         {...field}
                         id="dropdown"
                         className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
-                        value={field.value}
                       >
                         {months.map((month) => (
                           <option key={month.value} value={month.value}>
@@ -225,7 +223,6 @@ const EducationPopupNew = ({ onClose, details, onChange }) => {
                         {...field}
                         id="dropdown"
                         className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
-                        value={field.value}
                       >
                         {years.map((year) => (
                           <option key={year} value={year}>
@@ -245,7 +242,6 @@ const EducationPopupNew = ({ onClose, details, onChange }) => {
                         {...field}
                         id="dropdown"
                         className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
-                        value={field.value}
                       >
                         {months.map((month) => (
                           <option key={month.value} value={month.value}>
