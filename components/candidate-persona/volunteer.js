@@ -31,6 +31,9 @@ const Volunteering = ({ details }) => {
     setSelectedExperience(experience);
     setVolunteeringIsOpen(true);
   };
+  const handleVolunteeringClose = () => {
+    setVolunteeringIsOpen(false);
+  };
   const handleRemoveVolunteering = (id) => {
     console.log(id);
     setVolunteerId(id);
@@ -61,15 +64,13 @@ const Volunteering = ({ details }) => {
       } else {
         userData.accessToken = details.accessToken;
         loginUser(userData);
+        setVolunteeringNewIsOpen(false);
         handleUserChangeState();
       }
     } catch (error) {
       setLoading(false);
       console.error("Error in onSubmit:", error);
     }
-  };
-  const handleVolunteeringClose = () => {
-    setVolunteeringIsOpen(false);
   };
 
   const handleVolunteeringNewOpen = () => {
@@ -127,7 +128,6 @@ const Volunteering = ({ details }) => {
         <div>
           {user.volunteering.map((experience) => (
             <div key={experience._id}>
-              {console.log(experience)}
               <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <div className="flex gap-3">
                   <div>

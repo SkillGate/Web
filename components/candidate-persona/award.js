@@ -57,6 +57,7 @@ const Award = ({ details }) => {
       } else {
         userData.accessToken = details.accessToken;
         loginUser(userData);
+        setAwardNewIsOpen(false);
         handleUserChangeState();
       }
     } catch (error) {
