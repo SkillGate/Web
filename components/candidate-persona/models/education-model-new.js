@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
-import Loader from "../../common/Loader";
 import { useUiContext } from "../../../contexts/UiContext";
-import { UpdateUserWithSpecificStatus } from "../../../apiCalls/userApiCalls";
+import { UpdateUserWithStatus } from "../../../apiCalls/userApiCalls";
+import Loader from "../../common/Loader";
 
-const EducationPopup = ({ onClose, details, onChange, education }) => {
+const EducationPopupNew = ({ onClose, details, onChange }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { loginUser } = useUiContext();
+
   const years = Array.from(
     { length: 50 },
     (_, index) => `${new Date().getFullYear() - index}`
@@ -18,34 +23,6 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
     return { value: index + 1, label: month };
   });
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { loginUser } = useUiContext();
-
-  const [universityName, setUniversityName] = useState(
-    education?.universityName
-  );
-  const [degreeName, setDegreeName] = useState(education?.degreeName);
-  const [classOfDegree, setClassOfDegree] = useState(education?.classOfDegree);
-  const [endMonth, setEndMonth] = useState(education?.endMonth);
-  const [endYear, setEndYear] = useState(education?.endYear);
-  const [startMonth, setStartMonth] = useState(education?.startMonth);
-  const [startYear, setStartYear] = useState(education?.startYear);
-
-  useEffect(() => {
-    const changeProperties = () => {
-      setUniversityName((previous) => education?.universityName);
-      setDegreeName((previous) => education?.degreeName);
-      setClassOfDegree((previous) => education?.classOfDegree);
-      setEndMonth((previous) => education?.endMonth);
-      setEndYear((previous) => education?.endYear);
-      setStartMonth((previous) => education?.startMonth);
-      setStartYear((previous) => education?.startYear);
-    };
-    changeProperties();
-  }, [education]);
-
   const {
     handleSubmit,
     control,
@@ -54,57 +31,55 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
 
   const onSubmit = async (data) => {
     console.log(data);
-
-    setLoading(true);
-    const actualData = {
-      universityName: data.universityName
-        ? data.universityName
-        : universityName,
-      degreeName: data.degreeName ? data.degreeName : degreeName,
-      classOfDegree: data.classOfDegree ? data.classOfDegree : classOfDegree,
-      startYear: data.duration.startYear ? data.duration.startYear : startYear,
-      startMonth: data.duration.startMonth
-        ? data.duration.startMonth
-        : startMonth,
-      endYear: data.duration.endYear ? data.duration.endYear : endYear,
-      endMonth: data.duration.endMonth ? data.duration.endMonth : endMonth,
-      _id: education._id,
-    };
-    console.log(actualData);
-    try {
-      const {
-        data: userData,
-        loading,
-        error,
-      } = await UpdateUserWithSpecificStatus(
-        details?._id,
-        details?.accessToken,
-        actualData,
-        "education"
-      );
-      console.log(userData);
-      setLoading(loading);
-      if (!userData || userData.length === 0) {
-        setIsModalVisible(true);
-        // reset();
-      } else {
-        setIsModalVisibleSuccess(true);
-        userData.accessToken = details.accessToken;
-        loginUser(userData);
-        onChange();
-        onClose();
+    if (
+      (data.universityName && data.degreeName && data.classOfDegree) !==
+      undefined
+    ) {
+      setLoading(true);
+      const actualData = {
+        universityName: data.universityName,
+        degreeName: data.degreeName,
+        classOfDegree: data.classOfDegree,
+        startYear: data.duration.startYear,
+        startMonth: data.duration.startMonth,
+        endYear: data.duration.endYear,
+        endMonth: data.duration.endMonth,
+      };
+      try {
+        const {
+          data: userData,
+          loading,
+          error,
+        } = await UpdateUserWithStatus(
+          details?._id,
+          details?.accessToken,
+          actualData,
+          "education"
+        );
+        console.log(userData);
+        setLoading(loading);
+        if (!userData || userData.length === 0) {
+          setIsModalVisible(true);
+          // reset();
+        } else {
+          setIsModalVisibleSuccess(true);
+          userData.accessToken = details.accessToken;
+          loginUser(userData);
+          onChange();
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Error in onSubmit:", error);
       }
-    } catch (error) {
-      setLoading(false);
-      console.error("Error in onSubmit:", error);
+    } else {
+      console.log("Empty biography entry");
     }
   };
-
   return !loading ? (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity z-50">
       <div className="bg-white dark:bg-dark-main w-full h-2/3 sm:w-1/3 rounded-lg p-4 flex flex-col">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold">Education</h2>
+          <h2 className="text-xl font-bold">Add New Education Experience</h2>
           <button className="text-gray-500" onClick={onClose}>
             <IoMdClose />
           </button>
@@ -121,7 +96,7 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
                     type="text"
                     id="universityName"
                     className="input"
-                    defaultValue={universityName}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -138,7 +113,7 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
                     type="text"
                     id="degreeName"
                     className="input"
-                    defaultValue={degreeName}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -155,7 +130,7 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
                     type="text"
                     id="classOfDegree"
                     className="input"
-                    defaultValue={classOfDegree}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -200,12 +175,12 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
                   <Controller
                     name="duration.startYear"
                     control={control}
-                    defaultValue={startYear}
                     render={({ field }) => (
                       <select
                         {...field}
                         id="dropdown"
                         className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
+                        value={field.value}
                       >
                         {years.map((year) => (
                           <option key={year} value={year}>
@@ -220,7 +195,6 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
                   <Controller
                     name="duration.startMonth"
                     control={control}
-                    defaultValue={startMonth}
                     render={({ field }) => (
                       <select
                         {...field}
@@ -246,12 +220,12 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
                   <Controller
                     name="duration.endYear"
                     control={control}
-                    defaultValue={endYear}
                     render={({ field }) => (
                       <select
                         {...field}
                         id="dropdown"
                         className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
+                        value={field.value}
                       >
                         {years.map((year) => (
                           <option key={year} value={year}>
@@ -266,12 +240,12 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
                   <Controller
                     name="duration.endMonth"
                     control={control}
-                    defaultValue={endMonth}
                     render={({ field }) => (
                       <select
                         {...field}
                         id="dropdown"
                         className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
+                        value={field.value}
                       >
                         {months.map((month) => (
                           <option key={month.value} value={month.value}>
@@ -298,4 +272,4 @@ const EducationPopup = ({ onClose, details, onChange, education }) => {
   );
 };
 
-export default EducationPopup;
+export default EducationPopupNew;
