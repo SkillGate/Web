@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { getAllSkills } from "../../apiCalls/skillApiCalls";
 import { getCompanyLogo } from "../../apiCalls/companyApiCalls";
 import { imageUrl } from "../../constants";
+import { getEducationLogo } from "../../apiCalls/educationApiCalls";
 
-function CompanyRenderer({ user, companyLogo }) {
+function EducationRenderer({ user, companyLogo }) {
   const [skills, setSkills] = useState();
 
   useEffect(() => {
@@ -15,7 +16,7 @@ function CompanyRenderer({ user, companyLogo }) {
           data: userData,
           loading,
           error,
-        } = await getCompanyLogo(companyLogo, user?.accessToken);
+        } = await getEducationLogo(companyLogo, user?.accessToken);
         console.log(userData);
         setSkills((prev) => {
           return userData;
@@ -42,4 +43,4 @@ function CompanyRenderer({ user, companyLogo }) {
   );
 }
 
-export default CompanyRenderer;
+export default EducationRenderer;

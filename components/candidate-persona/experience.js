@@ -9,6 +9,7 @@ import PopUpModal from "../common/PopUpModal";
 import ExperiencePopupNew from "./models/experience-model-new";
 import { RemoveUserWithSpecificStatus } from "../../apiCalls/userApiCalls";
 import SkillRenderer from "../common/SkillRenderer";
+import CompanyRenderer from "../common/CompanyRenderer";
 
 const Experience = ({ details }) => {
   const [isExperienceOpen, setExperienceIsOpen] = useState(false);
@@ -151,13 +152,14 @@ const Experience = ({ details }) => {
           {user.experience.map((experience) => (
             <div key={experience._id}>
               <div className="flex flex-col sm:flex-row justify-between gap-4">
-                <div className="flex gap-3">
+                <div className="flex gap-3 items-center justify-center">
                   <div>
-                    <img
+                    <CompanyRenderer user={user} companyLogo={experience?.companyName} />
+                    {/* <img
                       src={imageUrl.gtnlogo}
                       alt=""
                       className="w-10 h-10 object-contain"
-                    />
+                    /> */}
                   </div>
                   <div>
                     <h1 className="text-md font-semiBold capitalize">

@@ -8,6 +8,7 @@ import { useUiContext } from "../../contexts/UiContext";
 import { RemoveUserWithSpecificStatus } from "../../apiCalls/userApiCalls";
 import EducationPopupNew from "./models/education-model-new";
 import Loader from "../common/Loader";
+import EducationRenderer from "../common/EducationRenderer";
 
 const Education = ({ details }) => {
   const [isEducationOpen, setEducationIsOpen] = useState(false);
@@ -130,12 +131,15 @@ const Education = ({ details }) => {
           {user.education.map((education) => (
             <div key={education?._id}>
               <div className="flex flex-col sm:flex-row justify-between gap-4 mt-4">
-                <div className="flex gap-3">
-                  <img
+                <div className="flex gap-3 items-center justify-center">
+                  <div>
+                  <EducationRenderer user={user} companyLogo={education?.universityName} />
+                  </div>
+                  {/* <img
                     src={imageUrl.ucsclogo}
                     alt=""
                     className="flex-shrink-0 w-10 h-10 object-contain"
-                  />
+                  /> */}
                   <div>
                     <h1 className="text-md font-semiBold capitalize">
                       {education?.degreeName}
