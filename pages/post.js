@@ -26,6 +26,8 @@ const PostJob = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    console.log(banner);
+    console.log(logo);
   };
 
   const [educationFields, setEducationFields] = useState(1);

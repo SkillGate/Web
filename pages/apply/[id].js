@@ -10,6 +10,7 @@ import { server } from "../../config";
 import { useUiContext } from "../../contexts/UiContext";
 import FullPageLoader from "../../components/common/FullPageLoader";
 import { getJob } from "../../apiCalls/jobApiCalls";
+import { useForm } from "react-hook-form";
 
 const ApplyJob = ({ candidate }) => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const ApplyJob = ({ candidate }) => {
   const [file, setFile] = useState("");
 
   useEffect(() => {
-    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
     setUser(storedUserData);
     const fetchData = async () => {
       try {
@@ -42,9 +43,18 @@ const ApplyJob = ({ candidate }) => {
     fetchData();
   }, []);
 
-  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
-  
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(e);
+  };
+
+  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
 
   const {
     title,
@@ -154,7 +164,7 @@ const ApplyJob = ({ candidate }) => {
           </div>
 
           {/*---------------------------------------- Form------------------------------------- */}
-          <form className="mt-8">
+          <form className="mt-8" onSubmit={onSubmit}>
             <div className="flex-align-center flex-col sm:flex-row gap-4">
               <div className="form-input w-full sm:flex-1 relative">
                 <input
@@ -224,7 +234,11 @@ const ApplyJob = ({ candidate }) => {
               
             </div> */}
             <div className="form-input w-full sm:flex-1 relative mt-5">
-              <textarea name="biography" className="input !h-20 pt-2" value={user?.biography}></textarea>
+              <textarea
+                name="biography"
+                className="input !h-20 pt-2"
+                value={user?.biography}
+              ></textarea>
               <label htmlFor="biography">Short Bio</label>
             </div>
             <div className="input-check">
@@ -233,7 +247,7 @@ const ApplyJob = ({ candidate }) => {
                 I agree to the terms & conditions
               </label>
             </div>
-            <button className="btn btn-primary w-full mt-4">
+            <button className="btn btn-primary w-full mt-4" type="submit">
               submit application
             </button>
           </form>
