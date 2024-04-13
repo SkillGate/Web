@@ -1,18 +1,18 @@
 import { publicConfigRequest } from "../constants/requestMethods";
 
-export const getAllSkills = async (skills, token) => {
+export const getAllCompanyLogos = async (companies, token) => {
   let loading = true;
   let error = null;
   let data = [];
 
-  if (!(skills && token)) {
-    console.log("skills " + skills);
+  if (!(companies && token)) {
+    console.log("skills " + companies);
     console.log("Token " + token);
-    error = "Skills or token or User must be provided";
+    error = "Companies or token or User must be provided";
     return { data, loading, error };
   }
   try {
-    const res = await publicConfigRequest.post(`/config/skills`, skills, {
+    const res = await publicConfigRequest.post(`/config/company`, companies, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -29,18 +29,19 @@ export const getAllSkills = async (skills, token) => {
   }
 };
 
-export const getSkill = async (skill, token) => {
+export const getCompanyLogo = async (company, token) => {
   let loading = true;
   let error = null;
   let data = [];
-  if (!(skill && token)) {
-    console.log("skills " + skill);
+  if (!(company && token)) {
+    console.log("skills " + company);
     console.log("Token " + token);
-    error = "Skills or token or User must be provided";
+    error = "Company or token or User must be provided";
     return { data, loading, error };
   }
+
   try {
-    const res = await publicConfigRequest.get(`/config/skill/${skill}`, {
+    const res = await publicConfigRequest.get(`/config/company/${company}`, {
       headers: {
         authorization: `Bearer ${token}`,
       },

@@ -8,6 +8,7 @@ import Loader from "../common/Loader";
 import { useUiContext } from "../../contexts/UiContext";
 import ProjectPopupNew from "./models/project-model-new";
 import { RemoveUserWithSpecificStatus } from "../../apiCalls/userApiCalls";
+import SkillRenderer from "../common/SkillRenderer";
 
 const Project = ({ details }) => {
   const [isProjectOpen, setProjectIsOpen] = useState(false);
@@ -47,31 +48,35 @@ const Project = ({ details }) => {
   const confirmFunction = async () => {
     setIsModalVisible(false);
     setLoading(true);
-    try {
-      const {
-        data: userData,
-        loading,
-        error,
-      } = await RemoveUserWithSpecificStatus(
-        details?._id,
-        details?.accessToken,
-        "projects",
-        projectId
-      );
-      console.log(userData);
-      setLoading(loading);
-      if (!userData || userData.length === 0) {
-        // setIsModalVisible(true);
-        // reset();
-      } else {
-        userData.accessToken = details.accessToken;
-        loginUser(userData);
-        setProjectNewIsOpen(false);
-        handleUserChangeState();
+    if (details && details._id && details.accessToken) {
+      try {
+        const {
+          data: userData,
+          loading,
+          error,
+        } = await RemoveUserWithSpecificStatus(
+          details._id,
+          details.accessToken,
+          "projects",
+          projectId
+        );
+        console.log(userData);
+        setLoading(loading);
+        if (!userData || userData.length === 0) {
+          // setIsModalVisible(true);
+          // reset();
+        } else {
+          userData.accessToken = details.accessToken;
+          loginUser(userData);
+          setProjectNewIsOpen(false);
+          handleUserChangeState();
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Error in onSubmit:", error);
       }
-    } catch (error) {
-      setLoading(false);
-      console.error("Error in onSubmit:", error);
+    } else {
+      console.log("Details user object is empty");
     }
   };
 
@@ -177,17 +182,14 @@ const Project = ({ details }) => {
                 </div>
               </div>
               <div className="my-3">
-                <p class="text-sm mt-2">
+                <p className="text-sm mt-2">
                   {/* A system that provides guidance to high school students on
                     how to enhance their academic and career paths. */}
                   {project?.projectOverview}
                 </p>
                 <h2 className="text-md font-semibold mt-3 mb-2">Skills</h2>
                 <div className="flex-align-center gap-2">
-                  <img src={skillIconUrl.htmlIcon} alt="" className="w-6" />
-                  <img src={skillIconUrl.cssIcon} alt="" className="w-6" />
-                  <img src={skillIconUrl.jsIcon} alt="" className="w-6" />
-                  <img src={skillIconUrl.reactIcon} alt="" className="w-6" />
+                  <SkillRenderer user={user} requiredSkills={project?.skills} />
                 </div>
                 <h2 className="text-md font-semibold mt-3 mb-2">
                   Contribution
