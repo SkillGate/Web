@@ -128,7 +128,7 @@ const Education = ({ details }) => {
       {user && user.education && user.education.length !== 0 ? (
         <div>
           {user.education.map((education) => (
-            <div>
+            <div key={education?._id}>
               <div className="flex flex-col sm:flex-row justify-between gap-4 mt-4">
                 <div className="flex gap-3">
                   <img

@@ -14,7 +14,7 @@ const JobList = ({ jobs, loading, userType }) => {
           {jobs?.map((job) => (
             <motion.div
               className="card p-4 mt-3 group"
-              key={job?.id}
+              key={job?._id}
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.6, opacity: 0 }}

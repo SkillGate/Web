@@ -8,6 +8,7 @@ import Loader from "../common/Loader";
 import PopUpModal from "../common/PopUpModal";
 import ExperiencePopupNew from "./models/experience-model-new";
 import { RemoveUserWithSpecificStatus } from "../../apiCalls/userApiCalls";
+import SkillRenderer from "../common/SkillRenderer";
 
 const Experience = ({ details }) => {
   const [isExperienceOpen, setExperienceIsOpen] = useState(false);
@@ -220,11 +221,12 @@ const Experience = ({ details }) => {
               </div>
               <div className="my-3">
                 <p className="text-sm mt-3">Skills</p>
-                <div className="flex-align-center gap-2">
-                  <img src={skillIconUrl.htmlIcon} alt="" className="w-6" />
+                <div className="flex-align-center gap-2 my-2">
+                  <SkillRenderer user={user} requiredSkills={experience.skills} />
+                  {/* <img src={skillIconUrl.htmlIcon} alt="" className="w-6" />
                   <img src={skillIconUrl.cssIcon} alt="" className="w-6" />
                   <img src={skillIconUrl.jsIcon} alt="" className="w-6" />
-                  <img src={skillIconUrl.reactIcon} alt="" className="w-6" />
+                  <img src={skillIconUrl.reactIcon} alt="" className="w-6" /> */}
                 </div>
                 <p className="text-sm mt-2 mb-2">
                   {experience?.workDone}
