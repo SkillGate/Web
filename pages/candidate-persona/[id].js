@@ -15,6 +15,7 @@ import Volunteering from "../../components/candidate-persona/volunteer";
 const CandidatePersona = () => {
   const [isPersonalInfoOpen, setPersonalInfoIsOpen] = useState(false);
   const [user, setUser] = useState();
+  const [change, notChange] = useState(false);
 
   const handlePersonalInfoOpen = () => {
     setPersonalInfoIsOpen(true);
