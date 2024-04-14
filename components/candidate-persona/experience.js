@@ -222,7 +222,7 @@ const Experience = ({ details }) => {
                 </div>
               </div>
               <div className="my-3">
-                <p className="text-sm mt-3">Skills</p>
+                <p className="text-sm mt-3 font-semibold">Skills</p>
                 <div className="flex-align-center gap-2 my-2">
                   <SkillRenderer user={user} requiredSkills={experience.skills} />
                   {/* <img src={skillIconUrl.htmlIcon} alt="" className="w-6" />
