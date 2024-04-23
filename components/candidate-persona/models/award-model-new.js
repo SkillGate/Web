@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { useUiContext } from "../../../contexts/UiContext";
-import { UpdateUserWithSpecificStatus } from "../../../apiCalls/userApiCalls";
+import { UpdateUserWithStatus } from "../../../apiCalls/userApiCalls";
 import Loader from "../../common/Loader";
 
-const AwardPopup = ({ onClose, details, onChange, award }) => {
+const AwardNewPopup = ({ onClose, details, onChange }) => {
   const years = Array.from(
     { length: 50 },
     (_, index) => `${new Date().getFullYear() - index}`
@@ -18,80 +18,59 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
     return { value: index + 1, label: month };
   });
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { loginUser } = useUiContext();
+
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { loginUser } = useUiContext();
-  const [organizationName, setOrganizationName] = useState(
-    award?.organizationName
-  );
-  const [awardName, setAwardName] = useState(award?.awardName);
-  const [placeDescription, setPlaceDescription] = useState(
-    award?.placeDescription
-  );
-  const [year, setYear] = useState(award?.year);
-  const [month, setMonth] = useState(award?.month);
-
-  useEffect(() => {
-    const changeProperties = () => {
-      setAwardName((previous) => award?.awardName);
-      setOrganizationName((previous) => award?.organizationName);
-      setPlaceDescription((previous) => award?.placeDescription);
-      setYear((previous) => award?.year);
-      setMonth((previous) => award?.month);
-    };
-    changeProperties();
-  }, [award]);
-
   const onSubmit = async (data) => {
     console.log(data);
-
-    setLoading(true);
-    const actualData = {
-      awardName: data.awardName ? data.awardName : awardName,
-      organizationName: data.organizationName
-        ? data.organizationName
-        : organizationName,
-      placeDescription: data.placeDescription
-        ? data.placeDescription
-        : placeDescription,
-      year: data.duration.year ? data.duration.year : year,
-      month: data.duration.month ? data.duration.month : month,
-      _id: award._id,
-    };
-    console.log(actualData);
-    try {
-      const {
-        data: userData,
-        loading,
-        error,
-      } = await UpdateUserWithSpecificStatus(
-        details?._id,
-        details?.accessToken,
-        actualData,
-        "awards"
-      );
-      console.log(userData);
-      setLoading(loading);
-      if (!userData || userData.length === 0) {
-        setIsModalVisible(true);
-        // reset();
-      } else {
-        setIsModalVisibleSuccess(true);
-        userData.accessToken = details.accessToken;
-        loginUser(userData);
-        onChange();
-        onClose();
+    if (
+      (data.awardName && data.organizationName && data.placeDescription) !==
+      undefined
+    ) {
+      setLoading(true);
+      const actualData = {
+        awardName: data.awardName,
+        organizationName: data.organizationName,
+        placeDescription: data.placeDescription,
+        year: data.duration.year,
+        month: data.duration.month,
+      };
+      try {
+        const {
+          data: userData,
+          loading,
+          error,
+        } = await UpdateUserWithStatus(
+          details?._id,
+          details?.accessToken,
+          actualData,
+          "awards"
+        );
+        console.log(userData);
+        setLoading(loading);
+        if (!userData || userData.length === 0) {
+          setIsModalVisible(true);
+          // reset();
+        } else {
+          setIsModalVisibleSuccess(true);
+          userData.accessToken = details.accessToken;
+          loginUser(userData);
+          onChange();
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Error in onSubmit:", error);
       }
-    } catch (error) {
-      setLoading(false);
-      console.error("Error in onSubmit:", error);
+    } else {
+      console.log("Empty biography entry");
     }
   };
 
@@ -99,7 +78,7 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity z-50 overflow">
       <div className="bg-white dark:bg-dark-main w-full h-2/3 sm:w-1/3 rounded-lg p-4 flex flex-col">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold">Awards</h2>
+          <h2 className="text-xl font-bold">Add New Award Experience</h2>
           <button className="text-gray-500" onClick={onClose}>
             <IoMdClose />
           </button>
@@ -116,7 +95,7 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
                     type="text"
                     id="awardName"
                     className="input"
-                    defaultValue={awardName}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -133,7 +112,7 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
                     type="text"
                     id="organizationName"
                     className="input"
-                    defaultValue={organizationName}
+                    defaultValue=""
                     required
                   />
                 )}
@@ -149,12 +128,14 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
                     {...field}
                     id="placeDescription"
                     className="input !h-44 pt-2"
-                    defaultValue={placeDescription}
+                    defaultValue=""
                     required
                   />
                 )}
               />
-              <label htmlFor="placeDescription">Decsription of achievement</label>
+              <label htmlFor="placeDescription">
+                Decsription of achievement
+              </label>
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <h2>Date</h2>
@@ -163,7 +144,6 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
                   <Controller
                     name="duration.year"
                     control={control}
-                    defaultValue={year}
                     render={({ field }) => (
                       <select
                         {...field}
@@ -183,7 +163,6 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
                   <Controller
                     name="duration.month"
                     control={control}
-                    defaultValue={month}
                     render={({ field }) => (
                       <select
                         {...field}
@@ -215,4 +194,4 @@ const AwardPopup = ({ onClose, details, onChange, award }) => {
   );
 };
 
-export default AwardPopup;
+export default AwardNewPopup;

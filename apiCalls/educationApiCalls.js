@@ -1,22 +1,27 @@
 import { publicConfigRequest } from "../constants/requestMethods";
 
-export const getAllSkills = async (skills, token) => {
+export const getAllEducationLogos = async (educations, token) => {
   let loading = true;
   let error = null;
   let data = [];
 
-  if (!(skills && token)) {
-    console.log("skills " + skills);
+  if (!(educations && token)) {
+    console.log("skills " + educations);
     console.log("Token " + token);
-    error = "Skills or token or User must be provided";
+    error = "Educations or token or User must be provided";
     return { data, loading, error };
   }
+
   try {
-    const res = await publicConfigRequest.post(`/config/skills`, skills, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await publicConfigRequest.post(
+      `/config/educations`,
+      educations,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log(res.data);
     loading = false;
     data = res.data;
@@ -29,22 +34,26 @@ export const getAllSkills = async (skills, token) => {
   }
 };
 
-export const getSkill = async (skill, token) => {
+export const getEducationLogo = async (education, token) => {
   let loading = true;
   let error = null;
   let data = [];
-  if (!(skill && token)) {
-    console.log("skills " + skill);
+
+  if (!(education && token)) {
+    console.log("skills " + education);
     console.log("Token " + token);
-    error = "Skills or token or User must be provided";
+    error = "Education or token or User must be provided";
     return { data, loading, error };
   }
   try {
-    const res = await publicConfigRequest.get(`/config/skill/${skill}`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await publicConfigRequest.get(
+      `/config/education/${education}`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log(res.data);
     loading = false;
     data = res.data;

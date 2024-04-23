@@ -14,6 +14,7 @@ const PopUpModal = ({
   confirmButtonText = "Confirm",
   cancelButtonText = "Cancel",
   icon = "warning",
+  confirmFunction = () => {}
 }) => {
   return (
     <div>
@@ -64,6 +65,7 @@ const PopUpModal = ({
                   data-modal-hide="popup-modal"
                   type="button"
                   className={`${confirmButtonColor} focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2`}
+                  onClick={confirmFunction}
                 >
                   {confirmButtonText}
                 </button>
@@ -72,7 +74,7 @@ const PopUpModal = ({
                 <button
                   data-modal-hide="popup-modal"
                   type="button"
-                  className={`${cancelButtonColor} focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10`}
+                  className={`${cancelButtonColor} focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10`}
                   onClick={toggleVisibility}
                 >
                   {cancelButtonText}
