@@ -1,18 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRef, useState } from "react";
-import { BiTag } from "react-icons/bi";
+import { useEffect, useRef, useState } from "react";
 import { FaCamera, FaTimes } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
-import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdRemove } from "react-icons/io";
 
 const PostJob = () => {
   const logoInput = useRef(null);
   const bannerInput = useRef(null);
   const [logo, setLogo] = useState("");
   const [banner, setBanner] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
+
+  const [user, setUser] = useState();
+  const [change, notChange] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUser((prevUser) => {
+        const userData = JSON.parse(storedUserData);
+        return userData;
+      });
+    }
+  }, [change]);
 
   const {
     handleSubmit,
@@ -28,6 +42,24 @@ const PostJob = () => {
     console.log(data);
     console.log(banner);
     console.log(logo);
+
+    // const actualData = {
+    //   userId:user._id,
+    //   title:data.title,
+    //   company_name:data.companyname,
+    //   company_location:
+    //   skills:
+    //   experience_level:
+    //   type_of_employment:
+    //   salary_range:
+    //   experience:
+    //   education:
+    //   overview:
+    //   description:
+    //   requirements_and_responsibilities:
+    //   time_posted:
+    //   logo_url:
+    // }
   };
 
   const [educationFields, setEducationFields] = useState(1);
@@ -35,15 +67,16 @@ const PostJob = () => {
   const handleAddEducationField = () => {
     setEducationFields((prevEducationFields) => prevEducationFields + 1);
   };
+  
+  const handleRemoveEducationField = () => {
+    setEducationFields((prevEducationFields) => prevEducationFields - 1);
+  };
 
   const [experienceFields, setExperienceFields] = useState(1);
 
   const handleAddExperienceField = () => {
     setExperienceFields((prevExperienceFields) => prevExperienceFields + 1);
   };
-
-  const [skills, setSkills] = useState([]);
-  const [newSkill, setNewSkill] = useState("");
 
   const addSkill = () => {
     if (newSkill.trim() !== "") {
@@ -68,6 +101,22 @@ const PostJob = () => {
   };
 
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const RadioButton = ({ id, value, checked, onChange, label }) => {
+    return (
+      <div className="mb-2 flex">
+        <input
+          type="radio"
+          id={id}
+          value={value}
+          checked={checked}
+          onChange={onChange}
+          className="checkbox mr-2"
+        />
+        <label htmlFor={id}>{label}</label>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -124,7 +173,7 @@ const PostJob = () => {
               )}
             </div>
           </div>
-          <h1 className="text-xl font-bold mt-10 pt-5">
+          <h1 className="text-2xl font-bold mt-10 pt-5">
             Company Profile and Job Post Insights
           </h1>
 
@@ -134,77 +183,79 @@ const PostJob = () => {
             <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
               <div className="form-input w-full sm:flex-1 relative">
                 <Controller
-                  name="companyname"
+                  name="company_name"
                   control={control}
                   render={({ field }) => (
                     <input
                       {...field}
                       type="text"
-                      id="companyname"
+                      id="company_name"
                       className="input"
                       required
                     />
                   )}
                 />
-                <label htmlFor="firstname">Company Name</label>
+                <label htmlFor="company_name">Company Name</label>
               </div>
               <div className="form-input w-full sm:flex-1 relative">
                 <Controller
-                  name="jobtitle"
+                  name="title"
                   control={control}
                   render={({ field }) => (
                     <input
                       {...field}
                       type="text"
-                      id="jobtitle"
+                      id="title"
                       className="input"
                       required
                     />
                   )}
                 />
-                <label htmlFor="jobtitle">Job Title</label>
+                <label htmlFor="title">Job Title</label>
               </div>
             </div>
             <div className="form-input w-full sm:flex-1 relative mt-5">
               <Controller
-                name="abouthtejob"
+                name="description"
                 control={control}
                 render={({ field }) => (
                   <textarea
                     {...field}
-                    id="aboutthejob"
+                    id="description"
                     className="input !h-28 pt-2"
                     required
                   />
                 )}
               />
-              <label htmlFor="aboutthejob">About the Job</label>
+              <label htmlFor="description">About the Job</label>
             </div>
             <div className="form-input w-full sm:flex-1 relative mt-5">
               <Controller
-                name="resposibilities"
+                name="requirements_and_responsibilities"
                 control={control}
                 render={({ field }) => (
                   <textarea
                     {...field}
-                    id="resposibilities"
+                    id="requirements_and_responsibilities"
                     className="input !h-28 pt-2"
                     required
                   />
                 )}
               />
-              <label htmlFor="resposibilities">Resposibilities</label>
+              <label htmlFor="requirements_and_responsibilities">
+                Resposibilities
+              </label>
             </div>
-            <h2 className="text-lg font-bold mb-5">Requirements</h2>
+            <h2 className="text-xl font-bold mb-5">Requirements</h2>
 
             {/*----------------------------------------Begin education section------------------------------------- */}
 
-            <h3 className="text-md font-bold mt-2">Education</h3>
+            <h3 className="text-lg font-bold mt-2">Education</h3>
             <div>
               {Array.from({ length: educationFields }, (_, index) => (
                 <div
                   key={index}
-                  className="mt-4 flex flex-col lg:flex-row gap-4"
+                  className="mt-4 flex flex-col lg:flex-row gap-4 items-center"
                 >
                   <div className="flex-auto mb-4 lg:mb-0">
                     <Controller
@@ -235,49 +286,50 @@ const PostJob = () => {
                     <Controller
                       name={`education[${index}].educationfield`}
                       control={control}
-                      defaultValue={{
-                        computerScience: false,
-                        softwareEngineer: false,
-                      }}
+                      defaultValue=""
                       render={({ field: { onChange, value } }) => (
                         <>
-                          <div className="mb-2">
-                            <input
-                              type="checkbox"
-                              id="computerscience"
-                              value="computerScience"
-                              onChange={(e) => {
-                                onChange({
-                                  ...value,
-                                  computerScience: e.target.checked,
-                                });
-                              }}
-                              class="checkbox mr-2"
-                            />
-                            <label htmlFor="computerscince">
-                              Computer Science
-                            </label>
-                          </div>
-                          <div className="mb-2">
-                            <input
-                              type="checkbox"
-                              id="softwareengineer"
-                              value="softwareEngineer"
-                              onChange={(e) => {
-                                onChange({
-                                  ...value,
-                                  softwareEngineering: e.target.checked,
-                                });
-                              }}
-                              class="checkbox mr-2"
-                            />
-                            <label htmlFor="softwareEngineer">
-                              Software Engineer
-                            </label>
-                          </div>
+                          <RadioButton
+                            id="computerscience"
+                            value="Computer Science"
+                            checked={value === "Computer Science"}
+                            onChange={(e) => {
+                              onChange(
+                                e.target.value === value ? "" : e.target.value
+                              );
+                            }}
+                            label="Computer Science"
+                          />
+                          <RadioButton
+                            id="softwareengineer"
+                            value="Software Engineer"
+                            checked={value === "Software Engineer"}
+                            onChange={(e) => {
+                              onChange(
+                                e.target.value === value ? "" : e.target.value
+                              );
+                            }}
+                            label="Software Engineer"
+                          />
+                          <RadioButton
+                            id="itRelatedOrEquivalent"
+                            value="IT Related Or Equivalent"
+                            checked={value === "IT Related Or Equivalent"}
+                            onChange={(e) => {
+                              onChange(
+                                e.target.value === value ? "" : e.target.value
+                              );
+                            }}
+                            label="IT Related Or Equivalent"
+                          />
                         </>
                       )}
                     />
+                  </div>
+                  <div>
+                    <button type="button" onClick={() => handleRemoveEducationField(index)}>
+                      <IoMdRemove size={25} className="text-gray-400" />
+                    </button>
                   </div>
                 </div>
               ))}
@@ -323,7 +375,7 @@ const PostJob = () => {
 
             {/*----------------------------------------Begin experience section------------------------------------- */}
 
-            <h3 className="text-md font-bold mt-10">Experience</h3>
+            <h3 className="text-lg font-bold mt-10">Experience</h3>
             <div>
               {Array.from({ length: experienceFields }, (_, index) => (
                 <div

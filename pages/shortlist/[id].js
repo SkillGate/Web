@@ -93,18 +93,18 @@ const ApplyJob = ({ candidate }) => {
 
                 <div className="mt-3">
                     <div id="tabs-with-icons-1" className={`tab-content ${activeTab !== 1 ? 'hidden' : ''}`}>
-                        <div class="flex flex-col">
-                            <div class="-m-1.5 overflow-x-auto">
-                                <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div className="flex flex-col">
+                            <div className="-m-1.5 overflow-x-auto">
+                                <div className="p-1.5 min-w-full inline-block align-middle">
                                     <Table rows={allApplicantsRows} heads={allApplicantsHeads} actions={actions} />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div id="tabs-with-icons-2" className={`tab-content ${activeTab !== 2 ? 'hidden' : ''}`}>
-                        <div class="flex flex-col">
-                            <div class="-m-1.5 overflow-x-auto">
-                                <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div className="flex flex-col">
+                            <div className="-m-1.5 overflow-x-auto">
+                                <div className="p-1.5 min-w-full inline-block align-middle">
                                     <Table rows={shortlistApplicantsRows} heads={shortlistApplicantsHeads} actions={shrtlistactions} />
                                 </div>
                             </div>
