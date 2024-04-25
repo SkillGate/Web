@@ -20,8 +20,8 @@ export const imageUrl = {
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645058/SkillGate/xv-logo.png",
   ifslogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645073/SkillGate/ifs-logo.png",
-  directfnlogo:
-    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645188/SkillGate/directfn-logo.png",
+  creativesoftwarelogo:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702202649/SkillGate/creative%20software.png",
   gtnlogo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645187/SkillGate/gtn-logo.webp",
   dialoglogo:
@@ -32,11 +32,26 @@ export const imageUrl = {
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645454/SkillGate/wealthos-logo.png",
   x99logo:
     "https://res.cloudinary.com/dsqosc2ig/image/upload/v1700645059/SkillGate/99x-logo.png",
+  ucsclogo:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702273476/SkillGate/ucsc.png",
+  noLogo:
+    "https://res.cloudinary.com/midefulness/image/upload/v1713019229/SkillGate/NoLogo/no-logo-removebg-preview_r3ipnp.png",
 };
 
 export const userTypes = {
   employer: "Employer",
   candidate: "Candidate",
+};
+
+export const employmentTypes = {
+  fullTime: "Full-time",
+  partTime: "Part-time",
+  selfEmployed: "Self-employed",
+  freelance: "Freelance",
+  contract: "Contract",
+  internship: "Internship",
+  apprenticeship: "Apprenticeship",
+  seasonal: "Seasonal",
 };
 
 export const NAV_LINKS = [
@@ -53,9 +68,31 @@ export const fetchMethods = {
 };
 
 export const userImage = {
-  imageUrl: "https://res.cloudinary.com/midefulness/image/upload/v1701515657/SkillGate/profile_ofqaog.png"
-}
+  imageUrl:
+    "https://res.cloudinary.com/midefulness/image/upload/v1701515657/SkillGate/profile_ofqaog.png",
+};
 
 // export const userData = {
 
 // }
+
+export const skillIconUrl = {
+  htmlIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381164/skills-icon/html5_auahni.png",
+  sassIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381248/skills-icon/sass_bmfzj9.png",
+  reactIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381246/skills-icon/react_hwngwl.png",
+  jqueryIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381171/skills-icon/jquery_tvs6tm.png",
+  jsIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381167/skills-icon/javascript_jfndp4.png",
+  gitIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381158/skills-icon/git_smsyel.png",
+  firebaseIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381155/skills-icon/firebase_ysbdb4.png",
+  cssIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381149/skills-icon/css3_hoj6a0.png",
+  bootstrapIcon:
+    "https://res.cloudinary.com/dsqosc2ig/image/upload/v1702381142/skills-icon/bootstrap_jroje5.png",
+};

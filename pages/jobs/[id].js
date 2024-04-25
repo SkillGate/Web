@@ -17,22 +17,22 @@ import FullPageLoader from "../../components/common/FullPageLoader";
 const SingleJob = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useUiContext();
+  // const { user } = useUiContext();
   const [job, setJob] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    if (!user?.userType) {
-      router.push("/sign-in");
-    }
+    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    console.log(storedUserData);
+    setUser(storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
           id,
-          user?.accessToken
+          storedUserData?.accessToken
         );
         console.log(jobData);
         setJob(jobData);
@@ -43,7 +43,11 @@ const SingleJob = () => {
       }
     };
     fetchData();
-  }, [user]);
+  }, []);
+
+  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+
+  
 
   const {
     title,
@@ -57,6 +61,8 @@ const SingleJob = () => {
     description,
     requirements_and_responsibilities,
     logo_url,
+    banner_url,
+    userId,
   } = job;
 
   // const { data: jobs } = useFetch(`${server}/api/jobs`);
@@ -83,7 +89,7 @@ const SingleJob = () => {
   return !loading ? (
     <div>
       <div className="padding-container mb-5">
-      {user?.userType === userTypes.candidate ? (
+      {user?.userType == userTypes.candidate ? (
         <Back url={"/candidateDashboard"} />
       ) : (
         <Back url={"/employerDashboard"} />
@@ -96,13 +102,13 @@ const SingleJob = () => {
           <div className="card overflow-hidden">
             <div className="relative">
               <img
-                src="https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"
+                src={banner_url || "https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"}
                 alt="job-header-image"
                 className="h-full sm:h-[200px] object-cover w-full"
               />
               <img
                 src={logo_url || "/images/photo-3.jpg"}
-                alt=""
+                alt="company-logo"
                 className="w-16 left-10 -bottom-8 absolute rounded-xl"
               />
             </div>

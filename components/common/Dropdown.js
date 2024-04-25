@@ -3,15 +3,30 @@ import { motion } from "framer-motion";
 import { useUiContext } from "../../contexts/UiContext";
 import { useRouter } from "next/router";
 import { userTypes } from "../../constants";
+import { useEffect, useState } from "react";
 
 const Dropdown = () => {
-  const { user, logoutUser, isDropdownOpen } = useUiContext();
+  const { logoutUser, isDropdownOpen } = useUiContext();
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, []);
 
   const router = useRouter();
 
   const userLogout = () => {
     logoutUser();
     router.push("/");
+    window.location.href = "/";
   };
 
   const userProfile = () => {

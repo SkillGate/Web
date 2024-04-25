@@ -8,7 +8,6 @@ import Navbar from "./Navbar";
 import BackToTopButton from "./BackToTopButton";
 import MainNavbar from "./../landing/Navbar";
 import { useRouter } from "next/router";
-import Header from "../landing/Header";
 
 const Layout = ({ children }) => {
   const { dispatch } = useUiContext();
@@ -18,7 +17,21 @@ const Layout = ({ children }) => {
 
   const [currentPath, setCurrentPath] = useState("");
 
-  const { user } = useUiContext();
+  const { loginUser } = useUiContext();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUser(prevUser => {
+        const userData = JSON.parse(storedUserData);
+        // Here you can perform any additional logic before updating the state
+        return userData;
+      });
+      // loginAndPersistUser(JSON.parse(storedUserData));
+    }
+  }, [loginUser]);
 
   const handleCloseDropdown = (e) => {
     dispatch({ type: actioTypes.closeDropdown });
@@ -30,15 +43,15 @@ const Layout = ({ children }) => {
   useEffect(() => {
     // Get the current URL path
     const pathName = router.pathname;
-    console.log(pathName);
+    // console.log(pathName);
     setCurrentPath(pathName);
-    console.log(currentPath);
+    // console.log(currentPath);
 
-    console.log(user);
+    // console.log(user);
     user?.userType ? setUserType(user?.userType) : setUserType(null);
 
     // Other logic or side effects
-  }, [router.pathname, user]);
+  }, [currentPath, router.pathname, user]);
 
   // Loader when page is loading
   if (typeof window !== "undefined") {
@@ -57,17 +70,15 @@ const Layout = ({ children }) => {
       <Meta />
       {showLoader && <Loader />}
       <BackToTopButton showButton={showButton} />
-      {currentPath === "/" && (
-        <div className="invisible sm:visible absolute sm:relative z-50">
-          <Header />
-        </div>
-      )}
-      {!(
-        currentPath == "/sign-in" ||
-        currentPath == "/create-account" ||
-        currentPath == "/candidate-register" ||
-        currentPath == "/employer-register"
-      ) && (userType == null ? <MainNavbar /> : <Navbar />)}
+      <div className="relative">
+        {!(
+          currentPath === "/sign-in" ||
+          currentPath === "/create-account" ||
+          currentPath === "/candidate-register" ||
+          currentPath === "/employer-register"
+        ) && (userType == null ? <MainNavbar /> : <Navbar />)}
+      </div>
+
       <div
         //  pt-20 px-[2%] md:px-[6%] 2xl:container
         className={`${
@@ -75,9 +86,10 @@ const Layout = ({ children }) => {
             currentPath === "/sign-in" ||
             currentPath === "/create-account" ||
             currentPath === "/candidate-register" ||
-            currentPath === "/employer-register"
+            currentPath === "/employer-register" ||
+            currentPath === "/"
           )
-            ? "2xl:mx-auto pt-18 min-h-screen"
+            ? "px-[2%] md:px-[6%] 2xl:container 2xl:mx-auto pt-20 min-h-screen"
             : ""
         } `}
         onClick={handleCloseDropdown}

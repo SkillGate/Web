@@ -1,23 +1,21 @@
 import { motion } from "framer-motion";
 import { FiDelete, FiMoon, FiSun } from "react-icons/fi";
-import { BiBell, BiChevronDown, BiSearch, BiMenu } from "react-icons/bi";
-import { CiLogin } from "react-icons/ci";
+import { BiMenu } from "react-icons/bi";
 import { useUiContext } from "../../contexts/UiContext";
 import { actioTypes } from "../../reducers/uiReducer";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "../../data/links";
 import useDarkMode from "../../helpers/useDarkMode";
 import { imageUrl } from "../../constants";
 import ActiveLink from "./ActiveLink";
+import { useEffect, useState } from "react";
 
 const MainNavbar = () => {
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
-  const router = useRouter();
 
-  const currentPath = router.pathname;
-  console.log(currentPath);
+  const [navbarFixed, setNavbarFixed] = useState();
+  const [navBarColor, setNavBarColor] = useState(false);
 
   const { dispatch, isSidebarOpen } = useUiContext();
 
@@ -39,11 +37,33 @@ const MainNavbar = () => {
       dispatch({ type: actioTypes.closeSidebar });
   };
 
+  const listenScrollEvent = () => {
+    window.scrollY > 10 ? setNavBarColor(true) : setNavBarColor(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", listenScrollEvent);
+    return () => {
+      window.removeEventListener("scroll", listenScrollEvent);
+    };
+  }, []);
+
   const logoUrl = imageUrl.logoDoubleColor;
+
+  if (typeof window !== "undefined") {
+    // window.addEventListener("load", () => {
+    //   setShowLoader(false);
+    // });
+
+    // Show/Hide scroll to top button
+    window.addEventListener("scroll", () => {
+      window.scrollY > 500 ? setNavbarFixed(true) : setNavbarFixed(false);
+    });
+  }
 
   return (
     <div
-      className="relative navbar w-full z-10 top-0 left-0 px-[2%]  md:px-[6%] flex-center-between py-[0.5rem] bg-white dark:bg-dark-card border-b dark:border-slate-800"
+      className={`navbar fixed w-full z-50 top-0 left-0 px-[2%] md:px-[6%] flex-center-between py-[0.5rem] ${navBarColor ? "bg-white dark:bg-dark-card" : "bg-transparent"}`}
       onClick={handleClose}
     >
       <Link href="/">
@@ -173,6 +193,16 @@ const MainNavbar = () => {
             </span>
           </div>
         </form> */}
+
+        {/*----------------------------- Dark mode toggle-------------------------------------------------- */}
+        {/* <motion.div
+          className="icon-box bg-slate-100 dark:bg-[#2b2b35]"
+          onClick={toggleMode}
+          whileTap={{ scale: 0.5 }}
+        >
+          {mode === "dark" ? <FiSun /> : <FiMoon />}
+        </motion.div>
+        <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-700"></div> */}
 
         {/*------------------------------- Profile Dropdown toggle-------------------------------------------- */}
         {/* <div
