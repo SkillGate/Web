@@ -53,15 +53,15 @@ const ApplyJob = ({ candidate }) => {
     const actions = [
         { name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow", url:"" }, 
         { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green", url:"http://localhost:3000/github" }, 
-        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"" }, 
+        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"http://localhost:3000/linkedin" }, 
         { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange", url:"http://localhost:3000/blogs" },
     ];
     const shrtlistactions = [
         { name: "Reason", title: "View reason for shortlisting", icon: "BsBookmarkCheck", color:"pink", url:"" },
         { name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow", url:"" }, 
         { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green", url:"http://localhost:3000/github" }, 
-        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"" }, 
-        { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange", url:"" },
+        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"http://localhost:3000/linkedin" }, 
+        { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange", url:"http://localhost:3000/blogs" },
     ];
 
     return (
