@@ -10,6 +10,7 @@ import { server } from "../../config";
 import { useUiContext } from "../../contexts/UiContext";
 import FullPageLoader from "../../components/common/FullPageLoader";
 import { getJob } from "../../apiCalls/jobApiCalls";
+import { useForm } from "react-hook-form";
 
 const ApplyJob = ({ candidate }) => {
   const router = useRouter();
@@ -17,34 +18,19 @@ const ApplyJob = ({ candidate }) => {
   // const { user } = useUiContext();
   const [job, setJob] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      setUser(prevUser => {
-        const userData = JSON.parse(storedUserData);
-        // Here you can perform any additional logic before updating the state
-        return userData;
-      });
-      // loginAndPersistUser(JSON.parse(storedUserData));
-    }
-  }, []);
-
-  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
-
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  const [user, setUser] = useState({});
   const fileInput = useRef(null);
   const [file, setFile] = useState("");
 
   useEffect(() => {
-    if (!user?.userType) {
-      router.push("/sign-in");
-    }
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+    setUser(storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
           id,
-          user?.accessToken
+          storedUserData?.accessToken
         );
         console.log(jobData);
         setJob(jobData);
@@ -55,7 +41,20 @@ const ApplyJob = ({ candidate }) => {
       }
     };
     fetchData();
-  }, [user]);
+  }, []);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(e);
+  };
+
+  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
 
   const {
     title,
@@ -82,7 +81,7 @@ const ApplyJob = ({ candidate }) => {
             href={
               userTypes.candidate == user?.userType
                 ? "/candidateDashboard"
-                : "employerDashboard"
+                : "/employerDashboard"
             }
           >
             <a className="flex-align-center gap-2">
@@ -165,7 +164,7 @@ const ApplyJob = ({ candidate }) => {
           </div>
 
           {/*---------------------------------------- Form------------------------------------- */}
-          <form className="mt-8">
+          <form className="mt-8" onSubmit={onSubmit}>
             <div className="flex-align-center flex-col sm:flex-row gap-4">
               <div className="form-input w-full sm:flex-1 relative">
                 <input
@@ -235,8 +234,12 @@ const ApplyJob = ({ candidate }) => {
               
             </div> */}
             <div className="form-input w-full sm:flex-1 relative mt-5">
-              <textarea name="name" className="input !h-20 pt-2"></textarea>
-              <label htmlFor="name">Short Bio</label>
+              <textarea
+                name="biography"
+                className="input !h-20 pt-2"
+                value={user?.biography}
+              ></textarea>
+              <label htmlFor="biography">Short Bio</label>
             </div>
             <div className="input-check">
               <input type="checkbox" name="" id="terms" required />
@@ -244,7 +247,7 @@ const ApplyJob = ({ candidate }) => {
                 I agree to the terms & conditions
               </label>
             </div>
-            <button className="btn btn-primary w-full mt-4">
+            <button className="btn btn-primary w-full mt-4" type="submit">
               submit application
             </button>
           </form>

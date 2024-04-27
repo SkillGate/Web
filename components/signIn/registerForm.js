@@ -37,6 +37,7 @@ const RegisterForm = () => {
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
+    console.log("Hiiiii");
   };
 
   const router = useRouter();
@@ -65,7 +66,8 @@ const RegisterForm = () => {
         setIsModalVisible(true);
         reset();
       } else {
-        loginUser(userData);
+        localStorage.setItem("userData", JSON.stringify(userData));
+        await loginUser(userData);
         if (userData.userType === userTypes.candidate) {
           router.push("/candidateDashboard");
         } else {

@@ -21,31 +21,18 @@ const SingleJob = () => {
   const [job, setJob] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      setUser(prevUser => {
-        const userData = JSON.parse(storedUserData);
-        // Here you can perform any additional logic before updating the state
-        return userData;
-      });
-      // loginAndPersistUser(JSON.parse(storedUserData));
-    }
-  }, []);
-
-  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
-
-  useEffect(() => {
-    if (!user?.userType) {
-      router.push("/sign-in");
-    }
+    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    console.log(storedUserData);
+    setUser(storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
           id,
-          user?.accessToken
+          storedUserData?.accessToken
         );
         console.log(jobData);
         setJob(jobData);
@@ -56,7 +43,11 @@ const SingleJob = () => {
       }
     };
     fetchData();
-  }, [user]);
+  }, []);
+
+  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+
+  
 
   const {
     title,
@@ -98,7 +89,7 @@ const SingleJob = () => {
   return !loading ? (
     <div>
       <div className="padding-container mb-5">
-      {user?.userType === userTypes.candidate ? (
+      {user?.userType == userTypes.candidate ? (
         <Back url={"/candidateDashboard"} />
       ) : (
         <Back url={"/employerDashboard"} />

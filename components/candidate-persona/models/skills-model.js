@@ -1,35 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
 import { useUiContext } from "../../../contexts/UiContext";
 import { UpdateUser } from "../../../apiCalls/userApiCalls";
 import ModelPopup from "../../common/ModelPopup";
 import Loader from "../../common/Loader";
+import { getSkill } from "../../../apiCalls/skillApiCalls";
+import { IoMdAdd } from "react-icons/io";
 
 export const SkillsPopup = ({ user, onClose, onChange }) => {
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
+  const [skillUrls, setSkillsUrls] = useState([]);
   const { loginUser } = useUiContext();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [skillLoading, setSkillLoading] = useState(false);
+
+  useEffect(() => {
+    const addExistingSkills = () => {
+      if (user && user.skills && user.skills.length !== 0) {
+        setSkills([]);
+        user.skills.map((skill) => {
+          setSkills((prevSkills) => [...user.skills]);
+        });
+      }
+    };
+    addExistingSkills();
+  }, []);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
 
   // There is no submit form
-  const onSubmit = async (data) => {
-    console.log(data);
+  const handleAddNewSkill = async () => {
+    console.log(skills);
 
-    if (data.skills !== undefined) {
+    if (skills && skills.length !== 0) {
       setLoading(true);
+      const actualData = {
+        skills: skills,
+      };
       try {
         const {
           data: userData,
           loading,
           error,
-        } = await UpdateUser(user?._id, user?.accessToken, data);
+        } = await UpdateUser(user?._id, user?.accessToken, actualData);
         console.log(userData);
         setLoading(loading);
         if (!userData || userData.length === 0) {
@@ -46,7 +65,7 @@ export const SkillsPopup = ({ user, onClose, onChange }) => {
         console.error("Error in onSubmit:", error);
       }
     } else {
-      console.log("Empty biography entry");
+      console.log("Empty skill entry");
     }
   };
 
@@ -54,11 +73,13 @@ export const SkillsPopup = ({ user, onClose, onChange }) => {
     setIsModalVisibleSuccess(!isModalVisibleSuccess);
   };
 
-  const handleAddSkill = () => {
+  const handleAddSkill = async () => {
+    console.log(newSkill);
     if (newSkill.trim() !== "") {
-      setSkills([...skills, newSkill]);
+      setSkills((prevSkills) => [...prevSkills, newSkill]);
       setNewSkill("");
     }
+    console.log(skills);
   };
 
   const removeSkill = (skillToRemove) => {
@@ -89,7 +110,7 @@ export const SkillsPopup = ({ user, onClose, onChange }) => {
           <IoMdClose />
         </button>
         <h2 className="text-xl font-bold mb-8">Skills</h2>
-        <div className="mb-10">
+        <div className="flex mb-10 gap-4">
           <input
             type="text"
             className="outline-none h-8 border border-slate-300  dark:border-hover-color bg-main dark:bg-dark-main rounded-md px-[0.8rem] w-full text-base focus:!border-primary"
@@ -98,6 +119,9 @@ export const SkillsPopup = ({ user, onClose, onChange }) => {
             onChange={(e) => setNewSkill(e.target.value)}
             onKeyPress={handleKeyPress}
           />
+          <button type="click" onClick={handleAddNewSkill}>
+            <IoMdAdd size={20} className="text-primary"></IoMdAdd>
+          </button>
         </div>
         <div className="flex flex-wrap gap-2">
           {skills.map((skill, index) => (
