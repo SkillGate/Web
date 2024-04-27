@@ -50,8 +50,19 @@ const ApplyJob = ({ candidate }) => {
 
     const allApplicantsHeads = [{ name: "Applicant Name", col: 1 }, { name: "Contact Number", col: 1 }, { name: "Email", col: 1 }, { name: "Actions", col: 4 },];
     const shortlistApplicantsHeads = [{ name: "Applicant Name", col: 1 },{ name: "Contact Number", col: 1 }, { name: "Email", col: 1 },{ name: "Score", col: 1 }, { name: "Actions", col: 5 },];
-    const actions = [{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
-    const shrtlistactions = [{ name: "Reason", title: "View reason for shortlisting", icon: "BsBookmarkCheck", color:"pink" },{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
+    const actions = [
+        { name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow", url:"" }, 
+        { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green", url:"http://localhost:3000/github" }, 
+        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"" }, 
+        { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange", url:"http://localhost:3000/blogs" },
+    ];
+    const shrtlistactions = [
+        { name: "Reason", title: "View reason for shortlisting", icon: "BsBookmarkCheck", color:"pink", url:"" },
+        { name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow", url:"" }, 
+        { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green", url:"http://localhost:3000/github" }, 
+        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"" }, 
+        { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange", url:"" },
+    ];
 
     return (
         <div>
