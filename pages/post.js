@@ -219,6 +219,9 @@ const PostJob = () => {
                         >
                           <option value="">Select...</option>
                           <option value="Bachelor s degree">
+                            None
+                          </option>
+                          <option value="Bachelor s degree">
                             Bachelor s degree
                           </option>
                           <option value="Master s degree">
@@ -275,6 +278,23 @@ const PostJob = () => {
                               Software Engineer
                             </label>
                           </div>
+                          <div className="mb-2">
+                            <input
+                              type="checkbox"
+                              id="ITequivalent"
+                              value="ITequivalent"
+                              onChange={(e) => {
+                                onChange({
+                                  ...value,
+                                  computerScience: e.target.checked,
+                                });
+                              }}
+                              class="checkbox mr-2"
+                            />
+                            <label htmlFor="ITequivalent">
+                              IT Equivalent
+                            </label>
+                          </div>
                         </>
                       )}
                     />
@@ -299,9 +319,9 @@ const PostJob = () => {
                     />
                   )}
                 />
-                <label htmlFor="education job post cursor-pointer">
-                  Summarize the preferred candidates educational requirements
-                  using bullet points, please
+                <label htmlFor="education job post cursor-pointer" className="text-sm"> 
+                  Summarize the preferred candidates educational requirements using bullet points, please <br />
+                  ex - Minimum of a bachelors degree in computer science or an equivalent qualification.
                 </label>
                 <button
                   className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer ml-2"
@@ -312,7 +332,7 @@ const PostJob = () => {
                 </button>
                 {showTooltip && (
                   <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center mb-2">
-                    We use this input field data to display in job posting
+                    We use this first part of the data to feed the ML model and the second part to display the job posting
                     <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
                   </div>
                 )}
@@ -323,7 +343,7 @@ const PostJob = () => {
 
             {/*----------------------------------------Begin experience section------------------------------------- */}
 
-            <h3 className="text-md font-bold mt-10">Experience</h3>
+            <h3 className="text-md font-bold mt-10">Work Experience</h3>
             <div>
               {Array.from({ length: experienceFields }, (_, index) => (
                 <div
@@ -396,9 +416,9 @@ const PostJob = () => {
                     />
                   )}
                 />
-                <label htmlFor="experience job post">
-                  Summarize the preferred candidates experience using bullet
-                  points, please
+                <label htmlFor="experience job post" className="text-sm">
+                  Summarize the preferred candidates experience using bullet points, please <br />
+                  ex - Over 4 years of solid experience in developing applications using Java, Spring Boot, React JS, and SQL/NoSQL databases such as MySQL and Mongo DB.
                 </label>
                 <button
                   className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer -mt-[0.75rem]"
@@ -409,7 +429,7 @@ const PostJob = () => {
                 </button>
                 {showTooltip && (
                   <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center mb-2">
-                    We use this input field data to display in job posting
+                    We use this first part of the data to feed the ML model and the second part to display the job posting
                     <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
                   </div>
                 )}
