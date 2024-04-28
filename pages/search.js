@@ -18,6 +18,7 @@ import { actioTypes } from "../reducers/uiReducer";
 import useFetch from "./api/useFetch";
 import { server } from "../config";
 import formattedDate from './../components/common/CurrentDate';
+import { userTypes } from "../constants";
 
 const Search = () => {
   const { isFilterMenuOpen, dispatch } = useUiContext();
@@ -275,7 +276,7 @@ const Search = () => {
               </div>
             </div>
             <div className="mt-4">
-              <JobList jobs={currentJobs} loading={loading} />
+              <JobList jobs={currentJobs} loading={loading} userType={userTypes.employer}/>
             </div>
             {!loading && (
               <div className="mt-5">
