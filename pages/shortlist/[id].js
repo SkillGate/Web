@@ -8,13 +8,13 @@ import useFetch from "../api/useFetch";
 import { server } from "../../config";
 import Table from "../../components/table/Table";
 
-const ApplyJob = ({ candidate }) => {
+const ApplyJob = ({ Employer }) => {
     const router = useRouter();
     const { id } = router.query;
 
     const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
 
-    const [userType, setUserType] = useState("Candidate");
+    const [userType, setUserType] = useState("Employer");
 
     const [activeTab, setActiveTab] = useState(1);
 
@@ -72,7 +72,7 @@ const ApplyJob = ({ candidate }) => {
                         href={
                             userTypes.candidate == userType
                                 ? "/candidateDashboard"
-                                : "employerDashboard"
+                                : "/employerDashboard"
                         }
                     >
                         <a className="flex-align-center">

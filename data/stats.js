@@ -5,8 +5,8 @@ export const stats = [
   {
     id: 1,
     icon: <FiBriefcase />,
-    number: 256,
-    title: "Job Views",
+    number: 4,
+    title: "Opening Job Posts",
     percentage: 15,
     increment: true,
     cardBg: "#C7F4C2",
@@ -23,7 +23,7 @@ export const stats = [
   {
     id: 3,
     icon: <BiFile />,
-    number: 23365,
+    number: 12,
     title: "Posted Jobs",
     percentage: 10,
     increment: false,
@@ -32,8 +32,8 @@ export const stats = [
   {
     id: 4,
     icon: <BiEnvelope />,
-    number: 123,
-    title: "Unread Messages",
+    number: 12,
+    title: "Recruited candidates",
     percentage: 10,
     increment: false,
     cardBg: "#FFBBD7",

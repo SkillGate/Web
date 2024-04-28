@@ -2,11 +2,18 @@
 import Link from "next/link";
 import JobSkillTags from "../common/JobSkillTags";
 import { FaBookmark } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
 import { motion } from "framer-motion";
 import Skeleton from "../loading-skeleton/Skeleton";
 import { useState } from "react";
+import { userTypes } from "../../constants";
 const JobList = ({ jobs, loading, userType }) => {
   // const [userType, setUserType] = useState("Candidate");
+
+  function viewApplicants(url) {
+    window.location.href = url;
+  }
+
   return !loading ? (
     <>
       {jobs.length > 0 ? (
@@ -43,10 +50,20 @@ const JobList = ({ jobs, loading, userType }) => {
                 </div>
 
                 <div>
-                  <button className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]">
-                    <span>Save Job</span>
-                    <FaBookmark />
-                  </button>
+                  {userTypes.candidate === userType
+                      ? <button
+                        className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]">
+                        <span>Save Job</span>
+                        <FaBookmark />
+                      </button>
+                      : <button
+                        className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]"
+                        onClick={() => viewApplicants('http://localhost:3000/shortlist/1')}
+                      >
+                        <span>View Applicants</span>
+                        <ImProfile />
+                      </button>
+                  }
                 </div>
               </div>
               <div className="flex-align-center gap-2 mt-2 flex-wrap">
@@ -80,7 +97,7 @@ const JobList = ({ jobs, loading, userType }) => {
                   {/* <button className="btn flex-shrink-0 bg-slate-100 hover:bg-slate-200 text-muted dark:bg-hover-color dark:hover:bg-[#252532]">
                     message
                   </button> */}
-                  {userType && (
+                  {userType === userTypes.candidate && (
                     <Link href={`/apply/${job?._id}`}>
                       <a className="btn btn-primary flex-shrink-0">apply now</a>
                     </Link>
