@@ -439,6 +439,9 @@ const PostJob = () => {
                         >
                           <option value="">Select...</option>
                           <option value="Bachelor s degree">
+                            None
+                          </option>
+                          <option value="Bachelor s degree">
                             Bachelor s degree
                           </option>
                           <option value="Master s degree">
@@ -547,7 +550,7 @@ const PostJob = () => {
 
             {/* <h2 className="text-xl font-bold mb-5">Experience</h2> */}
 
-            <h3 className="text-lg font-bold mt-5">Experience</h3>
+            <h3 className="text-lg font-bold mt-5">Work Experience</h3>
             <div>
               {Array.from({ length: experienceFields }, (_, index) => (
                 <div

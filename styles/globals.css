@@ -453,3 +453,11 @@ input:-webkit-autofill ~ label {
 }
 
 /* END: PersonalInfo Popup */
+
+.swipe-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
