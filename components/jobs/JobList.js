@@ -5,10 +5,31 @@ import { FaBookmark } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { motion } from "framer-motion";
 import Skeleton from "../loading-skeleton/Skeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { userTypes } from "../../constants";
 const JobList = ({ jobs, loading, userType }) => {
   // const [userType, setUserType] = useState("Candidate");
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    if (!loading && jobs.length > 0) {
+      jobs.forEach((job) => {
+        if (job?.logo_url instanceof Blob) {
+          // Check if logo_url is a Blob
+          const blob = job.logo_url;
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onload = () => {
+            const imageUrl = reader.result;
+            setImageUrl((prevImages) => ({
+              ...prevImages,
+              [job._id]: imageUrl,
+            }));
+          };
+        }
+      });
+    }
+  }, [jobs, loading]);
 
   function viewApplicants(url) {
     window.location.href = url;
@@ -28,14 +49,19 @@ const JobList = ({ jobs, loading, userType }) => {
             >
               <div className="flex flex-col sm:flex-row gap-3 justify-between">
                 <div className="flex-align-center gap-3">
-                  <img
-                    src={
-                      job?.logo_url ||
-                      "https://res.cloudinary.com/midefulness/image/upload/v1700257571/SkillGate/photo_abisc5.png"
-                    }
-                    alt="logo"
-                    className="w-14 rounded-lg"
-                  />
+                  {imageUrl && imageUrl[job._id] ? (
+                    <img
+                      src={imageUrl[job._id]}
+                      alt="logo"
+                      className="w-14 rounded-lg"
+                    />
+                  ) : (
+                    <img
+                      src="https://res.cloudinary.com/midefulness/image/upload/v1700257571/SkillGate/photo_abisc5.png"
+                      alt="logo"
+                      className="w-14 rounded-lg"
+                    />
+                  )}
                   <div>
                     <Link href="/jobs/[id]" as={`/jobs/${job?._id}`}>
                       <a className="group-hover:text-primary transition-a">
@@ -50,20 +76,22 @@ const JobList = ({ jobs, loading, userType }) => {
                 </div>
 
                 <div>
-                  {userTypes.candidate === userType
-                      ? <button
-                        className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]">
-                        <span>Save Job</span>
-                        <FaBookmark />
-                      </button>
-                      : <button
-                        className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]"
-                        onClick={() => viewApplicants('http://localhost:3000/shortlist/1')}
-                      >
-                        <span>View Applicants</span>
-                        <ImProfile />
-                      </button>
-                  }
+                  {userTypes.candidate === userType ? (
+                    <button className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]">
+                      <span>Save Job</span>
+                      <FaBookmark />
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]"
+                      onClick={() =>
+                        viewApplicants("http://localhost:3000/shortlist/1")
+                      }
+                    >
+                      <span>View Applicants</span>
+                      <ImProfile />
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="flex-align-center gap-2 mt-2 flex-wrap">
@@ -71,7 +99,7 @@ const JobList = ({ jobs, loading, userType }) => {
                   {job?.type_of_employment}
                 </span>
                 <span className="text-muted bg-slate-200 rounded-sm px-2 py-[1px] dark:bg-hover-color sm:text-sm ">
-                  {job?.experience}
+                  {/* {job?.experience} */} {"Experience"}
                 </span>
                 <span className="text-muted bg-slate-200 rounded-sm px-2 py-[1px] dark:bg-hover-color sm:text-sm ">
                   {job?.experience_level}
