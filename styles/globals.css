@@ -177,8 +177,13 @@ input:-webkit-autofill:active {
   @apply outline-none h-8 border border-slate-300  dark:border-hover-color bg-inherit rounded-md px-[0.8rem] w-full text-base mb-5;
 }
 
+.input-response {
+  @apply outline-none h-8 border border-slate-300  dark:border-hover-color bg-inherit rounded-md px-[0.8rem] w-full text-base;
+}
+
 .form-input label,
-.select-input label {
+.select-input label 
+.input-response {
   @apply absolute top-[0.15rem] left-[0.9rem] text-[#8d9193]  px-[0.15rem] pointer-events-none;
   transition: top 0.3s ease-in-out;
 }
@@ -188,12 +193,26 @@ input:-webkit-autofill:active {
   @apply !border-primary;
 }
 
+.input-response:focus,
+.input-response:valid {
+  @apply !border-primary;
+}
+
 .form-input .input:focus ~ label,
 .form-input .input:valid ~ label {
   @apply -top-[12px] left-[15px] text-sm text-primary bg-white dark:bg-dark-card;
 }
 
+.input-response:focus ~ label,
+.input-response:valid ~ label {
+  @apply -top-[12px] left-[15px] text-sm text-primary bg-white dark:bg-dark-card;
+}
+
 .form-input .input:-webkit-autofill {
+  @apply border-primary;
+}
+
+.input-response:-webkit-autofill {
   @apply border-primary;
 }
 
