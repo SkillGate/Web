@@ -25,7 +25,7 @@ const SingleJob = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
     console.log(storedUserData);
     setUser(storedUserData);
     const fetchData = async () => {
@@ -46,8 +46,6 @@ const SingleJob = () => {
   }, []);
 
   // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
-
-  
 
   const {
     title,
@@ -89,20 +87,22 @@ const SingleJob = () => {
   return !loading ? (
     <div>
       <div className="padding-container mb-5">
-      {user?.userType == userTypes.candidate ? (
-        <Back url={"/candidateDashboard"} />
-      ) : (
-        <Back url={"/employerDashboard"} />
-      )}
+        {user?.userType == userTypes.candidate ? (
+          <Back url={"/candidateDashboard"} />
+        ) : (
+          <Back url={"/employerDashboard"} />
+        )}
       </div>
-      
 
       <div className="padding-container grid md:grid-cols-3 gap-x-14">
         <div className="md:col-span-2 h-fit md:sticky top-0">
           <div className="card overflow-hidden">
             <div className="relative">
               <img
-                src={banner_url || "https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"}
+                src={
+                  banner_url ||
+                  "https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"
+                }
                 alt="job-header-image"
                 className="h-full sm:h-[200px] object-cover w-full"
               />

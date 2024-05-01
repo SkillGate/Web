@@ -1,16 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaCamera, FaTimes } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdAdd, IoMdRemove } from "react-icons/io";
+import { addJob } from "../apiCalls/jobApiCalls";
+import { useUiContext } from "../contexts/UiContext";
+import ModelPopup from "../components/common/ModelPopup";
+import FullPageLoader from "../components/common/FullPageLoader";
+import Swal from "sweetalert2";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../firebase/firebase";
 
 const PostJob = () => {
   const logoInput = useRef(null);
   const bannerInput = useRef(null);
-  const [logo, setLogo] = useState("");
-  const [banner, setBanner] = useState("");
+  const [logo, setLogo] = useState(null);
+  const [banner, setBanner] = useState(null);
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
   const [requirements, setRequirements] = useState([]);
@@ -18,6 +30,11 @@ const PostJob = () => {
   const [user, setUser] = useState();
   const [change, notChange] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
+  const [storeData, setStoreData] = useState({});
+
+  const { loginUser } = useUiContext();
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -57,8 +74,6 @@ const PostJob = () => {
 
     const formattedTime = `${hours}:${minutes}:${seconds}`;
 
-    console.log(formattedTime);
-
     const actualData = {
       userId: user._id,
       title: data.title,
@@ -76,11 +91,131 @@ const PostJob = () => {
       description: data.description,
       requirements_and_responsibilities: responsibilityFields,
       time_posted: formattedTime,
-      logo_url: logo,
-      banner_url: banner,
+      // logo_url: logo,
+      // banner_url: banner,
+      blogsCheckBox: data.socialProfile.blogs,
+      githubCheckBox: data.socialProfile.github,
+      linkedinCheckBox: data.socialProfile.linkedin,
     };
-
     console.log(actualData);
+
+    setStoreData((prev) => actualData);
+
+    if (banner && logo) {
+      storeImage(banner, "banner_url");
+      storeImage(logo, "logo_url");
+    } else if (banner) {
+      storeImage(banner, "banner_url");
+      setStoreData((prevData) => ({
+        ...prevData,
+        logo_url: logo,
+      }));
+    } else if (logo) {
+      storeImage(logo, "logo_url");
+      setStoreData((prevData) => ({
+        ...prevData,
+        banner_url: banner,
+      }));
+    } else {
+      setStoreData((prevData) => ({
+        ...prevData,
+        banner_url: banner,
+        logo_url: logo,
+      }));
+    }
+    saveData();
+  };
+
+  const storeImage = (file, fileNameData) => {
+    const fileName = new Date().getTime() + file.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prevProgress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+        console.log("Upload is " + prevProgress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Image added unsuccess!",
+        });
+      },
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          setStoreData((prevData) => ({
+            ...prevData,
+            fileNameData: downloadURL,
+          }));
+          //   const status = addNews(userData, token);
+
+          //   if (status) {
+          //     Swal.fire({
+          //       title: "Success!",
+          //       text: "News added success!",
+          //       icon: "success",
+          //       confirmButtonText: "Ok",
+          //       confirmButtonColor: "#378cbb",
+          //       // showConfirmButton: false,
+          //       // timer: 2000,
+          //     });
+          //     navigate("/news");
+          //   } else {
+          //     Swal.fire({
+          //       icon: "error",
+          //       title: "Oops...",
+          //       text: "News added unsuccess!",
+          //     });
+          //   }
+        });
+      }
+    );
+  };
+
+  const saveData = async () => {
+    console.log(storeData);
+    setLoading(true);
+    try {
+      const {
+        data: jobData,
+        loading,
+        error,
+      } = await addJob(storeData, user?.accessToken);
+      console.log(jobData);
+      setLoading(loading);
+      if (!jobData || jobData.length === 0) {
+        setIsModalVisible(true);
+        reset();
+      } else {
+        setIsModalVisibleSuccess(true);
+        jobData.accessToken = user.accessToken;
+        // loginUser(jobData);
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error in onSubmit:", error);
+    }
   };
 
   const [educationFields, setEducationFields] = useState(1);
@@ -157,8 +292,26 @@ const PostJob = () => {
     );
   };
 
-  return (
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const toggleModalSuccess = () => {
+    setIsModalVisibleSuccess(!isModalVisibleSuccess);
+  };
+
+  return !loading ? (
     <>
+      <ModelPopup
+        isVisible={isModalVisible}
+        title={"Job Posting Unsuccessfully!"}
+        toggleVisibility={toggleModal}
+      />
+      <ModelPopup
+        isVisible={isModalVisibleSuccess}
+        title={"Job Posting Success!"}
+        toggleVisibility={toggleModalSuccess}
+      />
       <div className="rounded max-w-3xl w-full mx-auto">
         {/*---------------------------------------- Back to home button------------------------------------- */}
         <button className="btn bg-slate-200 hover:bg-slate-300 dark:bg-dark-card dark:hover:bg-hover-color">
@@ -438,9 +591,7 @@ const PostJob = () => {
                           className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
                         >
                           <option value="">Select...</option>
-                          <option value="Bachelor s degree">
-                            None
-                          </option>
+                          <option value="Bachelor s degree">None</option>
                           <option value="Bachelor s degree">
                             Bachelor s degree
                           </option>
@@ -616,11 +767,7 @@ const PostJob = () => {
                   </div>
                 </div>
               ))}
-              {/* <div>
-                <button type="button" onClick={handleAddExperienceField}>
-                  <IoMdAdd size={25} className="text-gray-400" />
-                </button>
-              </div> */}
+
               <div
                 className="form-input w-full sm:flex-1 relative mt-4"
                 onMouseEnter={() => setShowExperieneceTooltip(true)}
@@ -717,11 +864,12 @@ const PostJob = () => {
             </h2>
             <div className="form-input w-full sm:flex-1 relative mb-5">
               <Controller
-                name=""
+                name="socialProfile"
                 control={control}
                 defaultValue={{
-                  computerScience: false,
-                  softwareEngineer: false,
+                  github: false,
+                  linkedin: false,
+                  blogs: false,
                 }}
                 render={({ field: { onChange, value } }) => (
                   <>
@@ -729,49 +877,49 @@ const PostJob = () => {
                       <div className="flex items-center mb-2">
                         <input
                           type="checkbox"
-                          id="computerscience"
-                          value="computerScience"
+                          id="github"
+                          value="github"
                           onChange={(e) => {
                             onChange({
                               ...value,
-                              computerScience: e.target.checked,
+                              github: e.target.checked,
                             });
                           }}
-                          class="checkbox mr-3"
+                          className="checkbox mr-3"
                         />
-                        <h2 htmlFor="computerscince">GitHub</h2>
+                        <h2 htmlFor="github">GitHub</h2>
                       </div>
                       <div className="flex items-center mb-2">
                         <input
                           type="checkbox"
-                          id="softwareengineer"
-                          value="softwareEngineer"
+                          id="linkedin"
+                          value="linkedin"
                           onChange={(e) => {
                             onChange({
                               ...value,
-                              softwareEngineering: e.target.checked,
+                              linkedin: e.target.checked,
                             });
                           }}
-                          class="checkbox mr-3"
+                          className="checkbox mr-3"
                         />
-                        <h2 htmlFor="softwareengineering" className="min-w-max">
+                        <h2 htmlFor="linkedin" className="min-w-max">
                           LinkedIn
                         </h2>
                       </div>
                       <div className="flex items-center mb-2">
                         <input
                           type="checkbox"
-                          id="softwareengineer"
-                          value="softwareEngineer"
+                          id="blogs"
+                          value="blogs"
                           onChange={(e) => {
                             onChange({
                               ...value,
-                              softwareEngineering: e.target.checked,
+                              blogs: e.target.checked,
                             });
                           }}
-                          class="checkbox mr-3"
+                          className="checkbox mr-3"
                         />
-                        <h2 htmlFor="softwareengineering" className="min-w-max">
+                        <h2 htmlFor="blogs" className="min-w-max">
                           Blogs
                         </h2>
                       </div>
@@ -792,6 +940,8 @@ const PostJob = () => {
         </div>
       </div>
     </>
+  ) : (
+    <FullPageLoader />
   );
 };
 

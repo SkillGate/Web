@@ -13,6 +13,7 @@ const ModelPopup = ({ isVisible, title, toggleVisibility }) => {
       showCancelButton={false}
       confirmButtonText="Yes, I'm sure"
       cancelButtonText="No, cancel"
+      icon = "warning"
     />
   );
 };
