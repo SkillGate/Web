@@ -71,7 +71,7 @@ const JobList = ({ jobs, loading, userType }) => {
                   {job?.type_of_employment}
                 </span>
                 <span className="text-muted bg-slate-200 rounded-sm px-2 py-[1px] dark:bg-hover-color sm:text-sm ">
-                  {job?.experience}
+                  {/* {job?.experience} */} {"Experience"}
                 </span>
                 <span className="text-muted bg-slate-200 rounded-sm px-2 py-[1px] dark:bg-hover-color sm:text-sm ">
                   {job?.experience_level}
