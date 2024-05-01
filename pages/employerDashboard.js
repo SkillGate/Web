@@ -51,11 +51,11 @@ const EmployerDashboard = () => {
         <BarChart />
       </div>
       <div className="mt-6">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+        <div className="mt-4">
           {/*---------------------------------------- Featured & Latest Jobs------------------------------------- */}
           <div className="md:col-span-2 h-fit sm:sticky top-0">
             <div className="flex-center-between mb-4">
-              <h1 className="text-xl font-bold">Latest Job Posts</h1>
+              <h1 className="text-xl font-bold">Opening Job Posts</h1>
               <Link href="/search">
                 <a className="flex-align-center gap-x-2 text-primary">
                   <span>See All</span>
@@ -73,10 +73,10 @@ const EmployerDashboard = () => {
             ) : (
               <LatestJobs jobs={jobs} />
             )}
-            <FeaturedCompanies />
+            {/* <FeaturedCompanies /> */}
           </div>
           {/*---------------------------------------- Recommended & Schedule------------------------------------- */}
-          <div className="md:col-span-1 h-fit sm:sticky top-0">
+          {/* <div className="md:col-span-1 h-fit sm:sticky top-0">
             <div>
               <div className="flex-center-between mb-4">
                 <h1 className="text-xl font-bold">Recommended for you</h1>
@@ -90,7 +90,7 @@ const EmployerDashboard = () => {
               <Recommended jobs={jobs} loading={loading} />
               <Schedule />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

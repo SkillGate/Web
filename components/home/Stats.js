@@ -34,10 +34,10 @@ const Stats = () => {
                     </>
                   )}
                 </div>
-                <div className="w-full h-2 bg-primary-light mt-2 rounded-lg">
+                <div className="w-full h-2 bg-white mt-2 rounded-lg">
                   <div
                     className={`h-full w-1/2 rounded-lg ${
-                      increment ? "bg-secondaryGreen" : "bg-secondaryRed"
+                      increment ? "bg-green-600" : "bg-secondaryRed"
                     }`}
                   ></div>
                 </div>

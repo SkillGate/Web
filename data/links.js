@@ -77,17 +77,17 @@ export const employerLinks = [
     linkText: "Job Search",
     url: "/search",
   },
-  {
-    id: 3,
-    linkText: "Talent",
-    url: "/talent",
-  },
+  // {
+  //   id: 3,
+  //   linkText: "Talent",
+  //   url: "/talent",
+  // },
   // Calender can be used in employerDashboard
-  {
-    id: 4,
-    linkText: "Schedule",
-    url: "/schedule",
-  },
+  // {
+  //   id: 4,
+  //   linkText: "Schedule",
+  //   url: "/schedule",
+  // },
   {
     id: 5,
     linkText: "History",

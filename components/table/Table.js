@@ -20,6 +20,10 @@ const Table = ({ heads, rows, actions }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const pageCount = Math.ceil(rows.length / itemsPerPage);
 
+    function redirectToURL(url) {
+        window.location.href = url;
+    }
+
     const displayData = () => {
         const start = (currentPage - 1) * itemsPerPage;
         const end = start + itemsPerPage;
@@ -36,7 +40,14 @@ const Table = ({ heads, rows, actions }) => {
                         const Icon = icons[action.icon];
                         return (
                         <td key={action.name} class="px-3 py-4 whitespace-nowrap text-center text-sm font-medium">
-                            <button type="button" title={action.title} class="inline-flex items-center"><Icon className={`text-${action.color}-600 text-3xl`}/></button>
+                            <button 
+                                type="button" 
+                                title={action.title} 
+                                className="inline-flex items-center"
+                                onClick={() => redirectToURL(action.url)}
+                            >
+                                <Icon className={`text-${action.color}-600 text-2xl`}/>
+                            </button>
                         </td>
                         )
                     })}

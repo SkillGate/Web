@@ -1,18 +1,50 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRef, useState } from "react";
-import { BiTag } from "react-icons/bi";
+import React, { useEffect, useRef, useState } from "react";
 import { FaCamera, FaTimes } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
-import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdRemove } from "react-icons/io";
+import { addJob } from "../apiCalls/jobApiCalls";
+import { useUiContext } from "../contexts/UiContext";
+import ModelPopup from "../components/common/ModelPopup";
+import FullPageLoader from "../components/common/FullPageLoader";
+import Swal from "sweetalert2";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../firebase/firebase";
 
 const PostJob = () => {
   const logoInput = useRef(null);
   const bannerInput = useRef(null);
-  const [logo, setLogo] = useState("");
-  const [banner, setBanner] = useState("");
+  const [logo, setLogo] = useState(null);
+  const [banner, setBanner] = useState(null);
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
+  const [requirements, setRequirements] = useState([]);
+
+  const [user, setUser] = useState();
+  const [change, notChange] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
+  const [storeData, setStoreData] = useState({});
+
+  const { loginUser } = useUiContext();
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUser((prevUser) => {
+        const userData = JSON.parse(storedUserData);
+        return userData;
+      });
+    }
+  }, [change]);
 
   const {
     handleSubmit,
@@ -28,12 +60,185 @@ const PostJob = () => {
     console.log(data);
     console.log(banner);
     console.log(logo);
+
+    const responsibilityFields = data.requirements_and_responsibilities.map(
+      (item) => item.responsibilityfield
+    );
+    console.log(responsibilityFields);
+
+    const currentTime = new Date();
+
+    const hours = currentTime.getHours().toString().padStart(2, "0");
+    const minutes = currentTime.getMinutes().toString().padStart(2, "0");
+    const seconds = currentTime.getSeconds().toString().padStart(2, "0");
+
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    const actualData = {
+      userId: user._id,
+      title: data.title,
+      company_name: data.company_name,
+      company_location: data.company_location,
+      skills: data.skills,
+      experience_level: data.experience_level,
+      type_of_employment: data.type_of_employment,
+      salary_range: data.salary_range,
+      experience: data.experience,
+      experience_job_post: data.experience_job_post,
+      education: data.education,
+      education_job_post: data.education_job_post,
+      overview: data.overview,
+      description: data.description,
+      requirements_and_responsibilities: responsibilityFields,
+      time_posted: formattedTime,
+      // logo_url: logo,
+      // banner_url: banner,
+      blogsCheckBox: data.socialProfile.blogs,
+      githubCheckBox: data.socialProfile.github,
+      linkedinCheckBox: data.socialProfile.linkedin,
+    };
+    console.log(actualData);
+
+    setStoreData((prev) => actualData);
+
+    if (banner && logo) {
+      storeImage(banner, "banner_url");
+      storeImage(logo, "logo_url");
+    } else if (banner) {
+      storeImage(banner, "banner_url");
+      setStoreData((prevData) => ({
+        ...prevData,
+        logo_url: logo,
+      }));
+    } else if (logo) {
+      storeImage(logo, "logo_url");
+      setStoreData((prevData) => ({
+        ...prevData,
+        banner_url: banner,
+      }));
+    } else {
+      setStoreData((prevData) => ({
+        ...prevData,
+        banner_url: banner,
+        logo_url: logo,
+      }));
+    }
+    saveData();
+  };
+
+  const storeImage = (file, fileNameData) => {
+    const fileName = new Date().getTime() + file.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prevProgress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+        console.log("Upload is " + prevProgress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Image added unsuccess!",
+        });
+      },
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          setStoreData((prevData) => ({
+            ...prevData,
+            fileNameData: downloadURL,
+          }));
+          //   const status = addNews(userData, token);
+
+          //   if (status) {
+          //     Swal.fire({
+          //       title: "Success!",
+          //       text: "News added success!",
+          //       icon: "success",
+          //       confirmButtonText: "Ok",
+          //       confirmButtonColor: "#378cbb",
+          //       // showConfirmButton: false,
+          //       // timer: 2000,
+          //     });
+          //     navigate("/news");
+          //   } else {
+          //     Swal.fire({
+          //       icon: "error",
+          //       title: "Oops...",
+          //       text: "News added unsuccess!",
+          //     });
+          //   }
+        });
+      }
+    );
+  };
+
+  const saveData = async () => {
+    console.log(storeData);
+    setLoading(true);
+    try {
+      const {
+        data: jobData,
+        loading,
+        error,
+      } = await addJob(storeData, user?.accessToken);
+      console.log(jobData);
+      setLoading(loading);
+      if (!jobData || jobData.length === 0) {
+        setIsModalVisible(true);
+        reset();
+      } else {
+        setIsModalVisibleSuccess(true);
+        jobData.accessToken = user.accessToken;
+        // loginUser(jobData);
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error in onSubmit:", error);
+    }
   };
 
   const [educationFields, setEducationFields] = useState(1);
+  const [responsibilitiesFields, setResponsibilitiesFields] = useState(1);
+
+  const handleAddResponsibilitiesField = () => {
+    setResponsibilitiesFields(
+      (prevResponsibilitiesFields) => prevResponsibilitiesFields + 1
+    );
+  };
+
+  const handleRemoveResponsibilitiesField = (index) => {
+    setResponsibilitiesFields(
+      (prevResponsibilitiesFields) => prevResponsibilitiesFields - 1
+    );
+  };
 
   const handleAddEducationField = () => {
     setEducationFields((prevEducationFields) => prevEducationFields + 1);
+  };
+
+  const handleRemoveEducationField = (index) => {
+    setEducationFields((prevEducationFields) => prevEducationFields - 1);
   };
 
   const [experienceFields, setExperienceFields] = useState(1);
@@ -42,8 +247,9 @@ const PostJob = () => {
     setExperienceFields((prevExperienceFields) => prevExperienceFields + 1);
   };
 
-  const [skills, setSkills] = useState([]);
-  const [newSkill, setNewSkill] = useState("");
+  const handleRemoveExperienceField = (index) => {
+    setExperienceFields((prevExperienceFields) => prevExperienceFields - 1);
+  };
 
   const addSkill = () => {
     if (newSkill.trim() !== "") {
@@ -68,9 +274,44 @@ const PostJob = () => {
   };
 
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showExperieneceTooltip, setShowExperieneceTooltip] = useState(false);
 
-  return (
+  const RadioButton = ({ id, value, checked, onChange, label }) => {
+    return (
+      <div className="mb-2 flex">
+        <input
+          type="radio"
+          id={id}
+          value={value}
+          checked={checked}
+          onChange={onChange}
+          className="checkbox mr-2"
+        />
+        <label htmlFor={id}>{label}</label>
+      </div>
+    );
+  };
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const toggleModalSuccess = () => {
+    setIsModalVisibleSuccess(!isModalVisibleSuccess);
+  };
+
+  return !loading ? (
     <>
+      <ModelPopup
+        isVisible={isModalVisible}
+        title={"Job Posting Unsuccessfully!"}
+        toggleVisibility={toggleModal}
+      />
+      <ModelPopup
+        isVisible={isModalVisibleSuccess}
+        title={"Job Posting Success!"}
+        toggleVisibility={toggleModalSuccess}
+      />
       <div className="rounded max-w-3xl w-full mx-auto">
         {/*---------------------------------------- Back to home button------------------------------------- */}
         <button className="btn bg-slate-200 hover:bg-slate-300 dark:bg-dark-card dark:hover:bg-hover-color">
@@ -124,7 +365,7 @@ const PostJob = () => {
               )}
             </div>
           </div>
-          <h1 className="text-xl font-bold mt-10 pt-5">
+          <h1 className="text-2xl font-bold mt-10 pt-5">
             Company Profile and Job Post Insights
           </h1>
 
@@ -134,77 +375,209 @@ const PostJob = () => {
             <div className="flex-align-center flex-col sm:flex-row gap-4 mt-8">
               <div className="form-input w-full sm:flex-1 relative">
                 <Controller
-                  name="companyname"
+                  name="company_name"
                   control={control}
                   render={({ field }) => (
                     <input
                       {...field}
                       type="text"
-                      id="companyname"
+                      id="company_name"
                       className="input"
                       required
                     />
                   )}
                 />
-                <label htmlFor="firstname">Company Name</label>
+                <label htmlFor="company_name">Company Name</label>
               </div>
               <div className="form-input w-full sm:flex-1 relative">
                 <Controller
-                  name="jobtitle"
+                  name="title"
                   control={control}
                   render={({ field }) => (
                     <input
                       {...field}
                       type="text"
-                      id="jobtitle"
+                      id="title"
                       className="input"
                       required
                     />
                   )}
                 />
-                <label htmlFor="jobtitle">Job Title</label>
+                <label htmlFor="title">Job Title</label>
+              </div>
+            </div>
+
+            <div className="form-input w-full sm:flex-1 relative mt-5">
+              <Controller
+                name="overview"
+                control={control}
+                render={({ field }) => (
+                  <textarea
+                    {...field}
+                    id="overview"
+                    className="input !h-28 pt-2"
+                    required
+                  />
+                )}
+              />
+              <label htmlFor="overview">Overview of the Company</label>
+            </div>
+            <div className="flex items-start justify-center flex-col sm:flex-row gap-4 mt-5">
+              <div className="form-input w-full sm:flex-1 relative">
+                <Controller
+                  name="company_location"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      type="text"
+                      id="company_location"
+                      className="input"
+                      required
+                    />
+                  )}
+                />
+                <label htmlFor="company_location">Company Location</label>
+              </div>
+              <div className="form-input w-full sm:flex-1 relative">
+                <Controller
+                  name="experience_level"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      id="dropdown"
+                      className="block w-full border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-1.5"
+                    >
+                      <option value="">Select Experience Level</option>
+                      <option value="Student Level">Student Level</option>
+                      <option value="Entry Level">Entry level</option>
+                      <option value="Mid Level">Mid Level</option>
+                      <option value="Senior Level">Senior level</option>
+                      <option value="Directors">Directors</option>
+                    </select>
+                  )}
+                />
+                {/* <label htmlFor="experience_level">Experience Level</label> */}
               </div>
             </div>
             <div className="form-input w-full sm:flex-1 relative mt-5">
               <Controller
-                name="abouthtejob"
+                name="description"
                 control={control}
                 render={({ field }) => (
                   <textarea
                     {...field}
-                    id="aboutthejob"
+                    id="description"
                     className="input !h-28 pt-2"
                     required
                   />
                 )}
               />
-              <label htmlFor="aboutthejob">About the Job</label>
+              <label htmlFor="description">About the Job</label>
             </div>
-            <div className="form-input w-full sm:flex-1 relative mt-5">
-              <Controller
-                name="resposibilities"
-                control={control}
-                render={({ field }) => (
-                  <textarea
-                    {...field}
-                    id="resposibilities"
-                    className="input !h-28 pt-2"
-                    required
-                  />
-                )}
-              />
-              <label htmlFor="resposibilities">Resposibilities</label>
+            <div className="flex items-start justify-center flex-col sm:flex-row gap-4 mt-5">
+              <div className="form-input w-full sm:flex-1 relative">
+                <Controller
+                  name="type_of_employment"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      id="dropdown"
+                      className="block w-full border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-1.5"
+                    >
+                      <option value="">Select Type of Employment</option>
+                      <option value="Full Time">Full Time</option>
+                      <option value="Part Time">Part Time</option>
+                      <option value="Internship">Internship</option>
+                      <option value="Freelance">Freelance</option>
+                      <option value="Remote">Remote</option>
+                      <option value="Co Founder">Co Founder</option>
+                      <option value="Contract">Contract</option>
+                    </select>
+                  )}
+                />
+                {/* <label htmlFor="type_of_employment">Company Location</label> */}
+              </div>
+              <div className="form-input w-full sm:flex-1 relative">
+                <Controller
+                  name="salary_range"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      id="dropdown"
+                      className="block w-full border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-1.5"
+                    >
+                      <option value="">Select Salary Range</option>
+                      <option value="less than $40k">Less than $40k</option>
+                      <option value="$40k - 55k">$40k - 55k</option>
+                      <option value="$55k - 85k">$55k - 85k</option>
+                      <option value="$85k - 115k">$85k - 115k</option>
+                      <option value="$115k - 145k">$115k - 145k</option>
+                      <option value="$145k - 175k">$145k - 175k</option>
+                    </select>
+                  )}
+                />
+                {/* <label htmlFor="experience_level">Experience Level</label> */}
+              </div>
             </div>
-            <h2 className="text-lg font-bold mb-5">Requirements</h2>
+            {Array.from({ length: responsibilitiesFields }, (_, index) => (
+              <div
+                className="form-input w-full sm:flex-1 relative mt-10 mb-10 flex gap-4 items-center justify-center"
+                key={index}
+              >
+                <div className="flex-auto mb-4 lg:mb-0 items-center flex justify-center gap-4">
+                  <div className="form-input w-full sm:flex-1 relative items-center flex justify-center">
+                    <Controller
+                      name={`requirements_and_responsibilities[${index}].responsibilityfield`}
+                      control={control}
+                      render={({ field }) => (
+                        <textarea
+                          {...field}
+                          id="requirements_and_responsibilities"
+                          className="input-response"
+                          required
+                        />
+                      )}
+                    />
+                    <label htmlFor="requirements_and_responsibilities">
+                      Resposibilities
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex flex-row gap-1 items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={handleAddResponsibilitiesField}
+                  >
+                    <IoMdAdd size={25} className="text-gray-400" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveResponsibilitiesField(index)}
+                  >
+                    <IoMdRemove size={25} className="text-gray-400" />
+                  </button>
+                </div>
+              </div>
+              // </div>
+            ))}
+            <h2 className="text-xl font-bold mb-5">Requirements</h2>
 
             {/*----------------------------------------Begin education section------------------------------------- */}
 
-            <h3 className="text-md font-bold mt-2">Education</h3>
+            <h3 className="text-lg font-bold mt-5">Education</h3>
             <div>
               {Array.from({ length: educationFields }, (_, index) => (
                 <div
                   key={index}
-                  className="mt-4 flex flex-col lg:flex-row gap-4"
+                  className="mt-4 flex flex-col lg:flex-row gap-4 items-center"
                 >
                   <div className="flex-auto mb-4 lg:mb-0">
                     <Controller
@@ -218,6 +591,7 @@ const PostJob = () => {
                           className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
                         >
                           <option value="">Select...</option>
+                          <option value="Bachelor s degree">None</option>
                           <option value="Bachelor s degree">
                             Bachelor s degree
                           </option>
@@ -235,87 +609,89 @@ const PostJob = () => {
                     <Controller
                       name={`education[${index}].educationfield`}
                       control={control}
-                      defaultValue={{
-                        computerScience: false,
-                        softwareEngineer: false,
-                      }}
+                      defaultValue=""
                       render={({ field: { onChange, value } }) => (
                         <>
-                          <div className="mb-2">
-                            <input
-                              type="checkbox"
-                              id="computerscience"
-                              value="computerScience"
-                              onChange={(e) => {
-                                onChange({
-                                  ...value,
-                                  computerScience: e.target.checked,
-                                });
-                              }}
-                              class="checkbox mr-2"
-                            />
-                            <label htmlFor="computerscince">
-                              Computer Science
-                            </label>
-                          </div>
-                          <div className="mb-2">
-                            <input
-                              type="checkbox"
-                              id="softwareengineer"
-                              value="softwareEngineer"
-                              onChange={(e) => {
-                                onChange({
-                                  ...value,
-                                  softwareEngineering: e.target.checked,
-                                });
-                              }}
-                              class="checkbox mr-2"
-                            />
-                            <label htmlFor="softwareEngineer">
-                              Software Engineer
-                            </label>
-                          </div>
+                          <RadioButton
+                            id="computerscience"
+                            value="Computer Science"
+                            checked={value === "Computer Science"}
+                            onChange={(e) => {
+                              onChange(
+                                e.target.value === value ? "" : e.target.value
+                              );
+                            }}
+                            label="Computer Science"
+                          />
+                          <RadioButton
+                            id="softwareengineer"
+                            value="Software Engineer"
+                            checked={value === "Software Engineer"}
+                            onChange={(e) => {
+                              onChange(
+                                e.target.value === value ? "" : e.target.value
+                              );
+                            }}
+                            label="Software Engineer"
+                          />
+                          <RadioButton
+                            id="itRelatedOrEquivalent"
+                            value="IT Related Or Equivalent"
+                            checked={value === "IT Related Or Equivalent"}
+                            onChange={(e) => {
+                              onChange(
+                                e.target.value === value ? "" : e.target.value
+                              );
+                            }}
+                            label="IT Related Or Equivalent"
+                          />
                         </>
                       )}
                     />
                   </div>
+                  <div className="flex flex-col gap-1">
+                    <button type="button" onClick={handleAddEducationField}>
+                      <IoMdAdd size={25} className="text-gray-400" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveEducationField(index)}
+                    >
+                      <IoMdRemove size={25} className="text-gray-400" />
+                    </button>
+                  </div>
                 </div>
               ))}
-              <div>
-                <button type="button" onClick={handleAddEducationField}>
-                  <IoMdAdd size={25} className="text-gray-400" />
-                </button>
-              </div>
-              <div className="form-input w-full sm:flex-1 relative mt-5">
+              <div
+                className="form-input w-full sm:flex-1 relative mt-5"
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              >
                 <Controller
-                  name="education job post"
+                  name="education_job_post"
                   control={control}
                   render={({ field }) => (
                     <textarea
                       {...field}
-                      id="education job post"
+                      id="education_job_post"
                       className="input !h-28 pt-2"
                       required
                     />
                   )}
                 />
-                <label htmlFor="education job post cursor-pointer">
+                <label htmlFor="education_job_post z-50">
                   Summarize the preferred candidates educational requirements
                   using bullet points, please
+                  <button className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer ml-2 z-50">
+                    i
+                  </button>
+                  {showTooltip && (
+                    <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center mb-2">
+                      We use this input field data to display in job posting
+                      <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
+                    </div>
+                  )}
                 </label>
-                <button
-                  className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer ml-2"
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                >
-                  i
-                </button>
-                {showTooltip && (
-                  <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center mb-2">
-                    We use this input field data to display in job posting
-                    <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -323,7 +699,9 @@ const PostJob = () => {
 
             {/*----------------------------------------Begin experience section------------------------------------- */}
 
-            <h3 className="text-md font-bold mt-10">Experience</h3>
+            {/* <h2 className="text-xl font-bold mb-5">Experience</h2> */}
+
+            <h3 className="text-lg font-bold mt-5">Work Experience</h3>
             <div>
               {Array.from({ length: experienceFields }, (_, index) => (
                 <div
@@ -376,43 +754,50 @@ const PostJob = () => {
                       </label>
                     </div>
                   </div>
+                  <div className="flex flex-col gap-1">
+                    <button type="button" onClick={handleAddExperienceField}>
+                      <IoMdAdd size={25} className="text-gray-400" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveExperienceField(index)}
+                    >
+                      <IoMdRemove size={25} className="text-gray-400" />
+                    </button>
+                  </div>
                 </div>
               ))}
-              <div>
-                <button type="button" onClick={handleAddExperienceField}>
-                  <IoMdAdd size={25} className="text-gray-400" />
-                </button>
-              </div>
-              <div className="form-input w-full sm:flex-1 relative mt-5">
+
+              <div
+                className="form-input w-full sm:flex-1 relative mt-4"
+                onMouseEnter={() => setShowExperieneceTooltip(true)}
+                onMouseLeave={() => setShowExperieneceTooltip(false)}
+              >
                 <Controller
-                  name="experience job post"
+                  name="experience_job_post"
                   control={control}
                   render={({ field }) => (
                     <textarea
                       {...field}
-                      id="experience job post"
+                      id="experience_job_post"
                       className="input !h-28 pt-2"
                       required
                     />
                   )}
                 />
-                <label htmlFor="experience job post">
+                <label htmlFor="experience_job_post">
                   Summarize the preferred candidates experience using bullet
                   points, please
+                  <button className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer ml-2 z-50">
+                    i
+                  </button>
+                  {showExperieneceTooltip && (
+                    <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center">
+                      We use this input field data to display in job posting
+                      <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
+                    </div>
+                  )}
                 </label>
-                <button
-                  className="bg-primary text-white font-semibold text-sm rounded-full w-5 h-5 cursor-pointer -mt-[0.75rem]"
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                >
-                  i
-                </button>
-                {showTooltip && (
-                  <div className="absolute bg-white text-gray-800 border border-primary shadow-lg dark:bg-gray-800 dark:text-white text-sm rounded p-2 absolute z-10 text-center mb-2">
-                    We use this input field data to display in job posting
-                    <div className="bg-gray-800 absolute bottom-full left-1/2 transform -translate-x-1/2"></div>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -420,7 +805,7 @@ const PostJob = () => {
 
             {/*----------------------------------------Begin skill section------------------------------------- */}
 
-            <div className="mt-10">
+            <div className="mt-5">
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill, index) => (
                   <div
@@ -459,7 +844,7 @@ const PostJob = () => {
 
             {/*----------------------------------------End skill section------------------------------------- */}
 
-            <div className="form-input w-full sm:flex-1 relative mt-10">
+            <div className="form-input w-full sm:flex-1 relative mt-5">
               <Controller
                 name="email"
                 control={control}
@@ -479,11 +864,12 @@ const PostJob = () => {
             </h2>
             <div className="form-input w-full sm:flex-1 relative mb-5">
               <Controller
-                name=""
+                name="socialProfile"
                 control={control}
                 defaultValue={{
-                  computerScience: false,
-                  softwareEngineer: false,
+                  github: false,
+                  linkedin: false,
+                  blogs: false,
                 }}
                 render={({ field: { onChange, value } }) => (
                   <>
@@ -491,49 +877,49 @@ const PostJob = () => {
                       <div className="flex items-center mb-2">
                         <input
                           type="checkbox"
-                          id="computerscience"
-                          value="computerScience"
+                          id="github"
+                          value="github"
                           onChange={(e) => {
                             onChange({
                               ...value,
-                              computerScience: e.target.checked,
+                              github: e.target.checked,
                             });
                           }}
-                          class="checkbox mr-3"
+                          className="checkbox mr-3"
                         />
-                        <h2 htmlFor="computerscince">GitHub</h2>
+                        <h2 htmlFor="github">GitHub</h2>
                       </div>
                       <div className="flex items-center mb-2">
                         <input
                           type="checkbox"
-                          id="softwareengineer"
-                          value="softwareEngineer"
+                          id="linkedin"
+                          value="linkedin"
                           onChange={(e) => {
                             onChange({
                               ...value,
-                              softwareEngineering: e.target.checked,
+                              linkedin: e.target.checked,
                             });
                           }}
-                          class="checkbox mr-3"
+                          className="checkbox mr-3"
                         />
-                        <h2 htmlFor="softwareengineering" className="min-w-max">
+                        <h2 htmlFor="linkedin" className="min-w-max">
                           LinkedIn
                         </h2>
                       </div>
                       <div className="flex items-center mb-2">
                         <input
                           type="checkbox"
-                          id="softwareengineer"
-                          value="softwareEngineer"
+                          id="blogs"
+                          value="blogs"
                           onChange={(e) => {
                             onChange({
                               ...value,
-                              softwareEngineering: e.target.checked,
+                              blogs: e.target.checked,
                             });
                           }}
-                          class="checkbox mr-3"
+                          className="checkbox mr-3"
                         />
-                        <h2 htmlFor="softwareengineering" className="min-w-max">
+                        <h2 htmlFor="blogs" className="min-w-max">
                           Blogs
                         </h2>
                       </div>
@@ -554,6 +940,8 @@ const PostJob = () => {
         </div>
       </div>
     </>
+  ) : (
+    <FullPageLoader />
   );
 };
 

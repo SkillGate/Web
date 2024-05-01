@@ -8,13 +8,13 @@ import useFetch from "../api/useFetch";
 import { server } from "../../config";
 import Table from "../../components/table/Table";
 
-const ApplyJob = ({ candidate }) => {
+const ApplyJob = ({ Employer }) => {
     const router = useRouter();
     const { id } = router.query;
 
     const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
 
-    const [userType, setUserType] = useState("Candidate");
+    const [userType, setUserType] = useState("Employer");
 
     const [activeTab, setActiveTab] = useState(1);
 
@@ -50,8 +50,19 @@ const ApplyJob = ({ candidate }) => {
 
     const allApplicantsHeads = [{ name: "Applicant Name", col: 1 }, { name: "Contact Number", col: 1 }, { name: "Email", col: 1 }, { name: "Actions", col: 4 },];
     const shortlistApplicantsHeads = [{ name: "Applicant Name", col: 1 },{ name: "Contact Number", col: 1 }, { name: "Email", col: 1 },{ name: "Score", col: 1 }, { name: "Actions", col: 5 },];
-    const actions = [{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
-    const shrtlistactions = [{ name: "Reason", title: "View reason for shortlisting", icon: "BsBookmarkCheck", color:"pink" },{ name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow" }, { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green" }, { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue" }, { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange" },];
+    const actions = [
+        { name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow", url:"" }, 
+        { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green", url:"http://localhost:3000/github" }, 
+        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"http://localhost:3000/linkedin" }, 
+        { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange", url:"http://localhost:3000/blogs" },
+    ];
+    const shrtlistactions = [
+        { name: "Reason", title: "View reason for shortlisting", icon: "BsBookmarkCheck", color:"pink", url:"" },
+        { name: "CV", title: "View CV", icon: "IoDocumentTextOutline", color:"yellow", url:"" }, 
+        { name: "GitHub", title: "Access contributions made to projects via their respective GitHub URLs", icon: "IoLogoGithub", color:"green", url:"http://localhost:3000/github" }, 
+        { name: "LinkedIn", title: "Review endorsed skills on LinkedIn", icon: "BsLinkedin", color:"blue", url:"http://localhost:3000/linkedin" }, 
+        { name: "Articles", title: "Access analysis of blog articles", icon: "MdOutlineArticle", color:"orange", url:"http://localhost:3000/blogs" },
+    ];
 
     return (
         <div>
@@ -61,7 +72,7 @@ const ApplyJob = ({ candidate }) => {
                         href={
                             userTypes.candidate == userType
                                 ? "/candidateDashboard"
-                                : "employerDashboard"
+                                : "/employerDashboard"
                         }
                     >
                         <a className="flex-align-center">
@@ -93,18 +104,18 @@ const ApplyJob = ({ candidate }) => {
 
                 <div className="mt-3">
                     <div id="tabs-with-icons-1" className={`tab-content ${activeTab !== 1 ? 'hidden' : ''}`}>
-                        <div class="flex flex-col">
-                            <div class="-m-1.5 overflow-x-auto">
-                                <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div className="flex flex-col">
+                            <div className="-m-1.5 overflow-x-auto">
+                                <div className="p-1.5 min-w-full inline-block align-middle">
                                     <Table rows={allApplicantsRows} heads={allApplicantsHeads} actions={actions} />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div id="tabs-with-icons-2" className={`tab-content ${activeTab !== 2 ? 'hidden' : ''}`}>
-                        <div class="flex flex-col">
-                            <div class="-m-1.5 overflow-x-auto">
-                                <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div className="flex flex-col">
+                            <div className="-m-1.5 overflow-x-auto">
+                                <div className="p-1.5 min-w-full inline-block align-middle">
                                     <Table rows={shortlistApplicantsRows} heads={shortlistApplicantsHeads} actions={shrtlistactions} />
                                 </div>
                             </div>

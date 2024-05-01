@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { BiFile, BiLink } from "react-icons/bi";
-import { FaLinkedin } from "react-icons/fa";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
 import { userTypes } from "../../constants";
-import useFetch from "../api/useFetch";
-import { server } from "../../config";
-import { useUiContext } from "../../contexts/UiContext";
 import FullPageLoader from "../../components/common/FullPageLoader";
-import { getJob } from "../../apiCalls/jobApiCalls";
+import { applyJob, getJob } from "../../apiCalls/jobApiCalls";
 import { useForm } from "react-hook-form";
+import ModelPopup from "../../components/common/ModelPopup";
+import { FaLinkedin } from "react-icons/fa";
+import { FaRegThumbsUp } from "react-icons/fa6";
 
 const ApplyJob = ({ candidate }) => {
   const router = useRouter();
@@ -22,6 +21,9 @@ const ApplyJob = ({ candidate }) => {
   const [user, setUser] = useState({});
   const fileInput = useRef(null);
   const [file, setFile] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
+  const [candidateIdExist, setCandidateIdExist] = useState(false);
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
@@ -32,6 +34,8 @@ const ApplyJob = ({ candidate }) => {
           id,
           storedUserData?.accessToken
         );
+        jobData.candidate_id_list.includes(storedUserData._id) &&
+          setCandidateIdExist((prev) => true);
         console.log(jobData);
         setJob(jobData);
         setLoading(loading);
@@ -49,31 +53,116 @@ const ApplyJob = ({ candidate }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    console.log(e);
+  const [formData, setFormData] = useState({
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    phone: user?.phone,
+    email: user?.email,
+    biography: user?.biography,
+    acceptTerms: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: newValue,
+    }));
   };
 
-  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    // Here you can access the form data in the formData object
+    console.log(formData);
+    console.log(user);
+    console.log(job);
+    console.log(job?._id);
+    // You can then perform any further actions, such as submitting the data to a server
 
-  const {
-    title,
-    company_name,
-    company_location,
-    skills,
-    experience_level,
-    type_of_employment,
-    salary_range,
-    experience,
-    description,
-    requirements_and_responsibilities,
-    logo_url,
-    banner_url,
-    userId,
-  } = job;
+    const candidateProfile = {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+      phone: user?.phone,
+      address: user?.address,
+      dateOfBirth: user?.dateOfBirth,
+      role: user?.role,
+      portfolio: user?.portfolio,
+      linkedIn: user?.linkedIn,
+      gitHub: user?.gitHub,
+      blog: user?.blog,
+      biography: user?.biography,
+      skills: user?.skills,
+      volunteering: user?.volunteering,
+      experience: user?.experience,
+      education: user?.education,
+      projects: user?.projects,
+      awards: user?.awards,
+      createdAt: user?.createdAt,
+      updatedAt: user?.updatedAt,
+    };
+
+    if (user?._id && job?._id) {
+      const candidateData = {
+        candidateId: user._id,
+      };
+
+      setLoading(true);
+
+      try {
+        const {
+          data: jobData,
+          loading,
+          error,
+        } = await applyJob(job._id, user?.accessToken, candidateData);
+        console.log(jobData);
+        setLoading(loading);
+
+        if (!error) {
+          console.log(error);
+          if (!jobData || jobData.length === 0) {
+            setIsModalVisible(true);
+            reset();
+          } else {
+            setIsModalVisibleSuccess(true);
+            // jobData.accessToken = user.accessToken;
+            // loginUser(jobData);
+          }
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Error in onSubmit:", error);
+      }
+    } else {
+      console.log("Job ID is null");
+    }
+  };
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const toggleModalSuccess = () => {
+    setIsModalVisibleSuccess(!isModalVisibleSuccess);
+  };
 
   return !loading ? (
     <>
+      <ModelPopup
+        isVisible={isModalVisible}
+        title={"Apply Job Unsuccessfully!"}
+        toggleVisibility={toggleModal}
+      />
+      <ModelPopup
+        isVisible={isModalVisibleSuccess}
+        title={"Apply Job Success!"}
+        toggleVisibility={toggleModalSuccess}
+      />
       <div className="rounded max-w-3xl w-full mx-auto">
         {/*---------------------------------------- Back to home button------------------------------------- */}
         <button className="btn bg-slate-200 hover:bg-slate-300 dark:bg-dark-card dark:hover:bg-hover-color">
@@ -113,8 +202,16 @@ const ApplyJob = ({ candidate }) => {
               <span>3 days ago</span>
             </p>
           </div>
-          <div className="py-4 mt-3 border-y dark:border-hover-color">
+          <div className="py-4 mt-3 border-y dark:border-hover-color flex gap-4 items-center">
             <h1 className="font-bold capitalize">submit your application</h1>
+            {candidateIdExist && (
+              <button className="btn bg-red-500 hover:bg-red-600 focus:bg-red-600 text-white">
+                <a href="www/linkedin.com" className="flex-align-center gap-2">
+                  <FaRegThumbsUp />
+                  <span>Already Applied</span>
+                </a>
+              </button>
+            )}
           </div>
           <div className="py-4 border-b dark:border-hover-color">
             <div className="flex-align-center gap-5">
@@ -138,6 +235,7 @@ const ApplyJob = ({ candidate }) => {
                   hidden
                   ref={fileInput}
                   onChange={(e) => setFile(e.target.files[0])}
+                  disabled={candidateIdExist}
                 />
                 <p className="required-style">Attach Candidate Profile</p>
                 <button
@@ -164,15 +262,17 @@ const ApplyJob = ({ candidate }) => {
           </div>
 
           {/*---------------------------------------- Form------------------------------------- */}
-          <form className="mt-8" onSubmit={onSubmit}>
+          <form className="mt-8" onSubmit={handleFormSubmit}>
             <div className="flex-align-center flex-col sm:flex-row gap-4">
               <div className="form-input w-full sm:flex-1 relative">
                 <input
                   type="text"
                   name="name"
                   className="input"
-                  value={user?.firstName}
-                  onChange={() => {}}
+                  defaultValue={user?.firstName}
+                  // value={formData.firstName}
+                  disabled={candidateIdExist}
+                  onChange={handleChange}
                   required
                 />
                 <label htmlFor="name" className="required-style">
@@ -184,8 +284,10 @@ const ApplyJob = ({ candidate }) => {
                   type="text"
                   name="name"
                   className="input"
-                  value={user?.lastName}
-                  onChange={() => {}}
+                  defaultValue={user?.lastName}
+                  // value={formData.lastName}
+                  disabled={candidateIdExist}
+                  onChange={handleChange}
                   required
                 />
                 <label htmlFor="name" className="required-style">
@@ -199,7 +301,10 @@ const ApplyJob = ({ candidate }) => {
                   type="number"
                   name="phone"
                   className="input"
-                  value={user?.phone}
+                  defaultValue={user?.phone}
+                  // value={formData.phone}
+                  disabled={candidateIdExist}
+                  onChange={handleChange}
                   required
                 />
                 <label htmlFor="phone" className="required-style">
@@ -221,8 +326,10 @@ const ApplyJob = ({ candidate }) => {
                   type="text"
                   name="email"
                   className="input"
-                  value={user?.email}
-                  onChange={() => {}}
+                  defaultValue={user?.email}
+                  // value={formData.email}
+                  disabled={candidateIdExist}
+                  onChange={handleChange}
                   required
                 />
                 <label htmlFor="email" className="required-style">
@@ -237,17 +344,35 @@ const ApplyJob = ({ candidate }) => {
               <textarea
                 name="biography"
                 className="input !h-20 pt-2"
-                value={user?.biography}
+                defaultValue={user?.biography}
+                // value={formData.biography}
+                disabled={candidateIdExist}
+                onChange={handleChange}
               ></textarea>
               <label htmlFor="biography">Short Bio</label>
             </div>
             <div className="input-check">
-              <input type="checkbox" name="" id="terms" required />
+              <input
+                type="checkbox"
+                name="accept-terms"
+                id="terms"
+                // className="disabled:border-gray"
+                // value={formData.acceptTerms}
+                disabled={candidateIdExist}
+                onChange={handleChange}
+                required
+              />
               <label htmlFor="terms" className="required-style">
                 I agree to the terms & conditions
               </label>
             </div>
-            <button className="btn btn-primary w-full mt-4" type="submit">
+            <button
+              className={
+                "btn btn-primary w-full mt-4 disabled:opacity-75 disabled:bg-gray-300 disabled:text-gray-600 disabled:cursor-not-allowed"
+              }
+              type="submit"
+              disabled={candidateIdExist}
+            >
               submit application
             </button>
           </form>
