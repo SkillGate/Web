@@ -207,8 +207,11 @@ const PostJob = () => {
       } else {
         setIsModalVisibleSuccess(true);
         jobData.accessToken = user.accessToken;
-        loginUser(jobData);
+        // loginUser(jobData);
       }
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       setLoading(false);
       console.error("Error in onSubmit:", error);

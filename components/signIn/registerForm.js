@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { imageUrl, userTypes } from "../../constants";
 import { useForm, Controller } from "react-hook-form";
-import { auth } from "../../firebase";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { auth } from "../../firebase";
+// import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Login } from "../../apiCalls/userApiCalls";
@@ -44,16 +44,16 @@ const RegisterForm = () => {
 
   const { loginUser } = useUiContext();
 
-  const [user, setUse] = useAuthState(auth);
-  const googleAuth = new GoogleAuthProvider();
-  const login = async () => {
-    // const result = await signInWithPopup(auth, googleAuth);
-    const result = await signInWithPopup(auth, googleAuth);
-  };
-  useEffect(() => {
-    setLoading(false);
-    console.log(user);
-  }, []);
+  // const [user, setUse] = useAuthState(auth);
+  // const googleAuth = new GoogleAuthProvider();
+  // const login = async () => {
+  //   // const result = await signInWithPopup(auth, googleAuth);
+  //   const result = await signInWithPopup(auth, googleAuth);
+  // };
+  // useEffect(() => {
+  //   setLoading(false);
+  //   console.log(user);
+  // }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -203,7 +203,7 @@ const RegisterForm = () => {
               <button
                 type="button"
                 className="flex w-full justify-center rounded-md bg-gray-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800 mt-6"
-                onClick={login}
+                // onClick={login}
               >
                 <img
                   className="h-6 w-auto mr-4"
