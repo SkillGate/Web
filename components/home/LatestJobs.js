@@ -3,8 +3,9 @@ import { BiBriefcase } from "react-icons/bi";
 import { FiClock, FiUsers } from "react-icons/fi";
 import Link from "next/link";
 import JobSkillTags from "../common/JobSkillTags";
+import { userTypes } from "../../constants";
 
-const LatestJobs = ({ jobs }) => {
+const LatestJobs = ({ jobs, userType }) => {
   return (
     <div className="md:col-span-2 flex flex-wrap gap-3">
       {jobs?.slice(0, 4).map((job) => (
@@ -54,9 +55,11 @@ const LatestJobs = ({ jobs }) => {
                 {job?.salary_range}/
                 <span className="text-sm text-muted">month</span>
               </h1>
-              <Link href="/apply">
-                <a className="btn btn-primary">apply now</a>
-              </Link>
+              {userType === userTypes.candidate && (
+                <Link href="/apply">
+                  <a className="btn btn-primary">apply now</a>
+                </Link>
+              )}
             </div>
           </div>
         </div>
