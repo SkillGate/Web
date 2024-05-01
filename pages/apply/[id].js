@@ -206,7 +206,7 @@ const ApplyJob = ({ candidate }) => {
             <h1 className="font-bold capitalize">submit your application</h1>
             {candidateIdExist && (
               <button className="btn bg-red-500 hover:bg-red-600 focus:bg-red-600 text-white">
-                <a href="www/linkedin.com" className="flex-align-center gap-2">
+                <a href="#" disabled={true} className="flex-align-center gap-2">
                   <FaRegThumbsUp />
                   <span>Already Applied</span>
                 </a>
@@ -233,9 +233,9 @@ const ApplyJob = ({ candidate }) => {
                 <input
                   type="file"
                   hidden
-                  ref={fileInput}
-                  onChange={(e) => setFile(e.target.files[0])}
-                  disabled={candidateIdExist}
+                  // ref={fileInput}
+                  // onChange={(e) => setFile(e.target.files[0])}
+                  disabled={true}
                 />
                 <p className="required-style">Attach Candidate Profile</p>
                 <button
@@ -275,8 +275,11 @@ const ApplyJob = ({ candidate }) => {
                   onChange={handleChange}
                   required
                 />
-                <label htmlFor="name" className="required-style">
-                  First Name
+                <label
+                  htmlFor="name"
+                  className={candidateIdExist ? "" : "required-style"}
+                >
+                  {candidateIdExist ? "" : "First Name"}
                 </label>
               </div>
               <div className="form-input w-full sm:flex-1 relative">
@@ -290,8 +293,11 @@ const ApplyJob = ({ candidate }) => {
                   onChange={handleChange}
                   required
                 />
-                <label htmlFor="name" className="required-style">
-                  Last Name
+                <label
+                  htmlFor="name"
+                  className={candidateIdExist ? "" : "required-style"}
+                >
+                  {candidateIdExist ? "" : "Last Name"}
                 </label>
               </div>
             </div>
@@ -307,8 +313,11 @@ const ApplyJob = ({ candidate }) => {
                   onChange={handleChange}
                   required
                 />
-                <label htmlFor="phone" className="required-style">
-                  Phone number
+                <label
+                  htmlFor="phone"
+                  className={candidateIdExist ? "" : "required-style"}
+                >
+                  {candidateIdExist ? "" : "Phone number"}
                 </label>
               </div>
               {/* <div className="form-input w-full sm:flex-1 relative">
@@ -332,8 +341,11 @@ const ApplyJob = ({ candidate }) => {
                   onChange={handleChange}
                   required
                 />
-                <label htmlFor="email" className="required-style">
-                  Email Address
+                <label
+                  htmlFor="email"
+                  className={candidateIdExist ? "" : "required-style"}
+                >
+                  {candidateIdExist ? "" : "Email Address"}
                 </label>
               </div>
             </div>
@@ -349,7 +361,9 @@ const ApplyJob = ({ candidate }) => {
                 disabled={candidateIdExist}
                 onChange={handleChange}
               ></textarea>
-              <label htmlFor="biography">Short Bio</label>
+              <label htmlFor="biography">
+                {candidateIdExist ? "" : "Short Bio"}
+              </label>
             </div>
             <div className="input-check">
               <input
