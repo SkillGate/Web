@@ -51,6 +51,17 @@ const JobList = ({ jobs, loading, userType, user, change }) => {
     }
   };
 
+  const calculateDate = (date) => {
+    const postedDate = new Date(date);
+
+    const currentDate = new Date();
+    const timeDifferenceMs = currentDate - postedDate;
+    const daysDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+
+    console.log("Number of days since posting:", daysDifference);
+    return daysDifference;
+  };
+
   return !loading ? (
     <>
       {jobs.length > 0 ? (
@@ -81,7 +92,10 @@ const JobList = ({ jobs, loading, userType, user, change }) => {
                     </Link>
                     <p className="text-sm">
                       {job?.company_name}{" "}
-                      <span className="text-xl mx-2">.</span>3 days ago
+                      <span className="text-xl mx-2">.</span>
+                      <span>
+                        {calculateDate(job?.createdAt) + " " + "Days"}
+                      </span>
                     </p>
                   </div>
                 </div>
