@@ -8,11 +8,10 @@ import Skeleton from "../loading-skeleton/Skeleton";
 import { useState } from "react";
 import { userTypes } from "../../constants";
 const JobList = ({ jobs, loading, userType }) => {
-  // const [userType, setUserType] = useState("Candidate");
 
-  function viewApplicants(url) {
-    window.location.href = url;
-  }
+  const saveJob = (jobId) => {
+    console.log(jobId);
+  };
 
   return !loading ? (
     <>
@@ -50,20 +49,27 @@ const JobList = ({ jobs, loading, userType }) => {
                 </div>
 
                 <div>
-                  {userTypes.candidate === userType
-                      ? <button
-                        className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]">
-                        <span>Save Job</span>
-                        <FaBookmark />
-                      </button>
-                      : <button
+                  {userTypes.candidate === userType ? (
+                    <button
+                      className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]"
+                      onClick={() => saveJob(job?._id)}
+                    >
+                      <span>Save Job</span>
+                      <FaBookmark />
+                    </button>
+                  ) : (
+                    <Link href="/shortlist/[id]" as={`/shortlist/${job?._id}`}>
+                      <button
                         className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]"
-                        onClick={() => viewApplicants('http://localhost:3000/shortlist/1')}
+                        // onClick={() =>
+                        //   viewApplicants("shortlist/1")
+                        // }
                       >
                         <span>View Applicants</span>
                         <ImProfile />
                       </button>
-                  }
+                    </Link>
+                  )}
                 </div>
               </div>
               <div className="flex-align-center gap-2 mt-2 flex-wrap">

@@ -67,6 +67,16 @@ export const getJob = async (jobId, token) => {
 };
 
 export const getJobByUser = async (employerId, token) => {
+  let loading = true;
+  let error = null;
+  let data = [];
+  console.log("Emoloyee ID " + employerId);
+  if (!(employerId && token)) {
+    console.log("Token " + token);
+    console.log("Emoloyee ID " + employerId);
+    error = "Employee Id or token must be provided";
+    return { data, loading, error };
+  }
   try {
     const res = await publicJobRequest.get(`/job/find/jobs/${employerId}`, {
       headers: {
@@ -74,10 +84,15 @@ export const getJobByUser = async (employerId, token) => {
       },
     });
     console.log(res.data);
-    return res.data;
+    console.log(res.data);
+    loading = false;
+    data = res.data;
+    return { data, loading, error };
   } catch (err) {
     console.error(err);
-    return null;
+    loading = false;
+    error = err.message;
+    return { data, loading, error };
   }
 };
 
