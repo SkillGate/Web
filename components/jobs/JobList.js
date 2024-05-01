@@ -2,15 +2,53 @@
 import Link from "next/link";
 import JobSkillTags from "../common/JobSkillTags";
 import { FaBookmark } from "react-icons/fa";
+import { FaRegBookmark } from "react-icons/fa6";
 import { ImProfile } from "react-icons/im";
 import { motion } from "framer-motion";
 import Skeleton from "../loading-skeleton/Skeleton";
 import { useState } from "react";
 import { userTypes } from "../../constants";
-const JobList = ({ jobs, loading, userType }) => {
+import { savedJob } from "../../apiCalls/jobApiCalls";
 
-  const saveJob = (jobId) => {
+const JobList = ({ jobs, loading, userType, user, change }) => {
+  const saveJobData = async (jobId) => {
     console.log(jobId);
+    if (user?._id && jobId) {
+      await saveHistoryJob(jobId, user?.accessToken, user?._id);
+    } else {
+      console.log(user?._id);
+      console.log(jobId);
+      console.log("User ID or job ID cant null");
+    }
+  };
+
+  const saveHistoryJob = async (jobId, token, candidateId) => {
+    // setLoading(true);
+    const candidateIdData = {
+      candidateId: candidateId,
+    };
+    try {
+      const {
+        data: jobData,
+        loading,
+        error,
+      } = await savedJob(jobId, token, candidateIdData);
+      console.log(jobData);
+      // setLoading(loading);
+      if (!jobData || jobData.length === 0) {
+        // setIsModalVisible(true);
+        // reset();
+        console.log("Saved Job");
+      } else {
+        change();
+      }
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 2000);
+    } catch (error) {
+      // setLoading(false);
+      console.error("Error in onSubmit:", error);
+    }
   };
 
   return !loading ? (
@@ -51,11 +89,21 @@ const JobList = ({ jobs, loading, userType }) => {
                 <div>
                   {userTypes.candidate === userType ? (
                     <button
-                      className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532]"
-                      onClick={() => saveJob(job?._id)}
+                      className="bg-slate-100 px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-slate-200 dark:bg-hover-color dark:hover:bg-[#252532] disabled:bg-secondaryLightPurple dark:disabled:bg-secondaryLightPurple dark:disabled:text-black"
+                      onClick={() => saveJobData(job?._id)}
+                      disabled={job.saved_candidate_id_list.includes(user._id)}
                     >
-                      <span>Save Job</span>
-                      <FaBookmark />
+                      {job.saved_candidate_id_list.includes(user._id) ? (
+                        <>
+                          <span>Already Saved</span>
+                          <FaBookmark />
+                        </>
+                      ) : (
+                        <>
+                          <span>Save Job</span>
+                          <FaRegBookmark />
+                        </>
+                      )}
                     </button>
                   ) : (
                     <Link href="/shortlist/[id]" as={`/shortlist/${job?._id}`}>

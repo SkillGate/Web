@@ -147,3 +147,25 @@ export const applyJob = async (jobId, token, candidateId) => {
     return { data, loading, error };
   }
 };
+
+export const savedJob = async (jobId, token, candidateId) => {
+    let loading = true;
+    let error = null;
+    let data = [];
+    try {
+      const res = await publicJobRequest.put(`/job/saved/${jobId}`, candidateId, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data);
+      loading = false;
+      data = res.data;
+      return { data, loading, error };
+    } catch (err) {
+      console.error(err);
+      loading = false;
+      error = err;
+      return { data, loading, error };
+    }
+  };

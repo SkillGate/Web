@@ -28,14 +28,15 @@ const CandidateDashboard = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [change, setChange] = useState(false);
 
   const router = useRouter();
   // const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
+    const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
-      setUser(prevUser => {
+      setUser((prevUser) => {
         const userData = JSON.parse(storedUserData);
         console.log(userData);
         fetchData(userData.accessToken);
@@ -43,7 +44,7 @@ const CandidateDashboard = () => {
       });
       // loginAndPersistUser(JSON.parse(storedUserData));
     }
-  }, []);
+  }, [change]);
 
   const fetchData = async (accessToken) => {
     try {
@@ -57,11 +58,15 @@ const CandidateDashboard = () => {
     }
   };
 
+  const fetchChange = () => {
+    setChange(!change);
+  }
+
   // useEffect(() => {
   //   // if (!user?.userType) {
   //   //   router.push("/sign-in");
   //   // }
-    
+
   //   fetchData();
   // }, [user]);
 
@@ -316,7 +321,13 @@ const CandidateDashboard = () => {
               </div>
             </div>
             <div className="mt-4">
-              <JobList jobs={currentJobs} loading={loading} userType={user?.userType} />
+              <JobList
+                jobs={currentJobs}
+                loading={loading}
+                userType={user?.userType}
+                user={user}
+                change={fetchChange}
+              />
             </div>
             {!loading && (
               <div className="mt-5">
