@@ -17,6 +17,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase/firebase";
+import { sum } from "firebase/firestore";
 
 const PostJob = () => {
   const logoInput = useRef(null);
@@ -35,6 +36,15 @@ const PostJob = () => {
   const [storeData, setStoreData] = useState({});
 
   const { loginUser } = useUiContext();
+
+  const weightsOfFields = [
+    { key: 'education', label: 'Education'},
+    { key: 'experience', label: 'Experience' },
+    { key: 'technicalSkills', label: 'Technical Skills' },
+    { key: 'softSkills', label: 'Soft Skills' }
+  ];
+  const [sumOfWeight, setSumOfWeight] = useState(0);
+  
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -96,6 +106,10 @@ const PostJob = () => {
       blogsCheckBox: data.socialProfile.blogs,
       githubCheckBox: data.socialProfile.github,
       linkedinCheckBox: data.socialProfile.linkedin,
+      // educationWeight: data.fieldsWeight.education,
+      // experienceWeight: data.fieldsWeight.experience,
+      // technicalSkillsWeight: data.fieldsWeight.technicalSkills,
+      // softSkillsWeight: data.fieldsWeight.softSkills,
     };
     console.log(actualData);
 
@@ -332,11 +346,10 @@ const PostJob = () => {
               onChange={(e) => setLogo(e.target.files[0])}
             />
             <img
-              src={`${
-                banner
-                  ? URL.createObjectURL(banner)
-                  : "https://res.cloudinary.com/midefulness/image/upload/v1702402848/SkillGate/image_vdwwzw.png"
-              }`}
+              src={`${banner
+                ? URL.createObjectURL(banner)
+                : "https://res.cloudinary.com/midefulness/image/upload/v1702402848/SkillGate/image_vdwwzw.png"
+                }`}
               alt=""
               className="h-[200px] sm:cursor-pointer object-cover w-full rounded-tl-xl rounded-tr-xl"
               onClick={() => bannerInput.current.click()}
@@ -591,7 +604,7 @@ const PostJob = () => {
                           className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
                         >
                           <option value="">Select...</option>
-                          <option value="Bachelor s degree">None</option>
+                          <option value="None">None</option>
                           <option value="Bachelor s degree">
                             Bachelor s degree
                           </option>
@@ -929,9 +942,57 @@ const PostJob = () => {
               />
             </div>
 
+            <h2 className="text-md text-justify font-bold mt-5 mb-5">
+              If you wish to prioritize fields for the shortlisting process, consider assigning weights to them to reflect their importance.
+            </h2>
+            <div className="form-input w-full sm:flex-1 relative mb-5">
+              <Controller
+                name="fieldsWeight"
+                control={control}
+                defaultValue={{
+                  education: 0,
+                  experience: 0,
+                  technicalSkills: 0,
+                  softSkills: 0,
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <>
+                    <div className="flex flex-col sm:flex-row justify-center gap-4">
+                      {weightsOfFields.map((field) => (
+                        <div className="flex items-center mb-2" key={field.key}>
+                          <h1 htmlFor={field.key} className="mr-2">{field.label}</h1>
+                          <select
+                            id={field.key}
+                            value={value[field.key]}
+                            onChange={(e) => { 
+                              const selectedValue = parseInt(e.target.value);
+                              const currentValue = value[field.key];
+                              const updatedValue = { ...value, [field.key]: selectedValue };
+                              const newSum = sumOfWeight - currentValue + selectedValue;
+                              if (newSum <= 10) {
+                                onChange(updatedValue);
+                                setSumOfWeight(newSum);
+                                console.log(sumOfWeight);
+                              }
+                            }}
+                            className={`select w-11 h-7 mr-1 rounded border ${sumOfWeight > 10 ? 'border-red-500' : 'border-green-500'} bg-white p-1`}
+                          >
+                            {[...Array(11).keys()].map((num) => (
+                              <option key={num} value={num}>{num}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                      <h1>Total : {sumOfWeight}/10</h1>
+                    </div>
+                  </>
+                )}
+              />
+            </div>
+
             {/*----------------------------------------End checkbox section------------------------------------- */}
 
-            <button type="submit" className="btn btn-primary w-full mt-4">
+            <button type="submit" className={`btn btn-primary w-full mt-4 ${sumOfWeight !== 10 ? 'disabled' : ''}`} disabled={sumOfWeight !== 10}>
               post job
             </button>
           </form>
