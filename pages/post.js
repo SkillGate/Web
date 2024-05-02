@@ -604,7 +604,7 @@ const PostJob = () => {
                           className="block w-full mt-1 border border-primary rounded-md focus:border-primary bg-gray-100 dark:bg-dark-main p-2"
                         >
                           <option value="">Select...</option>
-                          <option value="Bachelor s degree">None</option>
+                          <option value="None">None</option>
                           <option value="Bachelor s degree">
                             Bachelor s degree
                           </option>
