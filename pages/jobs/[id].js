@@ -3,15 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import JobSkillTags from "../../components/common/JobSkillTags";
 import { BiBookmark, BiCircle, BiShareAlt } from "react-icons/bi";
+import { FaRegBookmark } from "react-icons/fa6";
 import RelatedJobs from "../../components/singleJob/RelatedJobs";
 import { useRouter } from "next/router";
 import useFetch from "../api/useFetch";
 import { server } from "../../config";
 import { useEffect, useState } from "react";
-import { getAllJob, getJob } from "../../apiCalls/jobApiCalls";
+import { getAllJob, getJob, savedJob } from "../../apiCalls/jobApiCalls";
 import { useUiContext } from "../../contexts/UiContext";
 import Back from "../../components/common/Back";
-import { userTypes } from "../../constants";
+import { imageUrl, userTypes } from "../../constants";
 import FullPageLoader from "../../components/common/FullPageLoader";
 
 const SingleJob = () => {
@@ -45,22 +46,50 @@ const SingleJob = () => {
     fetchData();
   }, []);
 
-  // const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
+  const calculateDate = (date) => {
+    const postedDate = new Date(date);
+
+    const currentDate = new Date();
+    const timeDifferenceMs = currentDate - postedDate;
+    const daysDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+
+    console.log("Number of days since posting:", daysDifference);
+    return daysDifference;
+  };
 
   const {
+    userId,
     title,
     company_name,
     company_location,
+    createdAt,
     skills,
+    soft_skills,
     experience_level,
     type_of_employment,
     salary_range,
     experience,
+    experience_job_post,
+    education,
+    education_job_post,
+    overview,
     description,
     requirements_and_responsibilities,
+    time_posted,
     logo_url,
     banner_url,
-    userId,
+    job_status,
+    candidate_id_list,
+    githubCheckBox,
+    linkedinCheckBox,
+    blogsCheckBox,
+    saved_candidate_id_list,
+    persona_matching_score,
+    w_soft_skills,
+    w_technical_skills,
+    w_education,
+    w_experience,
+    _id,
   } = job;
 
   // const { data: jobs } = useFetch(`${server}/api/jobs`);
@@ -80,9 +109,70 @@ const SingleJob = () => {
 
   const relatedJobs = jobs.filter(
     (job) =>
-      Number(job._id) !== Number(id) &&
+      Number(job._id) !== Number(_id) &&
       (job.title === title || job.company_name === company_name)
   );
+
+  const saveJobData = async (jobId) => {
+    console.log(jobId);
+    if (user?._id && jobId) {
+      await saveHistoryJob(jobId, user?.accessToken, user?._id);
+    } else {
+      console.log(user?._id);
+      console.log(jobId);
+      console.log("User ID or job ID cant null");
+    }
+  };
+
+  const saveHistoryJob = async (jobId, token, candidateId) => {
+    // setLoading(true);
+    const candidateIdData = {
+      candidateId: candidateId,
+    };
+    try {
+      const {
+        data: jobData,
+        loading,
+        error,
+      } = await savedJob(jobId, token, candidateIdData);
+      console.log(jobData);
+      // setLoading(loading);
+      if (!jobData || jobData.length === 0) {
+        // setIsModalVisible(true);
+        // reset();
+        console.log("Saved Job");
+      } else {
+        change();
+      }
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 2000);
+    } catch (error) {
+      // setLoading(false);
+      console.error("Error in onSubmit:", error);
+    }
+  };
+
+  const shareJob = () => {
+    const urlToCopy = window.location.href;
+
+    const tempInput = document.createElement("input");
+    tempInput.value = urlToCopy;
+    document.body.appendChild(tempInput);
+
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+    document.execCommand("copy");
+
+    document.body.removeChild(tempInput);
+    const copySuccessMessage = document.getElementById("copySuccessMessage");
+    copySuccessMessage.classList.remove("hidden");
+
+    // Hide the success message after 3 seconds
+    setTimeout(() => {
+      copySuccessMessage.classList.add("hidden");
+    }, 1000);
+  };
 
   return !loading ? (
     <div>
@@ -99,28 +189,51 @@ const SingleJob = () => {
           <div className="card overflow-hidden">
             <div className="relative">
               <img
-                src={
-                  banner_url ||
-                  "https://res.cloudinary.com/midefulness/image/upload/v1700256405/SkillGate/3119_i6gvni.jpg"
-                }
+                src={banner_url || imageUrl.logoDoubleColor}
                 alt="job-header-image"
-                className="h-full sm:h-[200px] object-cover w-full"
+                className={`h-full sm:h-[200px] object-cover w-full ${
+                  !banner_url && "p-10"
+                }`}
               />
               <img
-                src={logo_url || "/images/photo-3.jpg"}
+                src={
+                  logo_url ||
+                  "https://res.cloudinary.com/midefulness/image/upload/v1713019229/SkillGate/NoLogo/no-logo-removebg-preview_r3ipnp.png"
+                }
                 alt="company-logo"
-                className="w-16 left-10 -bottom-8 absolute rounded-xl"
+                className={`w-16 left-10 -bottom-8 absolute rounded-xl ${
+                  !logo_url && "bg-white h-10"
+                }`}
               />
             </div>
             <div className="pt-10 px-6 pb-6">
               <div className="flex-center-between">
                 <h1 className="text-xl font-semibold">{title}</h1>
                 <div className="flex-align-center gap-x-2">
-                  <div className="icon-box card-shadow dark:shadow-none card-bordered !rounded-md">
-                    <BiBookmark />
-                  </div>
-                  <div className="icon-box card-shadow dark:shadow-none card-bordered !rounded-md">
+                  {user.userType == "Candidate" && (
+                    <div
+                      className="icon-box card-shadow dark:shadow-none card-bordered !rounded-md"
+                      onClick={() => saveJobData(_id)}
+                      disabled={saved_candidate_id_list.includes(user._id)}
+                    >
+                      {saved_candidate_id_list.includes(user._id) ? (
+                        <FaRegBookmark />
+                      ) : (
+                        <BiBookmark />
+                      )}
+                    </div>
+                  )}
+                  <div
+                    className="icon-box card-shadow dark:shadow-none card-bordered !rounded-md"
+                    onClick={shareJob}
+                  >
                     <BiShareAlt />
+                  </div>
+                  <div
+                    id="copySuccessMessage"
+                    class="hidden bg-green-500 text-white text-sm py-1 px-2 rounded mt-2"
+                  >
+                    URL copied successfully!
                   </div>
                 </div>
               </div>
@@ -130,9 +243,11 @@ const SingleJob = () => {
                   <span>{company_location}</span>
                 </p>
 
-                <span className="text-sm">
-                  <span className="text-muted">Posted 8 days ago</span> 98
-                  Applicants
+                <span className="text-sm flex flex-col items-end">
+                  <span className="text-muted">
+                    Posted {calculateDate(createdAt)} days ago
+                  </span>{" "}
+                  <span>{candidate_id_list?.length} Applicants</span>
                 </span>
               </div>
 
@@ -145,12 +260,22 @@ const SingleJob = () => {
               <div className="mt-5">
                 <div className="card">
                   <div className="flex flex-col sm:flex-row sm:flex-center-between">
-                    <div className="p-2">
-                      <span className="text-sm capitalize text-muted">
-                        Experience
-                      </span>
-                      <h1 className="capitalize">{experience}</h1>
-                    </div>
+                    {user?.userType == userTypes.candidate ? (
+                      <div className="p-2 ml-2">
+                        <span className="text-sm capitalize text-muted">
+                          Type of Employment
+                        </span>
+                        <h1 className="capitalize">{type_of_employment}</h1>
+                      </div>
+                    ) : (
+                      <div className="p-2 ml-2">
+                        <span className="text-sm capitalize text-muted">
+                          Job Status
+                        </span>
+                        <h1 className="capitalize">{job_status}</h1>
+                      </div>
+                    )}
+
                     <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
                     <div className="p-2">
                       <span className="text-sm capitalize text-muted">
@@ -166,12 +291,12 @@ const SingleJob = () => {
                       <h1 className="capitalize">{type_of_employment}</h1>
                     </div>
                     <div className="w-full h-[1px] sm:h-16 sm:w-[1px] bg-slate-200 dark:bg-hover-color"></div>
-                    <div className="p-2">
+                    <div className="p-2 mr-2">
                       <span className="text-sm capitalize text-muted">
                         offer salary
                       </span>
                       <h1 className="capitalize">
-                        {salary_range}/
+                        {salary_range}
                         <span className="text-sm text-muted"></span>
                       </h1>
                     </div>
@@ -182,10 +307,16 @@ const SingleJob = () => {
               {/*---------------------------------------- Job Overview--------------------------------------------- */}
               <div className="mt-4">
                 <h1 className="text-lg font-semibold">Overview</h1>
+                <p className="leading-7">{overview}</p>
+              </div>
+
+              {/*---------------------------------------- Job Overview--------------------------------------------- */}
+              <div className="mt-4">
+                <h1 className="text-lg font-semibold">Role Profile</h1>
                 <p className="leading-7">{description}</p>
               </div>
 
-              {/*---------------------------------------- Job Description------------------------------------- */}
+              {/*---------------------------------------- Job Responsibilities & Requirements------------------------------------- */}
               <div className="mt-4">
                 <h1 className="text-lg font-semibold">
                   Responsibilities & Requirements
@@ -194,10 +325,27 @@ const SingleJob = () => {
                   {requirements_and_responsibilities?.map((res, i) => (
                     <div className="flex-align-center gap-x-2 mt-3" key={i}>
                       <BiCircle className="text-xs text-primary flex-shrink-0" />
-                      <p className="text-sm">{res}</p>
+                      <p className="leading-7">{res}</p>
                     </div>
                   ))}
                 </div>
+
+                {/*---------------------------------------- Job Experience------------------------------------- */}
+                <div className="mt-4">
+                  <h1 className="text-lg font-semibold">What You'll Bring</h1>
+                  <div>
+                    <div className="flex-align-center gap-x-2 mt-3">
+                      <BiCircle className="text-xs text-primary flex-shrink-0" />
+                      {/* <p className="text-sm">{res}</p> */}
+                      <p className="leading-7">{education_job_post}</p>
+                    </div>
+                    <div className="flex-align-center gap-x-2 mt-3">
+                      <BiCircle className="text-xs text-primary flex-shrink-0" />
+                      <p className="leading-7">{experience_job_post}</p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex justify-end mt-3">
                   {/* <Link
                   href="/jobs/apply"
@@ -205,18 +353,20 @@ const SingleJob = () => {
                 >
                   apply now
                 </Link> */}
-                  <Link href={`/apply/${job?._id}`}>
-                    <a className="btn btn-primary-outline flex-shrink-0">
-                      apply now
-                    </a>
-                  </Link>
+                  {user?.userType == userTypes.candidate && (
+                    <Link href={`/apply/${job?._id}`}>
+                      <a className="btn btn-primary-outline flex-shrink-0">
+                        apply now
+                      </a>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div className="md:col-span-1 h-fit md:sticky top-0">
-          <RelatedJobs jobs={relatedJobs} />
+          <RelatedJobs jobs={relatedJobs} user={user} />
         </div>
       </div>
     </div>

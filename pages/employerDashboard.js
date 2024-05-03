@@ -17,14 +17,14 @@ import { getAllJob, getJobByUser } from "../apiCalls/jobApiCalls";
 import { userTypes } from "../constants";
 
 const EmployerDashboard = () => {
-  // const { user } = useUiContext();
   const router = useRouter();
-
-  // const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState([]);
+  const [noOfJobOpenings, setNoOfJobOpenings] = useState(0);
+  const [noOfPostedJob, setNoOfPostedJob] = useState(0);
+  const [noOfJobApplications, setNoOfJobApplications] = useState(0);
+  const [noOfJobClose, setNoOfJobClose] = useState(0);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -34,16 +34,47 @@ const EmployerDashboard = () => {
         fetchData(userData._id, userData.accessToken);
         return userData;
       });
-      // loginAndPersistUser(JSON.parse(storedUserData));
     }
   }, []);
 
   const fetchData = async (employeeId, accessToken) => {
     try {
-      const { data: jobData = [], loading } = await getJobByUser(employeeId, accessToken);
+      const { data: jobData = [], loading } = await getJobByUser(
+        employeeId,
+        accessToken
+      );
       console.log(jobData);
       setJobs(jobData);
       setLoading(loading);
+      setNoOfJobOpenings((prev) => {
+        let count = 0;
+        jobData.map((findJob, index) => {
+          if (findJob?.job_status == "Opening") {
+            count++;
+          }
+        });
+        return count;
+      });
+      setNoOfPostedJob((prev) => jobData.length);
+      setNoOfJobApplications((prev) => {
+        let count = 0;
+        jobData.map((findJob, index) => {
+          if (findJob?.candidate_id_list) {
+            console.log(findJob?.candidate_id_list.length);
+            count += findJob?.candidate_id_list.length;
+          }
+        });
+        return count;
+      });
+      setNoOfJobClose((prev) => {
+        let count = 0;
+        jobData.map((findJob, index) => {
+          if (findJob?.job_status == "Close") {
+            count++;
+          }
+        });
+        return count;
+      });
     } catch (error) {
       console.error("Error job fetching:", error);
       setLoading(false);
@@ -63,7 +94,12 @@ const EmployerDashboard = () => {
       </h1>
       <p>{formattedDate}</p>
       <div className="mt-6 grid md:grid-cols-2 gap-6">
-        <Stats />
+        <Stats
+          noOfJobOpenings={noOfJobOpenings}
+          noOfPostedJob={noOfPostedJob}
+          noOfJobApplications={noOfJobApplications}
+          noOfJobClose={noOfJobClose}
+        />
         <BarChart />
       </div>
       <div className="mt-6">

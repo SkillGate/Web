@@ -157,7 +157,7 @@ const JobList = ({ jobs, loading, userType, user, change }) => {
                     <span className="text-sm text-muted">month</span>
                   </h1>
                   <h1>
-                    54{" "}
+                    {job?.candidate_id_list ? job?.candidate_id_list.length : 0} {" "}
                     <span className="text-sm text-muted">People Applied</span>
                   </h1>
                 </div>
