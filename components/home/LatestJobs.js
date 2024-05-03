@@ -6,6 +6,17 @@ import JobSkillTags from "../common/JobSkillTags";
 import { userTypes } from "../../constants";
 
 const LatestJobs = ({ jobs, userType }) => {
+  const calculateDate = (date) => {
+    const postedDate = new Date(date);
+
+    const currentDate = new Date();
+    const timeDifferenceMs = currentDate - postedDate;
+    const daysDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+
+    console.log("Number of days since posting:", daysDifference);
+    return daysDifference;
+  };
+  
   return (
     <div className="md:col-span-2 flex flex-wrap gap-3">
       {jobs?.slice(0, 4).map((job) => (
@@ -15,12 +26,15 @@ const LatestJobs = ({ jobs, userType }) => {
         >
           <div className="flex-align-center gap-3">
             <img
-              src={job?.logo_url || "/images/whatsapp.png"}
+              src={
+                job?.logo_url ||
+                "https://res.cloudinary.com/midefulness/image/upload/v1713019229/SkillGate/NoLogo/no-logo-removebg-preview_r3ipnp.png"
+              }
               alt="logo"
               className="w-14 rounded-lg"
             />
             <div>
-              <Link href="/jobs/[id]" as={`/jobs/${job?.id}`}>
+              <Link href="/jobs/[id]" as={`/jobs/${job?._id}`}>
                 <a className="!opacity-100 group-hover:text-primary">
                   <h1 className="text-xl font-semibold">{job?.title}</h1>
                 </a>
@@ -40,13 +54,13 @@ const LatestJobs = ({ jobs, userType }) => {
               <div className=" bg-slate-200 rounded-sm flex-align-center flex-col sm:flex-row gap-2 px-2 py-1 dark:bg-hover-color">
                 <FiUsers />
                 <span className="text-muted sm:text-sm flex-shrink-0">
-                  45 Applied
+                  {job?.candidate_id_list.length} Applied
                 </span>
               </div>
               <div className=" bg-slate-200 rounded-sm flex-align-center flex-col sm:flex-row gap-2 px-2 py-1 dark:bg-hover-color">
                 <FiClock />
                 <span className="text-muted  sm:text-sm flex-shrink-0">
-                  3 days left
+                  {calculateDate(job?.createdAt)} days ago
                 </span>
               </div>
             </div>
