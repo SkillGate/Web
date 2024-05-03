@@ -15,8 +15,6 @@ import JobAlert from "../../components/search/JobAlert";
 import SearchFilters from "../../components/search/SearchFilters";
 import { useUiContext } from "../../contexts/UiContext";
 import { actioTypes } from "../../reducers/uiReducer";
-import useFetch from "../api/useFetch";
-import { server } from "../../config";
 import formattedDate from "../../components/common/CurrentDate";
 import { userTypes } from "../../constants";
 import { getJobByUser } from "../../apiCalls/jobApiCalls";
@@ -27,7 +25,6 @@ const Search = () => {
     if (e.target.classList.contains("filter-modal"))
       dispatch({ type: actioTypes.closeFilterMenu });
   };
-  // const { data: jobs, loading } = useFetch(`${server}/api/jobs`);
 
   const [selectedFilters, setSelectedFilters] = useState({});
 
@@ -236,7 +233,10 @@ const Search = () => {
     <div className="padding-container">
       {/*---------------------------------------- Top Banner with Search filters------------------------------------- */}
       <div
-        style={{ background: "url('/images/bg.jpg')" }}
+        style={{
+          background:
+            "url('https://res.cloudinary.com/midefulness/image/upload/v1700258375/SkillGate/33003_cvtlei.jpg')",
+        }}
         className="bg-no-repeat bg-cover rounded-lg text-slate-300"
       >
         <div className="px-6 pt-4">
