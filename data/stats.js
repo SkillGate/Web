@@ -33,7 +33,7 @@ export const stats = [
     id: 4,
     icon: <BiEnvelope />,
     number: 12,
-    title: "Recruited candidates",
+    title: "Close Job Posts",
     percentage: 10,
     increment: false,
     cardBg: "#FFBBD7",
