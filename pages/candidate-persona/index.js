@@ -12,6 +12,7 @@ import Skill from "../../components/candidate-persona/skill";
 import Experience from "../../components/candidate-persona/experience";
 import Education from "../../components/candidate-persona/education";
 import Volunteering from "../../components/candidate-persona/volunteer";
+import SoftSkill from "../../components/candidate-persona/softskills";
 
 const CandidatePersona = () => {
   const [isPersonalInfoOpen, setPersonalInfoIsOpen] = useState(false);
@@ -254,6 +255,7 @@ const CandidatePersona = () => {
             </div>
             <Biography />
             <Skill details={user} />
+            <SoftSkill details={user} />
             <Experience details={user} />
             <Education details={user} />
             <Project details={user} />
