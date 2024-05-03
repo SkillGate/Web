@@ -26,6 +26,8 @@ const PostJob = () => {
   const [banner, setBanner] = useState(null);
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
+  const [softskills, setSoftSkills] = useState([]);
+  const [newSoftSkill, setNewSoftSkill] = useState("");
   const [requirements, setRequirements] = useState([]);
 
   const [user, setUser] = useState();
@@ -90,6 +92,7 @@ const PostJob = () => {
       company_name: data.company_name,
       company_location: data.company_location,
       skills: data.skills,
+      // softskills: data.softskills,
       experience_level: data.experience_level,
       type_of_employment: data.type_of_employment,
       salary_range: data.salary_range,
@@ -284,6 +287,28 @@ const PostJob = () => {
     if (e.key === "Enter") {
       e.preventDefault();
       addSkill();
+    }
+  };
+
+  const addSoftSkill = () => {
+    if (newSoftSkill.trim() !== "") {
+      const updatedSoftSkills = [...softskills, newSoftSkill.trim()];
+      setSoftSkills(updatedSoftSkills);
+      setNewSoftSkill("");
+
+      setValue("softskills", updatedSoftSkills);
+    }
+  };
+
+  const removeSoftSkill = (softskillToRemove) => {
+    const updatedSoftSkills = softskills.filter((softskill) => softskill !== softskillToRemove);
+    setSoftSkills(updatedSoftSkills);
+  };
+
+  const handleKeyPressforSoftSkill = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addSoftSkill();
     }
   };
 
@@ -816,7 +841,7 @@ const PostJob = () => {
 
             {/*----------------------------------------End experience section------------------------------------- */}
 
-            {/*----------------------------------------Begin skill section------------------------------------- */}
+            {/*----------------------------------------Begin technical skill section------------------------------------- */}
 
             <div className="mt-5">
               <div className="flex flex-wrap gap-2">
@@ -844,7 +869,7 @@ const PostJob = () => {
                     <input
                       {...field}
                       type="text"
-                      placeholder="Enter skills"
+                      placeholder="Enter technical skills"
                       value={newSkill}
                       onChange={(e) => setNewSkill(e.target.value)}
                       onKeyPress={handleKeyPress}
@@ -855,7 +880,48 @@ const PostJob = () => {
               </div>
             </div>
 
-            {/*----------------------------------------End skill section------------------------------------- */}
+            {/*----------------------------------------End technical skill section------------------------------------- */}
+
+            {/*----------------------------------------Begin soft skill section------------------------------------- */}
+
+            <div className="mt-5">
+              <div className="flex flex-wrap gap-2">
+                {softskills.map((skill, index) => (
+                  <div
+                    key={index}
+                    className="bg-purple-400 text-white px-2 py-1 rounded-full flex items-center"
+                  >
+                    <span>{skill}</span>
+                    <button
+                      onClick={() => removeSoftSkill(skill)}
+                      className="ml-2 focus:outline-none"
+                    >
+                      &#10005;
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 form-input w-full sm:flex-1 relative">
+                <Controller
+                  name="softskills"
+                  control={control}
+                  defaultValue={softskills}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      type="text"
+                      placeholder="Enter soft skills"
+                      value={newSoftSkill}
+                      onChange={(e) => setNewSoftSkill(e.target.value)}
+                      onKeyPress={handleKeyPressforSoftSkill}
+                      className="input"
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
+            {/*----------------------------------------End soft skill section------------------------------------- */}
 
             <div className="form-input w-full sm:flex-1 relative mt-5">
               <Controller
