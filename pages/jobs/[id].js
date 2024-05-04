@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
 import Link from "next/link";
 import JobSkillTags from "../../components/common/JobSkillTags";
 import { ImProfile } from "react-icons/im";
@@ -9,7 +8,6 @@ import RelatedJobs from "../../components/singleJob/RelatedJobs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getAllJob, getJob, savedJob } from "../../apiCalls/jobApiCalls";
-import { useUiContext } from "../../contexts/UiContext";
 import Back from "../../components/common/Back";
 import { imageUrl, userTypes } from "../../constants";
 import FullPageLoader from "../../components/common/FullPageLoader";
@@ -43,7 +41,7 @@ const SingleJob = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const calculateDate = (date) => {
     const postedDate = new Date(date);
@@ -230,7 +228,7 @@ const SingleJob = () => {
                   </div>
                   <div
                     id="copySuccessMessage"
-                    class="hidden bg-green-500 text-white text-sm py-1 px-2 rounded mt-2"
+                    className="hidden bg-green-500 text-white text-sm py-1 px-2 rounded mt-2"
                   >
                     URL copied successfully!
                   </div>
@@ -345,7 +343,7 @@ const SingleJob = () => {
 
                 {/*---------------------------------------- Job Experience------------------------------------- */}
                 <div className="mt-4">
-                  <h1 className="text-lg font-semibold">What You'll Bring</h1>
+                  <h1 className="text-lg font-semibold">What You&apos;ll Bring</h1>
                   <div>
                     <div className="flex-align-center gap-x-2 mt-3">
                       <BiCircle className="text-xs text-primary flex-shrink-0" />
