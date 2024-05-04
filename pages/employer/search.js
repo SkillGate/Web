@@ -259,7 +259,7 @@ const Search = () => {
         {/*---------------------------------------- Job Filters | Mobile & Desktop------------------------------------- */}
         <div className="grid md:grid-cols-3 gap-x-14">
           <div className="md:col-span-1 row-start-3 md:row-start-auto h-fit md:sticky top-0">
-            <JobAlert />
+            {/* <JobAlert /> */}
             <div
               className={`filter-modal ${isFilterMenuOpen && "open"}`}
               onClick={handleCloseFiltermenu}

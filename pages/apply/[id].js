@@ -95,6 +95,7 @@ const ApplyJob = ({ candidate }) => {
       blog: user?.blog,
       biography: user?.biography,
       skills: user?.skills,
+      soft_skills: user?.soft_skills,
       volunteering: user?.volunteering,
       experience: user?.experience,
       education: user?.education,
