@@ -2,12 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import JobSkillTags from "../../components/common/JobSkillTags";
+import { ImProfile } from "react-icons/im";
 import { BiBookmark, BiCircle, BiShareAlt } from "react-icons/bi";
 import { FaRegBookmark } from "react-icons/fa6";
 import RelatedJobs from "../../components/singleJob/RelatedJobs";
 import { useRouter } from "next/router";
-import useFetch from "../api/useFetch";
-import { server } from "../../config";
 import { useEffect, useState } from "react";
 import { getAllJob, getJob, savedJob } from "../../apiCalls/jobApiCalls";
 import { useUiContext } from "../../contexts/UiContext";
@@ -252,10 +251,24 @@ const SingleJob = () => {
               </div>
 
               {/*---------------------------------------- Skills------------------------------------- */}
-              <div className="mt-4">
-                <JobSkillTags skills={skills} />
+              <div className="flex justify-items-center items-center place-content-between">
+                <div className="mt-4">
+                  <JobSkillTags skills={skills} />
+                </div>
+                {userTypes.employer === user?.userType && (
+                  <Link href="/shortlist/[id]" as={`/shortlist/${job?._id}`}>
+                    <button
+                      className="my-4 bg-purple-haze px-3 py-1 rounded-md flex-align-center gap-x-2 flex-shrink-0 text-muted hover:bg-primary hover:text-white dark:bg-hover-color dark:hover:bg-[#252532]"
+                      // onClick={() =>
+                      //   viewApplicants("shortlist/1")
+                      // }
+                    >
+                      <span>View Applicants</span>
+                      <ImProfile />
+                    </button>
+                  </Link>
+                )}
               </div>
-
               {/*---------------------------------------- About ------------------------------------ */}
               <div className="mt-5">
                 <div className="card">
