@@ -170,7 +170,7 @@ const ApplyJob = ({ Employer }) => {
     { name: "Contact Number", col: 1 },
     { name: "Email", col: 1 },
     { name: "Score", col: 1 },
-    { name: "Actions", col: 5 },
+    { name: "Actions", col: 6 },
   ];
   const actions = [
     {
@@ -217,6 +217,13 @@ const ApplyJob = ({ Employer }) => {
       icon: "IoDocumentTextOutline",
       color: "yellow",
       url: "",
+    },
+    {
+      name: "Benefits",
+      title: "Predicted Compensation & Benefits",
+      icon: "IoDocumentTextOutline",
+      color: "yellow",
+      popUp: "Benefits",
     },
     {
       name: "GitHub",
