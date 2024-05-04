@@ -5,9 +5,16 @@ import { IoLogoGithub } from "react-icons/io";
 import { BsLinkedin } from "react-icons/bs";
 import { MdOutlineArticle } from "react-icons/md";
 import { BsBookmarkCheck } from "react-icons/bs";
+import BenefitsPopUp from "../Benefits/benefits";
 
 const Table = ({ heads, rows, actions }) => {
-
+    const [isBenefitsOpen, setBenefitsOpen] = useState(false);
+    const handleBenefitsOpen = () => {
+        setBenefitsOpen(true);
+    };
+    const handleBenefitsClose = () => {
+        setBenefitsOpen(false);
+    };
     const icons = {
         IoDocumentTextOutline,
         IoLogoGithub,
@@ -22,6 +29,11 @@ const Table = ({ heads, rows, actions }) => {
 
     function redirectToURL(url) {
         window.location.href = url;
+    }
+    function openPopUp(popUp){
+        if(popUp==="Benefits"){
+            handleBenefitsOpen()
+        }
     }
 
     const displayData = () => {
@@ -40,14 +52,25 @@ const Table = ({ heads, rows, actions }) => {
                         const Icon = icons[action.icon];
                         return (
                         <td key={action.name} class="px-3 py-4 whitespace-nowrap text-center text-sm font-medium">
-                            <button 
-                                type="button" 
-                                title={action.title} 
-                                className="inline-flex items-center"
-                                onClick={() => redirectToURL(action.url)}
-                            >
-                                <Icon className={`text-${action.color}-600 text-2xl`}/>
-                            </button>
+                            {action.url?(<button 
+                                        type="button" 
+                                        title={action.title} 
+                                        className="inline-flex items-center"
+                                        onClick={() => redirectToURL(action.url)}
+                                    >
+                                        <Icon className={`text-${action.color}-600 text-2xl`}/>
+                                    </button>):
+                                    (<button 
+                                        type="button" 
+                                        title={action.title} 
+                                        className="inline-flex items-center"
+                                        onClick={() => openPopUp(action.popUp)}
+                                    >  
+                                    <Icon className={`text-${action.color}-600 text-2xl`}/>
+                                </button>)
+                            }
+                            {isBenefitsOpen && <BenefitsPopUp onClose={handleBenefitsClose} id={1} />}
+                            
                         </td>
                         )
                     })}
