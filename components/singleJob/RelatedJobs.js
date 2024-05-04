@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { BiBookmark } from "react-icons/bi";
+import { FaRegBookmark } from "react-icons/fa6";
 import Link from "next/link";
 
 const RelatedJobs = ({ jobs, user }) => {
