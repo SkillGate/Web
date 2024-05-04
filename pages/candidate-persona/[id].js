@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import useFetch from "../api/useFetch";
-import { server } from "../../config";
 import { MdEdit } from "react-icons/md";
 import PersonalInfoPopup from "../../components/candidate-persona/models/personalinfo-model";
 import Biography from "../../components/candidate-persona/biography";
@@ -24,10 +21,6 @@ const CandidatePersona = () => {
   const handlePersonalInfoClose = () => {
     setPersonalInfoIsOpen(false);
   };
-
-  //   const router = useRouter();
-  //   const { id } = router.query;
-  //   const { data: user, loading } = useFetch(`${server}/api/users/${id}`);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");

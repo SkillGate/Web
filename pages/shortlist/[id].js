@@ -106,79 +106,6 @@ const ApplyJob = ({ Employer }) => {
     }
   };
 
-  const shortlistApplicantsRows = [
-    {
-      id: 1,
-      name: "Ashani Liyanagamage",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 2,
-      name: "Yohan Nayanajith",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 3,
-      name: "Roshan Senevirathne",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 4,
-      name: "Sathya Karunankalage",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 5,
-      name: "Haitha Jayaweera",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 6,
-      name: "Roneki Manamperi",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 7,
-      name: "Madhuni Tharukshi",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 8,
-      name: "Ashani Liyanagamage",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 9,
-      name: "Yohan Nayanajith",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-    {
-      id: 10,
-      name: "Roshan Senevirathne",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-      score: "90.00%",
-    },
-  ];
-
   const allApplicantsHeads = [
     { name: "Applicant Name", col: 1 },
     { name: "Contact Number", col: 1 },
@@ -229,7 +156,7 @@ const ApplyJob = ({ Employer }) => {
       title: "View reason for shortlisting",
       icon: "BsBookmarkCheck",
       color: "pink",
-      url: "",
+      url: `/reasoning/${id}`,
     },
     {
       name: "CV",
