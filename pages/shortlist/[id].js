@@ -1,90 +1,110 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
-import { userTypes } from "../../constants";
-import useFetch from "../api/useFetch";
-import { server } from "../../config";
 import Table from "../../components/table/Table";
+import { getJob } from "../../apiCalls/jobApiCalls";
+import { GetCandidateData } from "../../apiCalls/userApiCalls";
+import FullPageLoader from "../../components/common/FullPageLoader";
 
 const ApplyJob = ({ Employer }) => {
   const router = useRouter();
   const { id } = router.query;
   console.log(id);
 
-  const { data: job, loading } = useFetch(`${server}/api/jobs/${id}`);
-
-  const [userType, setUserType] = useState("Employer");
-
   const [activeTab, setActiveTab] = useState(1);
+
+  const [job, setJob] = useState([]);
+  const [candidateList, setCandidateList] = useState([]);
+  const [candidateShortlistedList, setCandidateShortlistedList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({});
+  const [applyJob, setApplyJob] = useState(false);
+
+  useEffect(() => {
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+    console.log(storedUserData);
+    setUser(storedUserData);
+    const fetchData = async () => {
+      try {
+        const { data: jobData = [], loading } = await getJob(
+          id,
+          storedUserData?.accessToken
+        );
+        console.log(jobData);
+        setJob(jobData);
+        await getCandidateData(
+          jobData?.candidate_id_list,
+          storedUserData?.accessToken
+        );
+        setLoading(loading);
+      } catch (error) {
+        console.error("Error job fetching:", error);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
 
-  const allApplicantsRows = [
-    {
-      id: 1,
-      name: "Ashani Liyanagamage",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 2,
-      name: "Yohan Nayanajith",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 3,
-      name: "Roshan Senevirathne",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 4,
-      name: "Sathya Karunankalage",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 5,
-      name: "Haitha Jayaweera",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 6,
-      name: "Roneki Manamperi",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 7,
-      name: "Madhuni Tharukshi",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 8,
-      name: "Ashani Liyanagamage",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 9,
-      name: "Yohan Nayanajith",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-    {
-      id: 10,
-      name: "Roshan Senevirathne",
-      phone: "+94767619989",
-      email: "test@gmail.com",
-    },
-  ];
+  const getCandidateData = async (candidate_id_list, token) => {
+    console.log(candidate_id_list);
+    if (candidate_id_list?.length != 0) {
+      setApplyJob(true);
+      const canadidateData = {
+        candidateIds: candidate_id_list,
+      };
+      try {
+        const { data: candidateData = [], loading } = await GetCandidateData(
+          canadidateData,
+          token
+        );
+        console.log(candidateData);
+        setCandidateList((prev) => {
+          let applyCandidates = [];
+          candidateData?.map((candidate) => {
+            applyCandidates.push({
+              id: candidate?._id,
+              name: candidate?.firstName + " " + candidate?.lastName,
+              phone: candidate?.phone,
+              email: candidate?.email,
+            });
+          });
+          return applyCandidates;
+        });
+
+        setCandidateShortlistedList((prev) => {
+          let applyCandidates = [];
+          candidateData?.forEach((candidate) => {
+            let score = candidate?.persona_matching_score
+              ? candidate.persona_matching_score.overall_score
+              : 0;
+            applyCandidates.push({
+              id: candidate?._id,
+              name: candidate?.firstName + " " + candidate?.lastName,
+              phone: candidate?.phone,
+              email: candidate?.email,
+              score: score,
+            });
+          });
+
+          // Sort the applyCandidates array based on the overall_score in descending order
+          applyCandidates.sort((a, b) => b.score - a.score);
+
+          return applyCandidates;
+        });
+      } catch (error) {
+        console.error("Error job fetching:", error);
+      }
+    } else {
+      setApplyJob(false);
+      console.log("No one apply for this job!");
+    }
+  };
 
   const shortlistApplicantsRows = [
     {
@@ -170,7 +190,7 @@ const ApplyJob = ({ Employer }) => {
     { name: "Contact Number", col: 1 },
     { name: "Email", col: 1 },
     { name: "Score", col: 1 },
-    { name: "Actions", col: 5 },
+    { name: "Actions", col: 6 },
   ];
   const actions = [
     {
@@ -186,21 +206,21 @@ const ApplyJob = ({ Employer }) => {
         "Access contributions made to projects via their respective GitHub URLs",
       icon: "IoLogoGithub",
       color: "green",
-      url: "http://localhost:3000/github",
+      url: "/github",
     },
     {
       name: "LinkedIn",
       title: "Review endorsed skills on LinkedIn",
       icon: "BsLinkedin",
       color: "blue",
-      url: "http://localhost:3000/linkedin",
+      url: "/linkedin",
     },
     {
       name: "Articles",
       title: "Access analysis of blog articles",
       icon: "MdOutlineArticle",
       color: "orange",
-      url: "http://localhost:3000/blogs",
+      url: "/blogs",
     },
   ];
   const shrtlistactions = [
@@ -219,30 +239,37 @@ const ApplyJob = ({ Employer }) => {
       url: "",
     },
     {
+      name: "Benefits",
+      title: "Predicted Compensation & Benefits",
+      icon: "IoDocumentTextOutline",
+      color: "yellow",
+      popUp: "Benefits",
+    },
+    {
       name: "GitHub",
       title:
         "Access contributions made to projects via their respective GitHub URLs",
       icon: "IoLogoGithub",
       color: "green",
-      url: "http://localhost:3000/github",
+      url: "github",
     },
     {
       name: "LinkedIn",
       title: "Review endorsed skills on LinkedIn",
       icon: "BsLinkedin",
       color: "blue",
-      url: "http://localhost:3000/linkedin",
+      url: "/linkedin",
     },
     {
       name: "Articles",
       title: "Access analysis of blog articles",
       icon: "MdOutlineArticle",
       color: "orange",
-      url: "http://localhost:3000/blogs",
+      url: "/blogs",
     },
   ];
 
-  return (
+  return !loading ? (
     <div>
       <div className="rounded max-w-3xl w-full mt-10">
         <button className="btn bg-slate-200 hover:bg-slate-300 dark:bg-dark-card dark:hover:bg-hover-color">
@@ -291,7 +318,7 @@ const ApplyJob = ({ Employer }) => {
               <div className="-m-1.5 overflow-x-auto">
                 <div className="p-1.5 min-w-full inline-block align-middle">
                   <Table
-                    rows={allApplicantsRows}
+                    rows={candidateList}
                     heads={allApplicantsHeads}
                     actions={actions}
                   />
@@ -307,7 +334,7 @@ const ApplyJob = ({ Employer }) => {
               <div className="-m-1.5 overflow-x-auto">
                 <div className="p-1.5 min-w-full inline-block align-middle">
                   <Table
-                    rows={shortlistApplicantsRows}
+                    rows={candidateShortlistedList}
                     heads={shortlistApplicantsHeads}
                     actions={shrtlistactions}
                   />
@@ -318,6 +345,8 @@ const ApplyJob = ({ Employer }) => {
         </div>
       </div>
     </div>
+  ) : (
+    <FullPageLoader />
   );
 };
 
