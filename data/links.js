@@ -75,7 +75,7 @@ export const employerLinks = [
   {
     id: 2,
     linkText: "Job Search",
-    url: "/search",
+    url: "/employer/search",
   },
   // {
   //   id: 3,

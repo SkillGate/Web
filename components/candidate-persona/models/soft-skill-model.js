@@ -5,7 +5,6 @@ import { useUiContext } from "../../../contexts/UiContext";
 import { UpdateUser } from "../../../apiCalls/userApiCalls";
 import ModelPopup from "../../common/ModelPopup";
 import Loader from "../../common/Loader";
-import { getSkill } from "../../../apiCalls/skillApiCalls";
 import { IoMdAdd } from "react-icons/io";
 
 export const SoftSkillsPopup = ({ user, onClose, onChange }) => {
@@ -22,8 +21,8 @@ export const SoftSkillsPopup = ({ user, onClose, onChange }) => {
     const addExistingSkills = () => {
       if (user !== 0) {
         setSkills([]);
-        user.map((skill) => {
-          setSkills((prevSkills) => [...user]);
+        user?.soft_skills.map((skill) => {
+          setSkills((prevSkills) => [...user?.soft_skills]);
         });
       }
     };
@@ -41,7 +40,7 @@ export const SoftSkillsPopup = ({ user, onClose, onChange }) => {
     if (skills && skills.length !== 0) {
       setLoading(true);
       const actualData = {
-        skills: skills,
+        soft_skills: skills,
       };
       try {
         const {
@@ -97,12 +96,12 @@ export const SoftSkillsPopup = ({ user, onClose, onChange }) => {
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity z-50">
       <ModelPopup
         isVisible={isModalVisible}
-        title={"Personal Skills Update Unsuccess!"}
+        title={"Soft Skills Update Unsuccess!"}
         toggleVisibility={toggleModal}
       />
       <ModelPopup
         isVisible={isModalVisibleSuccess}
-        title={"Personal Skills Updated!"}
+        title={"Soft Skills Updated!"}
         toggleVisibility={toggleModalSuccess}
       />
       <div className="bg-white dark:bg-dark-main w-full sm:w-1/2 rounded-lg p-4">

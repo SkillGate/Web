@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useUiContext } from "../../contexts/UiContext";
 import { useRouter } from "next/router";
 import { BiFile, BiLink } from "react-icons/bi";
 import { MdOpenInNew } from "react-icons/md";
@@ -36,23 +35,17 @@ const CandidatePersona = () => {
     setPersonalInfoIsOpen(true);
   };
 
-  // const { user } = useUiContext();
-
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
       setUser((prevUser) => {
         const userData = JSON.parse(storedUserData);
-        // Here you can perform any additional logic before updating the state
         return userData;
       });
-      // loginAndPersistUser(JSON.parse(storedUserData));
     }
   }, [change]);
 
   const router = useRouter();
-  // const { id } = router.query;
-  // const { data: user, loading } = useFetch(`${server}/api/users/${id}`);
 
   return (
     <div className="padding-container max-w-5xl w-full mx-auto">
