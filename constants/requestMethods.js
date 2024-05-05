@@ -18,7 +18,7 @@ export const publicAuthRequest = axios.create({
 });
 
 export const publicJobRequest = axios.create({
-  baseURL: PROD_JOB_BASE_URL,
+  baseURL: LOCAL_JOB_BASE_URL,
   headers: {
     "Content-Type": "application/json",
     "access-control-allow-origin": "*",

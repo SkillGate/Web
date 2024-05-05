@@ -108,7 +108,7 @@ const ApplyJob = ({ candidate }) => {
     if (user?._id && job?._id) {
       const candidateData = {
         candidateId: user._id,
-        candidate_persona: candidateProfile
+        candidate_persona: candidateProfile,
       };
 
       setLoading(true);
