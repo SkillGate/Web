@@ -8,7 +8,9 @@ import { BsBookmarkCheck } from "react-icons/bs";
 import Link from "next/link";
 import BenefitsPopUp from "../Benefits/benefits";
 
-const Table = ({ heads, rows, actions }) => {
+const Table = ({ heads, rows, actions, user, job }) => {
+  console.log(user);
+  console.log(job);
   const icons = {
     IoDocumentTextOutline,
     IoLogoGithub,
