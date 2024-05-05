@@ -15,8 +15,9 @@ import {
   LineElement,
   Legend,
 } from "chart.js";
-import { getJob } from "../../apiCalls/jobApiCalls";
+import { getEAIJobComparison, getJob } from "../../apiCalls/jobApiCalls";
 import FullPageLoader from "../../components/common/FullPageLoader";
+import { GetUserData } from "../../apiCalls/userApiCalls";
 Chart.register(
   ArcElement,
   CategoryScale,
@@ -28,35 +29,41 @@ const Reasoning = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const bigId = id?.split("-");
-
-  const [jobId, setJobId] = useState(bigId && bigId[0].toString());
-  const [userId, setUserId] = useState(bigId && bigId[1].toString());
+  const [jobId, setJobId] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [job, setJob] = useState([]);
   const [loading, setLoading] = useState(true);
   const [personaScoring, setPersonaScoring] = useState(null);
   const [barGraphData, setBarGraphData] = useState({});
-
-  console.log(bigId);
-  console.log(jobId);
-  console.log(userId);
+  const [candidatePersonaData, setCandidatePersonaData] = useState({});
+  const [xAIData, setXAIData] = useState({});
 
   const [user, setUser] = useState(null);
 
   const [isExplainabilityOpen, setExplainabilityOpen] = useState(false);
-  const handleExplainabilityOpen = () => {
-    setExplainabilityOpen(true);
+  const handleExplainabilityOpen = async () => {
+    await getExplainableData("education");
   };
   const handleExplainabilityClose = () => {
     setExplainabilityOpen(false);
   };
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem("userData");
-    const userJson = JSON.parse(storedUserData);
-    setUser(userJson);
-    setLoading(true);
     const fetchData = async () => {
+      const bigId = id?.split("-");
+
+      console.log(bigId);
+      console.log(jobId);
+      console.log(userId);
+      setJobId(bigId && bigId[0]?.toString());
+      setUserId(bigId && bigId[1]?.toString());
+      if (!id) {
+        setLoading(true);
+      }
+      const storedUserData = localStorage.getItem("userData");
+      const userJson = JSON.parse(storedUserData);
+      setUser((prev) => userJson);
+      setLoading(true);
       try {
         const { data: jobData = [], loading } = await getJob(
           jobId,
@@ -105,6 +112,7 @@ const Reasoning = () => {
             },
           ],
         });
+        await fetchUserData();
         setLoading(loading);
       } catch (error) {
         console.error("Error job fetching:", error);
@@ -113,6 +121,53 @@ const Reasoning = () => {
     };
     fetchData();
   }, [userId, jobId]);
+
+  const fetchUserData = async () => {
+    try {
+      const {
+        data: userData = [],
+        loading,
+        error,
+      } = await GetUserData([userId], user?.accessToken);
+      console.log(userData);
+
+      const candidateProfile = {
+        firstName: userData?.firstName,
+        lastName: userData?.lastName,
+        email: userData?.email,
+        phone: userData?.phone,
+        address: userData?.address,
+        dateOfBirth: userData?.dateOfBirth,
+        role: userData?.role,
+        portfolio: userData?.portfolio,
+        linkedIn: userData?.linkedIn,
+        gitHub: userData?.gitHub,
+        blog: userData?.blog,
+        biography: userData?.biography,
+        skills: userData?.skills,
+        soft_skills: userData?.soft_skills,
+        volunteering: userData?.volunteering,
+        experience: userData?.experience,
+        education: userData?.education,
+        projects: userData?.projects,
+        awards: userData?.awards,
+        createdAt: userData?.createdAt,
+        updatedAt: userData?.updatedAt,
+      };
+
+      const candidateData = {
+        candidateId: userId,
+        candidate_persona: candidateProfile,
+      };
+
+      console.log(candidateData);
+
+      setCandidatePersonaData((prev) => candidateData);
+    } catch (error) {
+      console.error("Error job fetching:", error);
+      setLoading(false);
+    }
+  };
 
   const data = {
     labels: ["Food", "Transportation", "Rent", "Utilities"],
@@ -136,6 +191,56 @@ const Reasoning = () => {
       },
     },
   };
+
+  const getExplainableData = async (category) => {
+    setLoading(true);
+    // let candidateData = candidatePersonaData;
+    // candidateData[category] = category;
+    // console.log(candidateData);
+
+    setCandidatePersonaData((prev) => ({ ...prev, [category]: category }));
+
+    console.log(candidatePersonaData);
+
+    const explainableData = {
+      candidateId: candidatePersonaData.candidateId,
+      candidate_persona: candidatePersonaData.candidate_persona,
+      category: category,
+    };
+
+    console.log(explainableData);
+
+    try {
+      const {
+        data: explainData,
+        loading,
+        error,
+      } = await getEAIJobComparison(
+        jobId,
+        user?.accessToken,
+        explainableData,
+        category
+      );
+      console.log(explainData);
+      setLoading(loading);
+      if (!explainData || explainData.length === 0) {
+        // setIsModalVisible(true);
+        reset();
+      } else {
+        setXAIData((prev) => explainData);
+        setLoading(false);
+        setExplainabilityOpen(true);
+        // setIsModalVisibleSuccess(true);
+      }
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 2000);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error in onSubmit:", error);
+    }
+  };
+
   return !loading ? (
     <div className="h-screen flex flex-col gap-4">
       <div className="rounded max-w-3xl w-full mt-10">
@@ -223,6 +328,7 @@ const Reasoning = () => {
             <ExplainPopup
               onClose={handleExplainabilityClose}
               title={"Education"}
+              explanableData={xAIData}
             />
           )}
         </div>
