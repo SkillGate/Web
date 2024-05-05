@@ -25,7 +25,7 @@ const Shortlist = () => {
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
     console.log(storedUserData);
-    setUser(storedUserData);
+    setUser((prev) => storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
@@ -33,7 +33,7 @@ const Shortlist = () => {
           storedUserData?.accessToken
         );
         console.log(jobData);
-        setJob(jobData);
+        setJob((prev) => jobData);
         await getCandidateData(
           jobData?.candidate_id_list,
           storedUserData?.accessToken
@@ -45,7 +45,7 @@ const Shortlist = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);

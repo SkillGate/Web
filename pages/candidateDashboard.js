@@ -10,13 +10,12 @@ import { BiFilterAlt } from "react-icons/bi";
 import Filters from "../components/common/Filters";
 import JobList from "../components/jobs/JobList";
 import { filters } from "../data/jobFilters";
-import JobAlert from "../components/search/JobAlert";
 import SearchFilters from "../components/search/SearchFilters";
 import { useUiContext } from "../contexts/UiContext";
 import { actioTypes } from "../reducers/uiReducer";
 import formattedDate from "./../components/common/CurrentDate";
 import { useRouter } from "next/router";
-import { getAllJob, getJobByUser } from "../apiCalls/jobApiCalls";
+import { getAllJob } from "../apiCalls/jobApiCalls";
 
 const CandidateDashboard = () => {
   const { isFilterMenuOpen, dispatch } = useUiContext();
