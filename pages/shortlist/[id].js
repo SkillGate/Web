@@ -17,6 +17,7 @@ const Shortlist = () => {
 
   const [job, setJob] = useState([]);
   const [candidateList, setCandidateList] = useState([]);
+  const [candidateQualificationList, setCandidateQualificationList] = useState([]);
   const [candidateShortlistedList, setCandidateShortlistedList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
@@ -97,6 +98,20 @@ const Shortlist = () => {
 
           return applyCandidates;
         });
+
+        setCandidateQualificationList((prev) => {
+          let applyCandidates = [];
+          candidateData?.map((candidate) => {
+            applyCandidates.push({
+              id: candidate?._id,
+              skills: candidate?.skills,
+              experience: candidate?.experience,
+              education: candidate?.education,
+            });
+          });
+          return applyCandidates;
+        });
+        
       } catch (error) {
         console.error("Error job fetching:", error);
       }
@@ -249,6 +264,7 @@ const Shortlist = () => {
                     heads={allApplicantsHeads}
                     actions={actions}
                     user={user}
+                    candidateDetails={candidateQualificationList}
                     job={job}
                   />
                 </div>
@@ -266,6 +282,9 @@ const Shortlist = () => {
                     rows={candidateShortlistedList}
                     heads={shortlistApplicantsHeads}
                     actions={shrtlistactions}
+                    user={user}
+                    candidateDetails={candidateQualificationList}
+                    job={job}
                   />
                 </div>
               </div>

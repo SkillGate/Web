@@ -169,3 +169,29 @@ export const savedJob = async (jobId, token, candidateId) => {
       return { data, loading, error };
     }
   };
+
+  export const predictBenefits = async (jobId, token,candidateId, candidateData) => {
+    let loading = true;
+    let error = null;
+    let data = [];
+    console.log("candidateData: ",candidateData)
+    console.log("candidateID: ",candidateId)
+    console.log("candidate Token: ",token)
+    console.log("job id: ",jobId)
+    try {
+      const res = await publicJobRequest.post(`/job/getBenefits/${jobId}`, {candidateId,candidateData}, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data);
+      loading = false;
+      data = res.data;
+      return { data, loading, error };
+    } catch (err) {
+      console.error(err);
+      loading = false;
+      error = err;
+      return { data, loading, error };
+    }
+  };
