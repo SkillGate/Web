@@ -248,6 +248,8 @@ const Shortlist = () => {
                     rows={candidateList}
                     heads={allApplicantsHeads}
                     actions={actions}
+                    user={user}
+                    job={job}
                   />
                 </div>
               </div>
