@@ -25,7 +25,7 @@ const Shortlist = () => {
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
     console.log(storedUserData);
-    setUser((prev) => storedUserData);
+    setUser((prev)=> storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
