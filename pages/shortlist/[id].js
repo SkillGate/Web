@@ -8,7 +8,7 @@ import { getJob } from "../../apiCalls/jobApiCalls";
 import { GetCandidateData } from "../../apiCalls/userApiCalls";
 import FullPageLoader from "../../components/common/FullPageLoader";
 
-const ApplyJob = ({ Employer }) => {
+const Shortlist = () => {
   const router = useRouter();
   const { id } = router.query;
   console.log(id);
@@ -277,4 +277,4 @@ const ApplyJob = ({ Employer }) => {
   );
 };
 
-export default ApplyJob;
+export default Shortlist;
