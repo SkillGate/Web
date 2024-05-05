@@ -6,6 +6,7 @@ import { BsLinkedin } from "react-icons/bs";
 import { MdOutlineArticle } from "react-icons/md";
 import { BsBookmarkCheck } from "react-icons/bs";
 import Link from "next/link";
+import BenefitsPopUp from "../Benefits/benefits";
 
 const Table = ({ heads, rows, actions }) => {
   const icons = {
@@ -19,6 +20,19 @@ const Table = ({ heads, rows, actions }) => {
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
   const pageCount = Math.ceil(rows.length / itemsPerPage);
+  const [isBenefitsOpen, setBenefitsOpen] = useState(false);
+  const handleBenefitsOpen = () => {
+    setBenefitsOpen(true);
+  };
+  const handleBenefitsClose = () => {
+    setBenefitsOpen(false);
+  };
+
+  function openPopUp(popUp) {
+    if (popUp === "Benefits") {
+      handleBenefitsOpen();
+    }
+  }
 
   const displayData = () => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -44,15 +58,35 @@ const Table = ({ heads, rows, actions }) => {
                 key={action.name}
                 class="px-3 py-4 whitespace-nowrap text-center text-sm font-medium"
               >
-                <Link href={`${action.url}-${row.id}`}>
+                {action.url ? (
+                  <Link
+                    href={`${
+                      action.name == "Reason"
+                        ? action.url + "-" + row.id
+                        : action.url
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      title={action.title}
+                      className="inline-flex items-center"
+                    >
+                      <Icon className={`text-${action.color}-600 text-2xl`} />
+                    </button>
+                  </Link>
+                ) : (
                   <button
                     type="button"
                     title={action.title}
                     className="inline-flex items-center"
+                    onClick={() => openPopUp(action.popUp)}
                   >
                     <Icon className={`text-${action.color}-600 text-2xl`} />
                   </button>
-                </Link>
+                )}
+                {isBenefitsOpen && (
+                  <BenefitsPopUp onClose={handleBenefitsClose} id={1} />
+                )}
               </td>
             );
           })}
