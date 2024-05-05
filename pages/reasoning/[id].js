@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Pie, Line } from "react-chartjs-2";
 import ExplainPopup from "../../components/reasoning/model/explain-model";
+import { FiChevronLeft } from "react-icons/fi";
+import Link from "next/link";
 
 import {
   Chart,
@@ -14,6 +16,7 @@ import {
   Legend,
 } from "chart.js";
 import { getJob } from "../../apiCalls/jobApiCalls";
+import FullPageLoader from "../../components/common/FullPageLoader";
 Chart.register(
   ArcElement,
   CategoryScale,
@@ -52,6 +55,7 @@ const Reasoning = () => {
     const storedUserData = localStorage.getItem("userData");
     const userJson = JSON.parse(storedUserData);
     setUser(userJson);
+    setLoading(true);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
@@ -59,7 +63,7 @@ const Reasoning = () => {
           userJson?.accessToken
         );
         console.log(jobData);
-        setJob(jobData);
+        setJob((prev) => jobData);
         setPersonaScoring((prev) => {
           const personaMatchingScore = {};
           if (jobData?.persona_matching_score) {
@@ -108,7 +112,7 @@ const Reasoning = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [userId, jobId]);
 
   const data = {
     labels: ["Food", "Transportation", "Rent", "Utilities"],
@@ -132,8 +136,18 @@ const Reasoning = () => {
       },
     },
   };
-  return (
+  return !loading ? (
     <div className="h-screen flex flex-col gap-4">
+      <div className="rounded max-w-3xl w-full mt-10">
+        <button className="btn bg-slate-200 hover:bg-slate-300 dark:bg-dark-card dark:hover:bg-hover-color">
+          <Link href={`/shortlist/${jobId}`}>
+            <a className="flex-align-center">
+              <FiChevronLeft />
+              <span>back</span>
+            </a>
+          </Link>
+        </button>
+      </div>
       <div className="flex flex-row gap-4 self-center mt-4 mb-4 text-2xl font-semibold">
         Explaination of the Results
       </div>
@@ -234,6 +248,10 @@ const Reasoning = () => {
           <button className="btn btn-primary">Statistics</button>
         </div>
       </div>
+    </div>
+  ) : (
+    <div>
+      <FullPageLoader />
     </div>
   );
 };
