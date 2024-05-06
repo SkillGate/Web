@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllSkills } from "../../apiCalls/skillApiCalls";
 
-function SkillRenderer({ user, requiredSkills, change }) {
+function SkillRenderer({ user, requiredSkills }) {
   const [skills, setSkills] = useState();
 
   useEffect(() => {
