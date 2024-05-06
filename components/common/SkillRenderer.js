@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllSkills } from "../../apiCalls/skillApiCalls";
 
-function SkillRenderer({ user, requiredSkills }) {
+function SkillRenderer({ user, requiredSkills, change }) {
   const [skills, setSkills] = useState();
 
   useEffect(() => {
@@ -15,6 +15,7 @@ function SkillRenderer({ user, requiredSkills }) {
           error,
         } = await getAllSkills(requiredSkills, user?.accessToken);
         console.log(userData);
+        change();
         setSkills((prev) => {
           return userData;
         });
