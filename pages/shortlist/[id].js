@@ -140,7 +140,7 @@ const Shortlist = () => {
       title: "View CV",
       icon: "IoDocumentTextOutline",
       color: "yellow",
-      url: "",
+      url: `/candidate-persona`,
     },
     {
       name: "GitHub",
@@ -178,7 +178,7 @@ const Shortlist = () => {
       title: "View CV",
       icon: "IoDocumentTextOutline",
       color: "yellow",
-      url: "",
+      url: `/candidate-persona`,
     },
     {
       name: "Benefits",

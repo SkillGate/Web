@@ -10,7 +10,7 @@ import BenefitsPopUp from "../Benefits/benefits";
 
 const Table = ({ heads, rows, actions, user, job, candidateDetails }) => {
   console.log(user);
-  console.log("job details:",job);
+  console.log("job details:", job);
   const icons = {
     IoDocumentTextOutline,
     IoLogoGithub,
@@ -62,10 +62,13 @@ const Table = ({ heads, rows, actions, user, job, candidateDetails }) => {
               >
                 {action.url ? (
                   <Link
-                    href={`${action.name == "Reason"
+                    href={`${
+                      action.name == "Reason"
                         ? action.url + "-" + row.id
-                        : (action.name == "GitHub" ? action.url + "/" + row.id : action.url)
-                      }`}
+                        : (action.name == "GitHub") || (action.name == "CV")
+                        ? action.url + "/" + row.id
+                        : action.url
+                    }`}
                   >
                     <button
                       type="button"
@@ -86,7 +89,13 @@ const Table = ({ heads, rows, actions, user, job, candidateDetails }) => {
                   </button>
                 )}
                 {isBenefitsOpen && (
-                  <BenefitsPopUp onClose={handleBenefitsClose} candidateId={row.id} jobId={job._id} user={user} candidateDetails={candidateDetails}/>
+                  <BenefitsPopUp
+                    onClose={handleBenefitsClose}
+                    candidateId={row.id}
+                    jobId={job._id}
+                    user={user}
+                    candidateDetails={candidateDetails}
+                  />
                 )}
               </td>
             );
@@ -106,10 +115,11 @@ const Table = ({ heads, rows, actions, user, job, candidateDetails }) => {
       pageButtons.push(
         <button
           key={i}
-          className={`px-3 py-1 mx-1 ${currentPage === i
+          className={`px-3 py-1 mx-1 ${
+            currentPage === i
               ? "bg-primary text-white"
               : "bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
-            }`}
+          }`}
           onClick={() => changePage(i)}
         >
           {i}

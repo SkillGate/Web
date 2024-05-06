@@ -61,36 +61,6 @@ const Skill = ({ details }) => {
       </div>
       <div>
         <SkillRenderer user={user} requiredSkills={user?.skills} change={change} />
-        {/* <div>
-          {user && skills && skills.length !== 0 ? (
-            <div className="flex-align-center gap-2">
-              {skills.map((skill) =>
-                skill.value != "None" ? (
-                  <img src={skill.value} alt={skill.name} className="w-6" />
-                ) : (
-                  <div className="">{skill.name}</div>
-                )
-              )}
-            </div>
-          ) : (
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
-              <div className="flex gap-3">
-                <h1 className="text-md font-semiBold capitalize">
-                  No skills available.
-                </h1>
-              </div>
-            </div>
-          )}
-        </div> */}
-        {/* <img src={skillIconUrl.htmlIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.cssIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.sassIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.bootstrapIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.jsIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.jqueryIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.reactIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.firebaseIcon} alt="" className="w-6" />
-        <img src={skillIconUrl.gitIcon} alt="" className="w-6" /> */}
       </div>
     </div>
   );

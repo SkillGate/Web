@@ -60,12 +60,6 @@ const Biography = () => {
           </h1>
         </div>
       </div>
-      {/* <p
-        className="text-sm mt-3 cursor-pointer"
-        onClick={handleEmptyValueClick}
-      >
-        {user?.biography || "Add your biography"}
-      </p> */}
     </div>
   );
 };

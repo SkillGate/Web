@@ -6,11 +6,13 @@ import { getEducationLogo } from "../../apiCalls/educationApiCalls";
 
 function EducationRenderer({ user, companyLogo }) {
   const [skills, setSkills] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAllSkillLogos = async () => {
       console.log(user);
       console.log(companyLogo);
+      setLoading(true);
       try {
         const {
           data: userData,
@@ -21,14 +23,15 @@ function EducationRenderer({ user, companyLogo }) {
         setSkills((prev) => {
           return userData;
         });
+        setLoading(loading);
       } catch (error) {
-        // setLoading(false);
+        setLoading(false);
         console.error("Error in onSubmit:", error);
       }
     };
     getAllSkillLogos();
   }, [user, companyLogo]);
-  return (
+  return !loading && (
     <div className="flex items-center justify-center h-20 w-20">
       {user && skills ? (
         <img src={skills.value} alt={skills.name} className="w-full h-auto" />
