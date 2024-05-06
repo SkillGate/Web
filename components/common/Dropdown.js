@@ -26,8 +26,8 @@ const Dropdown = () => {
 
   const userLogout = () => {
     logoutUser();
-    router.push("/");
-    window.location.href = "/";
+    router.push("https://skillgate.github.io/Web/");
+    window.location.href = "https://skillgate.github.io/Web/";
     // window.location.reload();
   };
 
