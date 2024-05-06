@@ -157,20 +157,48 @@ const GitHubInfo = () => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.map((item, outerIndex) =>
-          extractChartData(item).map((chartData, innerIndex) => (
+      <div>
+        {data.length === 0 ? (
+          <div className="flex justify-center items-center place-content-around">
             <div
-              key={outerIndex}
-              className="rounded-md overflow-hidden border p-4 bg-white dark:bg-dark-card"
+              className="rounded-md overflow-hidden border p-4 bg-cover bg-center bg-no-repeat"
+              style={{
+                minHeight: "300px", // Set a minimum height for the image container
+              }}
             >
-              <h2 className="text-xl font-bold mb-4">{chartData.repoName}</h2>
-              <Line data={chartData} options={chartData.options} />
-              {renderLegend(chartData.contributorColors)}
-              <h3 className="mt-5">Languages:</h3>
-              {renderLanguages(chartData.languages)}
+              <img
+                src="https://res.cloudinary.com/midefulness/image/upload/v1702371275/SkillGate/4161376-removebg_nx7vyv.png"
+                alt="Placeholder"
+                // className="max-w-full max-h-full object-cover"
+                style={{
+                  width: "50%",
+                  height: "auto",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              />
             </div>
-          ))
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {data.map((item, outerIndex) =>
+              extractChartData(item).map((chartData, innerIndex) => (
+                <div
+                  key={outerIndex}
+                  className="rounded-md overflow-hidden border p-4 bg-white dark:bg-dark-card"
+                >
+                  <h2 className="text-xl font-bold mb-4">
+                    {chartData.repoName}
+                  </h2>
+                  <Line data={chartData} options={chartData.options} />
+                  {renderLegend(chartData.contributorColors)}
+                  <h3 className="mt-5">Languages:</h3>
+                  {renderLanguages(chartData.languages)}
+                </div>
+              ))
+            )}
+          </div>
         )}
       </div>
     </div>
