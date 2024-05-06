@@ -149,26 +149,53 @@ export const applyJob = async (jobId, token, candidateId) => {
 };
 
 export const savedJob = async (jobId, token, candidateId) => {
-  let loading = true;
-  let error = null;
-  let data = [];
-  try {
-    const res = await publicJobRequest.put(`/job/saved/${jobId}`, candidateId, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(res.data);
-    loading = false;
-    data = res.data;
-    return { data, loading, error };
-  } catch (err) {
-    console.error(err);
-    loading = false;
-    error = err;
-    return { data, loading, error };
-  }
-};
+    let loading = true;
+    let error = null;
+    let data = [];
+    try {
+      const res = await publicJobRequest.put(`/job/saved/${jobId}`, candidateId, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data);
+      loading = false;
+      data = res.data;
+      return { data, loading, error };
+    } catch (err) {
+      console.error(err);
+      loading = false;
+      error = err;
+      return { data, loading, error };
+    }
+  };
+
+  export const predictBenefits = async (jobId, token,candidateId, candidateData) => {
+    let loading = true;
+    let error = null;
+    let data = [];
+    console.log("candidateData: ",candidateData)
+    console.log("candidateID: ",candidateId)
+    console.log("candidate Token: ",token)
+    console.log("job id: ",jobId)
+    try {
+      const res = await publicJobRequest.post(`/job/getBenefits/${jobId}`, {candidateId,candidateData}, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data);
+      loading = false;
+      data = res.data;
+      return { data, loading, error };
+    } catch (err) {
+      console.error(err);
+      loading = false;
+      error = err;
+      return { data, loading, error };
+    }
+  };
+
 
 export const getEAIJobComparison = async (jobId, token, candidateData, category) => {
   let loading = true;
@@ -199,3 +226,4 @@ export const getEAIJobComparison = async (jobId, token, candidateData, category)
     return { data, loading, error };
   }
 };
+

@@ -8,9 +8,9 @@ import { BsBookmarkCheck } from "react-icons/bs";
 import Link from "next/link";
 import BenefitsPopUp from "../Benefits/benefits";
 
-const Table = ({ heads, rows, actions, user, job }) => {
+const Table = ({ heads, rows, actions, user, job, candidateDetails }) => {
   console.log(user);
-  console.log(job);
+  console.log("job details:",job);
   const icons = {
     IoDocumentTextOutline,
     IoLogoGithub,
@@ -87,7 +87,7 @@ const Table = ({ heads, rows, actions, user, job }) => {
                   </button>
                 )}
                 {isBenefitsOpen && (
-                  <BenefitsPopUp onClose={handleBenefitsClose} id={1} />
+                  <BenefitsPopUp onClose={handleBenefitsClose} candidateId={row.id} jobId={job._id} user={user} candidateDetails={candidateDetails}/>
                 )}
               </td>
             );
