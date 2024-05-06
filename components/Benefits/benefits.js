@@ -1,26 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Loader from "../common/Loader";
+import { predictBenefits } from "../../apiCalls/jobApiCalls";
+const BenefitsPopUp = ({onClose,candidateId,jobId,user,candidateDetails }) => {
 
-const BenefitsPopUp = ({onClose,id }) => {
     const [loading, setLoading] = useState(false);
-    const predictions=[
-        "$1,330.00 USD - $1,670.00 USD",
-        "Hybrid",
-        "6 - 8 hours",
-        "Flexible to handle emergency cases. Otherwise it is fixed.",
-        "2 days",
-        "1 days",
-        "Based on the performance. No matter about the years of employment",
-        [
-            "Knowledge Sharing sessions",
-        ],
-        [
-            "Health and welfare benefits",
-            "Health and welfare benefits",
-            "Health and welfare benefits"
-        ]
-    ];
+    const [predictions,setPredictions]=useState(["","","","","","","",[],[]])
+    useEffect(() => {
+        const fetchData = async () => {
+            const applyCandidates = candidateDetails
+            ?.filter(candidate => candidate?.id === candidateId)
+            .map(candidate => ({
+                id: candidate?._id,
+                skills: candidate?.skills,
+                experience: candidate?.experience,
+                education: candidate?.education,
+            }));
+            try {
+                const { data, loading } = await predictBenefits(
+                  jobId,
+                  user?.accessToken,
+                  candidateId,
+                  applyCandidates
+                );
+                console.log(data);
+                setPredictions(data);
+                setLoading(loading);
+              } catch (error) {
+                console.error("Error job fetching:", error);
+                setLoading(false);
+              }
+        };
+        fetchData();
+      }, []);
+
+    // const predictions=[
+    //     "$1,330.00 USD - $1,670.00 USD",
+    //     "Hybrid",
+    //     "6 - 8 hours",
+    //     "Flexible to handle emergency cases. Otherwise it is fixed.",
+    //     "2 days",
+    //     "1 days",
+    //     "Based on the performance. No matter about the years of employment",
+    //     [
+    //         "Knowledge Sharing sessions",
+    //     ],
+    //     [
+    //         "Health and welfare benefits",
+    //         "Health and welfare benefits",
+    //         "Health and welfare benefits"
+    //     ]
+    // ];
     return !loading ? (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 dark:bg-gray-800 bg-opacity-50 dark:bg-opacity-50 transition-opacity z-50">
           <div className="bg-white dark:bg-dark-main w-full sm:w-1/2 rounded-lg p-4">
