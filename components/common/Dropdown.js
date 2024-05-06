@@ -59,7 +59,7 @@ const Dropdown = () => {
             <BiBriefcase className="text-muted" />
             <span className="text-muted">My Jobs</span>
           </div>
-          <Link href={"/Web"}>
+          <Link href={"/"}>
             <div
               className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg"
               // onClick={userLogout}
