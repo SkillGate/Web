@@ -37,7 +37,7 @@ const ExperiencePopup = ({ onClose, details, onChange, experience }) => {
     experience?.currentlyWorking
   );
 
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(experience?.skills);
   const [newSkill, setNewSkill] = useState("");
   const [checkboxChecked, setCheckboxChecked] = useState(false);
 
@@ -365,10 +365,8 @@ const ExperiencePopup = ({ onClose, details, onChange, experience }) => {
               </div>
             </div>
             <h2 className="mt-4 mb-4">Skills</h2>
-            <button type="click" onClick={handleAddSkill}>
-              <IoMdAdd size={20} className="text-primary"></IoMdAdd>
-            </button>
-            <div className="mb-5">
+
+            <div className="mb-5 flex items-center gap-4">
               <input
                 type="text"
                 name="skills"
@@ -379,6 +377,9 @@ const ExperiencePopup = ({ onClose, details, onChange, experience }) => {
                 onChange={(e) => setNewSkill((previous) => e.target.value)}
                 onKeyPress={handleKeyPress}
               />
+              <button type="click" onClick={handleAddSkill}>
+                <IoMdAdd size={20} className="text-primary"></IoMdAdd>
+              </button>
             </div>
             <div className="flex flex-wrap gap-2 mb-10">
               {skills.map((skill, index) => (
