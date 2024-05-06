@@ -7,9 +7,12 @@ import AboutUsSection from "../components/landing/AboutUsSection";
 import { useEffect } from "react";
 
 const Home = () => {
-  // useEffect(() => {
-  //   window.location.href = "/Web";
-  // });
+  useEffect(() => {
+    const currentPathname = window.location.pathname;
+    if (currentPathname == "/") {
+      window.location.href = "/Web";
+    }
+  });
   return (
     <div className="overflow-hidden">
       <div>

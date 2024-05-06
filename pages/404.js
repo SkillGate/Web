@@ -1,6 +1,12 @@
 import Image from "next/image";
 
 const PageNotFound = () => {
+  useEffect(() => {
+    const currentPathname = window.location.pathname;
+    if (currentPathname == "/") {
+      window.location.href = "/Web";
+    }
+  });
   return (
     <div className="flex-col min-h-screen text-center flex-center-center">
       <div className="-mt-20 image-wrapper">
