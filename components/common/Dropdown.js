@@ -4,15 +4,16 @@ import { useUiContext } from "../../contexts/UiContext";
 import { useRouter } from "next/router";
 import { userTypes } from "../../constants";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const Dropdown = () => {
   const { logoutUser, isDropdownOpen } = useUiContext();
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
+    const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
-      setUser(prevUser => {
+      setUser((prevUser) => {
         const userData = JSON.parse(storedUserData);
         // Here you can perform any additional logic before updating the state
         return userData;
@@ -27,6 +28,7 @@ const Dropdown = () => {
     logoutUser();
     router.push("/");
     window.location.href = "/";
+    // window.location.reload();
   };
 
   const userProfile = () => {
@@ -58,6 +60,7 @@ const Dropdown = () => {
             <BiBriefcase className="text-muted" />
             <span className="text-muted">My Jobs</span>
           </div>
+          {/* <Link href={"/"}> */}
           <div
             className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg"
             onClick={userLogout}
@@ -65,6 +68,7 @@ const Dropdown = () => {
             <BiLogOut className="text-muted" />
             <span className="text-muted">Sign out</span>
           </div>
+          {/* </Link> */}
         </motion.div>
       )}
     </>

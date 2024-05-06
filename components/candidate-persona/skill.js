@@ -12,7 +12,7 @@ const Skill = ({ details }) => {
   const [change, notChange] = useState(false);
   const [loading, setLoading] = useState(false);
   const { loginUser } = useUiContext();
-  
+  // const [skillChange, SetSkillChange ] = useState(false);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -22,8 +22,6 @@ const Skill = ({ details }) => {
       // loginAndPersistUser(JSON.parse(storedUserData));
     }
   }, [change]);
-
-  
 
   const handleSkillsOpen = () => {
     setSkillsIsOpen(true);
@@ -38,6 +36,10 @@ const Skill = ({ details }) => {
 
   const handleUserChangeState = () => {
     notChange(!change);
+  };
+  
+  const changeSkill = () => {
+    SetSkillChange(!skillChange);
   };
 
   return (
