@@ -82,7 +82,7 @@ const Shortlist = () => {
           let applyCandidates = [];
           candidateData?.forEach((candidate) => {
             let score = candidate?.persona_matching_score
-              ? candidate.persona_matching_score.overall_score
+              ? candidate?.persona_matching_score?.overall_score
               : 0;
             applyCandidates.push({
               id: candidate?._id,
