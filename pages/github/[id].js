@@ -10,6 +10,8 @@ import {
   LineElement,
   BarElement,
 } from "chart.js";
+import { GetUserData } from '../../apiCalls/userApiCalls';
+import { useRouter } from 'next/router';
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +25,52 @@ ChartJS.register(
 const GitHubInfo = () => {
 
   const [data, setData] = useState([]);
+  const router = useRouter();
+  const { id } = router.query;
+  const [userProjectData, setUserProjectData] = useState([]);
+  const [user, setUser] = useState(null);
+  const [currentGitHubUrl, setCurrentGitHubUrl] = useState();
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    const userJson = JSON.parse(storedUserData);
+    setUser((prev) => userJson);
+    const fetchUserData = async () => {
+      try {
+        const {
+          data: userData = [],
+          loading,
+          error,
+        } = await GetUserData(id, user?.accessToken);
+
+        const candidateProfile = {
+          projects: userData?.projects,
+        };
+
+        setUserProjectData((prev) => {
+          const githubData = [];
+
+          if (userData?.projects) {
+            userData?.projects?.map((project, index) => {
+              githubData.push({
+                projectName: project.projectName,
+                projectUrl: project.gitHubLink,
+              })
+            });
+
+          }
+          return githubData;
+        });
+        console.log(userProjectData);
+      } catch (error) {
+        console.error("Error job fetching:", error);
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+  }, [id]);
+
+  console.log(userProjectData);
 
   const options = [
     { label: 'Restaurant' },
@@ -32,8 +80,10 @@ const GitHubInfo = () => {
 
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleSelect = (item) => {
-    setSelectedItem(item);
+  const handleSelect = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedItem(selectedValue);
+    console.log(selectedValue)
   };
 
   const handleConfirm = () => {
@@ -42,7 +92,7 @@ const GitHubInfo = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8000/github/projects?gitHubUrl=https://github.com/SkillGate');
+      const response = await fetch(`http://localhost:8000/github/projects?gitHubUrl=${selectedItem}`);
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
 
@@ -67,25 +117,17 @@ const GitHubInfo = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('Fetching data');
-  }, []);
-
-
   return (
     <div>
       <div className="container mx-auto flex flex-wrap justify-around items-center text-center my-4 mb-10">
-        <div className="padding-container mb-5">
-          <Back url={"/shortlist/1"} />
-        </div>
         <div>
           <select
             className="block w-full px-4 py-2 text-base leading-tight bg-white border border-gray-300 rounded-md appearance-none focus:outline-none focus:border-purple-500"
             onChange={handleSelect}
           >
             <option disabled selected>Select a project</option>
-            {options.map((option, index) => (
-              <option key={index} value={option.value} className="text-base font-sans">{option.label}</option>
+            {userProjectData.map((project, index) => (
+              <option key={index} value={project.projectUrl} className="text-base font-sans">{project.projectName}</option>
             ))}
           </select>
         </div>
