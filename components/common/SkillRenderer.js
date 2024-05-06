@@ -15,6 +15,7 @@ function SkillRenderer({ user, requiredSkills }) {
           error,
         } = await getAllSkills(requiredSkills, user?.accessToken);
         console.log(userData);
+        change();
         setSkills((prev) => {
           return userData;
         });
