@@ -116,32 +116,23 @@ const PostJob = () => {
 
     setStoreData((prev) => actualData);
 
-    if (banner && logo) {
-      storeImage(banner, "banner_url");
-      storeImage(logo, "logo_url");
-    } else if (banner) {
-      storeImage(banner, "banner_url");
-      setStoreData((prevData) => ({
-        ...prevData,
-        logo_url: logo,
-      }));
-    } else if (logo) {
-      storeImage(logo, "logo_url");
-      setStoreData((prevData) => ({
-        ...prevData,
-        banner_url: banner,
-      }));
-    } else {
-      setStoreData((prevData) => ({
-        ...prevData,
-        banner_url: banner,
-        logo_url: logo,
-      }));
+    try {
+      if (banner) {
+        storeImage(banner, "banner_url", actualData);
+      }
+      if (logo) {
+        storeImage(logo, "logo_url", actualData);
+      }
+    } catch (error) {
+      console.error("Error in image upload:", error);
+      setLoading(false);
     }
-    saveData();
+    if (!(banner && logo)) {
+      saveData(actualData);
+    }
   };
 
-  const storeImage = (file, fileNameData) => {
+  const storeImage = (file, fileNameData, actualData) => {
     const fileName = new Date().getTime() + file.name;
     const storage = getStorage(app);
     const storageRef = ref(storage, fileName);
@@ -176,44 +167,34 @@ const PostJob = () => {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          actualData[fileNameData] = downloadURL;
+
           setStoreData((prevData) => ({
             ...prevData,
             fileNameData: downloadURL,
           }));
-          //   const status = addNews(userData, token);
 
-          //   if (status) {
-          //     Swal.fire({
-          //       title: "Success!",
-          //       text: "News added success!",
-          //       icon: "success",
-          //       confirmButtonText: "Ok",
-          //       confirmButtonColor: "#378cbb",
-          //       // showConfirmButton: false,
-          //       // timer: 2000,
-          //     });
-          //     navigate("/news");
-          //   } else {
-          //     Swal.fire({
-          //       icon: "error",
-          //       title: "Oops...",
-          //       text: "News added unsuccess!",
-          //     });
-          //   }
+          if (banner && !logo) {
+            saveData(actualData);
+          }
+          if (logo) {
+            saveData(actualData);
+          }
         });
       }
     );
   };
 
-  const saveData = async () => {
+  const saveData = async (actualData) => {
     console.log(storeData);
+    console.log(actualData);
     setLoading(true);
     try {
       const {
         data: jobData,
         loading,
         error,
-      } = await addJob(storeData, user?.accessToken);
+      } = await addJob(actualData, user?.accessToken);
       console.log(jobData);
       setLoading(loading);
       if (!jobData || jobData.length === 0) {
