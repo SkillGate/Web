@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Back from "../../components/common/Back";
 import { Line, Bar } from "react-chartjs-2";
 import {
@@ -10,8 +10,9 @@ import {
   LineElement,
   BarElement,
 } from "chart.js";
-import { GetUserData } from '../../apiCalls/userApiCalls';
-import { useRouter } from 'next/router';
+import { GetUserData } from "../../apiCalls/userApiCalls";
+import { useRouter } from "next/router";
+import FullPageLoader from "../../components/common/FullPageLoader";
 
 ChartJS.register(
   CategoryScale,
@@ -23,18 +24,20 @@ ChartJS.register(
 );
 
 const GitHubInfo = () => {
-
   const [data, setData] = useState([]);
   const router = useRouter();
   const { id } = router.query;
   const [userProjectData, setUserProjectData] = useState([]);
   const [user, setUser] = useState(null);
   const [currentGitHubUrl, setCurrentGitHubUrl] = useState();
+  const [loading, setLoading] = useState(false);
+  const [change, setChange] = useState(false);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
     const userJson = JSON.parse(storedUserData);
     setUser((prev) => userJson);
+    setLoading(true);
     const fetchUserData = async () => {
       try {
         const {
@@ -42,6 +45,10 @@ const GitHubInfo = () => {
           loading,
           error,
         } = await GetUserData(id, user?.accessToken);
+
+        if (error) {
+          setChange(!change);
+        }
 
         const candidateProfile = {
           projects: userData?.projects,
@@ -55,27 +62,29 @@ const GitHubInfo = () => {
               githubData.push({
                 projectName: project.projectName,
                 projectUrl: project.gitHubLink,
-              })
+              });
             });
-
           }
           return githubData;
         });
         console.log(userProjectData);
+        // setChange(!change);
+        setLoading(loading);
       } catch (error) {
         console.error("Error job fetching:", error);
+        setChange(!change);
         setLoading(false);
       }
     };
     fetchUserData();
-  }, [id]);
+  }, [id, change]);
 
   console.log(userProjectData);
 
   const options = [
-    { label: 'Restaurant' },
-    { label: 'Employee Managment - CoEM' },
-    { label: 'Career Guidance System' },
+    { label: "Restaurant" },
+    { label: "Employee Managment - CoEM" },
+    { label: "Career Guidance System" },
   ];
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -83,7 +92,7 @@ const GitHubInfo = () => {
   const handleSelect = (event) => {
     const selectedValue = event.target.value;
     setSelectedItem(selectedValue);
-    console.log(selectedValue)
+    console.log(selectedValue);
   };
 
   const handleConfirm = () => {
@@ -92,11 +101,13 @@ const GitHubInfo = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/github/projects?gitHubUrl=${selectedItem}`);
+      const response = await fetch(
+        `http://localhost:8000/github/projects?gitHubUrl=${selectedItem}`
+      );
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
 
-      let partialData = '';
+      let partialData = "";
 
       while (true) {
         const { done, value } = await reader.read();
@@ -106,18 +117,16 @@ const GitHubInfo = () => {
 
         try {
           const parsedData = JSON.parse(partialData);
-          setData(prevData => [...prevData, parsedData]);
-          partialData = '';
-        } catch (error) {
-
-        }
+          setData((prevData) => [...prevData, parsedData]);
+          partialData = "";
+        } catch (error) {}
       }
     } catch (error) {
-      console.error('Failed to fetch data:', error);
+      console.error("Failed to fetch data:", error);
     }
   };
 
-  return (
+  return !loading ? (
     <div>
       <div className="container mx-auto flex flex-wrap justify-around items-center text-center my-4 mb-10">
         <div>
@@ -125,33 +134,77 @@ const GitHubInfo = () => {
             className="block w-full px-4 py-2 text-base leading-tight bg-white border border-gray-300 rounded-md appearance-none focus:outline-none focus:border-purple-500"
             onChange={handleSelect}
           >
-            <option disabled selected>Select a project</option>
+            <option disabled selected>
+              Select a project
+            </option>
             {userProjectData.map((project, index) => (
-              <option key={index} value={project.projectUrl} className="text-base font-sans">{project.projectName}</option>
+              <option
+                key={index}
+                value={project.projectUrl}
+                className="text-base font-sans"
+              >
+                {project.projectName}
+              </option>
             ))}
           </select>
         </div>
-        <div><button
-          onClick={handleConfirm}
-          className="mt-2 w-full px-4 py-2 text-sm font-medium text-white btn-primary-light border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Get Details
-        </button>
+        <div>
+          <button
+            onClick={handleConfirm}
+            className="mt-2 w-full px-4 py-2 text-sm font-medium text-white btn-primary-light border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Get Details
+          </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.map((item, outerIndex) => (
-          extractChartData(item).map((chartData, innerIndex) => (
-            <div key={outerIndex} className="rounded-md overflow-hidden border p-4 bg-white dark:bg-dark-card">
-              <h2 className="text-xl font-bold mb-4">{chartData.repoName}</h2>
-              <Line data={chartData} options={chartData.options} />
-              {renderLegend(chartData.contributorColors)}
-              <h3 className="mt-5">Languages:</h3>
-              {renderLanguages(chartData.languages)}
+      <div>
+        {data.length === 0 ? (
+          <div className="flex justify-center items-center place-content-around">
+            <div
+              className="rounded-md overflow-hidden border p-4 bg-cover bg-center bg-no-repeat"
+              style={{
+                minHeight: "300px", // Set a minimum height for the image container
+              }}
+            >
+              <img
+                src="https://res.cloudinary.com/midefulness/image/upload/v1702371275/SkillGate/4161376-removebg_nx7vyv.png"
+                alt="Placeholder"
+                // className="max-w-full max-h-full object-cover"
+                style={{
+                  width: "50%",
+                  height: "auto",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              />
             </div>
-          ))
-        ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {data.map((item, outerIndex) =>
+              extractChartData(item).map((chartData, innerIndex) => (
+                <div
+                  key={outerIndex}
+                  className="rounded-md overflow-hidden border p-4 bg-white dark:bg-dark-card"
+                >
+                  <h2 className="text-xl font-bold mb-4">
+                    {chartData.repoName}
+                  </h2>
+                  <Line data={chartData} options={chartData.options} />
+                  {renderLegend(chartData.contributorColors)}
+                  <h3 className="mt-5">Languages:</h3>
+                  {renderLanguages(chartData.languages)}
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
+    </div>
+  ) : (
+    <div>
+      <FullPageLoader />
     </div>
   );
 };
@@ -307,6 +360,5 @@ const renderLegend = (contributorColors) => {
     </div>
   );
 };
-
 
 export default GitHubInfo;
