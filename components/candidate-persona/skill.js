@@ -12,7 +12,7 @@ const Skill = ({ details }) => {
   const [change, notChange] = useState(false);
   const [loading, setLoading] = useState(false);
   const { loginUser } = useUiContext();
-  
+  const [skillChange, SetSkillChange ] = useState(false);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -21,7 +21,7 @@ const Skill = ({ details }) => {
       // getAllSkillLogos();
       // loginAndPersistUser(JSON.parse(storedUserData));
     }
-  }, [change]);
+  }, [change, skillChange]);
 
   
 
@@ -38,6 +38,10 @@ const Skill = ({ details }) => {
 
   const handleUserChangeState = () => {
     notChange(!change);
+  };
+  
+  const changeSkill = () => {
+    SetSkillChange(!skillChange);
   };
 
   return (
@@ -58,7 +62,7 @@ const Skill = ({ details }) => {
         </div>
       </div>
       <div>
-        <SkillRenderer user={user} requiredSkills={user?.skills} />
+        <SkillRenderer user={user} requiredSkills={user?.skills} change={changeSkill} />
         {/* <div>
           {user && skills && skills.length !== 0 ? (
             <div className="flex-align-center gap-2">
