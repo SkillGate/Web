@@ -27,7 +27,7 @@ const Dropdown = () => {
   const userLogout = () => {
     logoutUser();
     router.push("/");
-    window.location.href = "/Web";
+    window.location.href = "/";
     // window.location.reload();
   };
 
