@@ -7,7 +7,7 @@ const History = () => {
     <div>
       <div className="flex-center-between">
         <h1 className="text-xl font-bold">Job History</h1>
-        <button className="btn btn-primary">manage job post</button>
+        
       </div>
       <div className="mt-5 flex flex-wrap gap-8">
         {/* <div className="flex-1 basis-[16rem]">

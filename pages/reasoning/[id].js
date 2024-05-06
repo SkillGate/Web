@@ -41,11 +41,32 @@ const Reasoning = () => {
   const [user, setUser] = useState(null);
 
   const [isExplainabilityOpen, setExplainabilityOpen] = useState(false);
+  const [isTechnicalExplainabilityOpen, setTechnicalExplainabilityOpen] = useState(false);
+  const [isSoftExplainabilityOpen, setSoftExplainabilityOpen] = useState(false);
+  const [isExperienceExplainabilityOpen, setExperienceExplainabilityOpen] = useState(false);
   const handleExplainabilityOpen = async () => {
     await getExplainableData("education");
   };
   const handleExplainabilityClose = () => {
     setExplainabilityOpen(false);
+  };
+  const handleTechnicalExplainabilityOpen = async () => {
+    await getExplainableData("skills");
+  };
+  const handleTechnicalExplainabilityClose = () => {
+    setTechnicalExplainabilityOpen(false);
+  };
+  const handleSoftExplainabilityOpen = async () => {
+    await getExplainableData("soft_skills");
+  };
+  const handleSoftExplainabilityClose = () => {
+    setSoftExplainabilityOpen(false);
+  };
+  const handleExperienceExplainabilityOpen = async () => {
+    await getExplainableData("experience");
+  };
+  const handleExperienceExplainabilityClose = () => {
+    setExperienceExplainabilityOpen(false);
   };
 
   useEffect(() => {
@@ -229,7 +250,14 @@ const Reasoning = () => {
       } else {
         setXAIData((prev) => explainData);
         setLoading(false);
-        setExplainabilityOpen(true);
+        if(category==="education")
+          setExplainabilityOpen(true);
+        else if(category==="experience")
+          setExperienceExplainabilityOpen(true);
+        else if(category==="soft_skills")
+          setSoftExplainabilityOpen(true);
+        else
+          setTechnicalExplainabilityOpen(true);
         // setIsModalVisibleSuccess(true);
       }
       // setTimeout(() => {
@@ -337,21 +365,57 @@ const Reasoning = () => {
             <div className="flex">Technical Skills</div>
             <div className="flex">{personaScoring?.technical_skills}%</div>
           </div>
-          <button className="btn btn-primary">Statistics</button>
+          <button
+            onClick={handleTechnicalExplainabilityOpen}
+            className="btn btn-primary"
+          >
+            Statistics
+          </button>
+          {isTechnicalExplainabilityOpen && (
+            <ExplainPopup
+              onClose={handleTechnicalExplainabilityClose}
+              title={"Technical Skills"}
+              explanableData={xAIData}
+            />
+          )}
         </div>
         <div className="w-1/4 flex flex-col rounded-md overflow-hidden border p-4 gap-4 bg-white dark:bg-dark-main">
           <div className="flex flex-row gap-4">
             <div className="flex">Soft Skills</div>
             <div className="flex">{personaScoring?.soft_skills}%</div>
           </div>
-          <button className="btn btn-primary">Statistics</button>
+          <button
+            onClick={handleSoftExplainabilityOpen}
+            className="btn btn-primary"
+          >
+            Statistics
+          </button>
+          {isSoftExplainabilityOpen && (
+            <ExplainPopup
+              onClose={handleSoftExplainabilityClose}
+              title={"Soft Skills"}
+              explanableData={xAIData}
+            />
+          )}
         </div>
         <div className="w-1/4 flex flex-col rounded-md overflow-hidden border p-4 gap-4 bg-white dark:bg-dark-main">
           <div className="flex flex-row gap-4">
             <div className="flex">Experience</div>
             <div className="flex">{personaScoring?.experience}%</div>
           </div>
-          <button className="btn btn-primary">Statistics</button>
+          <button
+            onClick={handleExperienceExplainabilityOpen}
+            className="btn btn-primary"
+          >
+            Statistics
+          </button>
+          {isExperienceExplainabilityOpen && (
+            <ExplainPopup
+              onClose={handleExperienceExplainabilityClose}
+              title={"Experience"}
+              explanableData={xAIData}
+            />
+          )}
         </div>
       </div>
     </div>
