@@ -5,11 +5,13 @@ import { imageUrl } from "../../constants";
 
 function CompanyRenderer({ user, companyLogo }) {
   const [skills, setSkills] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAllSkillLogos = async () => {
       console.log(user);
       console.log(companyLogo);
+      setLoading(true);
       try {
         const {
           data: userData,
@@ -20,25 +22,28 @@ function CompanyRenderer({ user, companyLogo }) {
         setSkills((prev) => {
           return userData;
         });
+        setLoading(loading);
       } catch (error) {
-        // setLoading(false);
+        setLoading(false);
         console.error("Error in onSubmit:", error);
       }
     };
     getAllSkillLogos();
   }, [user, companyLogo]);
   return (
-    <div className="flex items-center justify-center h-20 w-20">
-      {user && skills ? (
-        <img src={skills.value} alt={skills.name} className="w-full h-auto" />
-      ) : (
-        <img
-          src={imageUrl.noLogo}
-          alt="No company logo"
-          className="w-full h-auto"
-        />
-      )}
-    </div>
+    !loading && (
+      <div className="flex items-center justify-center h-20 w-20">
+        {user && skills ? (
+          <img src={skills.value} alt={skills.name} className="w-full h-auto" />
+        ) : (
+          <img
+            src={imageUrl.noLogo}
+            alt="No company logo"
+            className="w-full h-auto"
+          />
+        )}
+      </div>
+    )
   );
 }
 

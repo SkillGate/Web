@@ -60,7 +60,7 @@ const Skill = ({ details }) => {
         </div>
       </div>
       <div>
-        <SkillRenderer user={user} requiredSkills={user?.skills} />
+        <SkillRenderer user={user} requiredSkills={user?.skills} change={change} />
         {/* <div>
           {user && skills && skills.length !== 0 ? (
             <div className="flex-align-center gap-2">

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { getAllSkills } from "../../apiCalls/skillApiCalls";
 
-function SkillRenderer({ user, requiredSkills }) {
+function SkillRenderer({ user, requiredSkills, change }) {
   const [skills, setSkills] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAllSkillLogos = async () => {
       console.log(user);
       console.log(requiredSkills);
+      setLoading(true);
       try {
         const {
           data: userData,
@@ -15,18 +17,18 @@ function SkillRenderer({ user, requiredSkills }) {
           error,
         } = await getAllSkills(requiredSkills, user?.accessToken);
         console.log(userData);
-        change();
+        setLoading(loading);
         setSkills((prev) => {
           return userData;
         });
       } catch (error) {
-        // setLoading(false);
+        setLoading(false);
         console.error("Error in onSubmit:", error);
       }
     };
     getAllSkillLogos();
-  }, [user, requiredSkills]);
-  return (
+  }, [user, requiredSkills, change]);
+  return !loading && (
     <div>
       {user && skills && skills.length !== 0 ? (
         <div className="flex-align-center gap-2">
