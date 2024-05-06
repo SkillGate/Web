@@ -67,6 +67,7 @@ const EmployerRegisterPage = () => {
   };
 
   const onSubmit = async (data) => {
+    // Check if the password and confirm password match
     if (password !== confirmPassword) {
       setError("confirmPassword", {
         type: "manual",
@@ -75,21 +76,40 @@ const EmployerRegisterPage = () => {
       return;
     } else {
       clearErrors("confirmPassword");
+      // Set the user type
       data.userType = "Employer";
+      // Concatenate the selected country dial code with the phone number
       data.phone = selectedCountry.dial_code + data.phone;
-      console.log(data);
-      try {
-        const userData = await Register(data);
-        console.log(userData);
-        if (!userData) {
+      // Extract the uploaded PDF document file
+      const businessRegistrationFile = data.businessRegistration[0];
+      // Check if a PDF document is uploaded
+      if (
+        businessRegistrationFile &&
+        businessRegistrationFile.type === "application/pdf"
+      ) {
+        // Handle PDF upload logic here
+        try {
+          // Call the Register API function with the form data
+          const userData = await Register(data);
+          console.log(userData);
+          // Check if registration was successful
+          if (!userData) {
+            setIsModalVisible(true);
+            reset(); // Optionally, you can clear the form values
+          } else {
+            router.push("/sign-in");
+          }
+        } catch (error) {
           setIsModalVisible(true);
-          reset(); // Optionally, you can clear the form values
-        } else {
-          router.push("/sign-in");
+          console.error("Error in onSubmit:", error);
         }
-      } catch (error) {
-        setIsModalVisible(true);
-        console.error("Error in onSubmit:", error);
+      } else {
+        // Display error message if no PDF document is uploaded
+        setError("businessRegistration", {
+          type: "manual",
+          message: "Please upload a PDF document for business registration",
+        });
+        return;
       }
     }
   };
@@ -322,6 +342,37 @@ const EmployerRegisterPage = () => {
               {errors.companyName && (
                 <span className="text-red-500 text-sm">
                   {errors.companyName.message}
+                </span>
+              )}
+            </div>
+
+            {/* Business Registration input */}
+            <div className="mb-4">
+              <label
+                htmlFor="businessRegistration"
+                className="register-from-label"
+              >
+                Business Registration (PDF)
+              </label>
+              <Controller
+                name="businessRegistration"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="file"
+                    id="businessRegistration"
+                    className={`register-from-input ${
+                      errors.businessRegistration
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
+                  />
+                )}
+              />
+              {errors.businessRegistration && (
+                <span className="text-red-500 text-sm">
+                  {errors.businessRegistration.message}
                 </span>
               )}
             </div>

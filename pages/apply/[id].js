@@ -24,6 +24,8 @@ const ApplyJob = ({ candidate }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
   const [candidateIdExist, setCandidateIdExist] = useState(false);
+  const [hasReloaded, setHasReloaded] = useState(false);
+  const [change, setChange] = useState(false);
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
@@ -45,7 +47,26 @@ const ApplyJob = ({ candidate }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [change]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (!hasReloaded) {
+        setHasReloaded(true);
+      } else {
+        event.preventDefault();
+        event.returnValue = ""; // For legacy browsers
+      }
+    };
+
+    // Attach the handleReload function to the window's beforeunload event
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [hasReloaded]);
 
   const {
     handleSubmit,
@@ -132,9 +153,7 @@ const ApplyJob = ({ candidate }) => {
             // jobData.accessToken = user.accessToken;
             // loginUser(jobData);
           }
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          setChange(!change);
         }
       } catch (error) {
         setLoading(false);
@@ -241,7 +260,7 @@ const ApplyJob = ({ candidate }) => {
                 />
                 <p className="required-style">Attach Candidate Profile</p>
                 <button
-                  className="btn disabled flex-align-center text-slate-300 gap-2 bg-dark-card hover:bg-hover-color"
+                  className="btn flex-align-center text-slate-300 gap-2 bg-dark-main dark:bg-primary dark:hover:bg-hover-color"
                   // onClick={() => fileInput.current.click()}
                 >
                   <BiLink />
