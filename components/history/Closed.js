@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { ImProfile } from "react-icons/im";
 
 const Closed = () => {
   const [loading, setLoading] = useState(true);
