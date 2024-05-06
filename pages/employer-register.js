@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { countryCodes } from "../data/countryCodeData";
 import { FaAngleDown } from "react-icons/fa";
+import { userTypes } from "../constants";
 
 const EmployerRegisterPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -76,41 +77,39 @@ const EmployerRegisterPage = () => {
       return;
     } else {
       clearErrors("confirmPassword");
-      // Set the user type
-      data.userType = "Employer";
-      // Concatenate the selected country dial code with the phone number
-      data.phone = selectedCountry.dial_code + data.phone;
-      // Extract the uploaded PDF document file
-      const businessRegistrationFile = data.businessRegistration[0];
-      // Check if a PDF document is uploaded
-      if (
-        businessRegistrationFile &&
-        businessRegistrationFile.type === "application/pdf"
-      ) {
-        // Handle PDF upload logic here
-        try {
-          // Call the Register API function with the form data
-          const userData = await Register(data);
-          console.log(userData);
-          // Check if registration was successful
-          if (!userData) {
-            setIsModalVisible(true);
-            reset(); // Optionally, you can clear the form values
-          } else {
-            router.push("/sign-in");
-          }
-        } catch (error) {
+      const { businessRegistration, ...withoutPdfData } = data;
+      withoutPdfData["userType"] = userTypes.employer;
+      withoutPdfData["phone"] = selectedCountry.dial_code + data.phone;
+      const businessRegistrationFile = businessRegistration[0];
+      console.log(withoutPdfData);
+
+      try {
+        const userData = await Register(withoutPdfData);
+        console.log(userData);
+        if (!userData) {
           setIsModalVisible(true);
-          console.error("Error in onSubmit:", error);
+          reset();
+        } else {
+          router.push("/sign-in");
         }
-      } else {
-        // Display error message if no PDF document is uploaded
-        setError("businessRegistration", {
-          type: "manual",
-          message: "Please upload a PDF document for business registration",
-        });
-        return;
+      } catch (error) {
+        setIsModalVisible(true);
+        console.error("Error in onSubmit:", error);
       }
+
+      // if (
+      //   businessRegistrationFile &&
+      //   businessRegistrationFile.type === "application/pdf"
+      // ) {
+
+      // } else {
+      //   // Display error message if no PDF document is uploaded
+      //   setError("businessRegistration", {
+      //     type: "manual",
+      //     message: "Please upload a PDF document for business registration",
+      //   });
+      //   return;
+      // }
     }
   };
 
