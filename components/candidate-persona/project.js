@@ -174,7 +174,7 @@ const Project = ({ details }) => {
                   {isProjectOpen && (
                     <ProjectPopup
                       onClose={handleProjectClose}
-                      details={details}
+                      details={user}
                       onChange={handleUserChangeState}
                       project={selectedProject}
                     />
@@ -189,7 +189,7 @@ const Project = ({ details }) => {
                 </p>
                 <h2 className="text-md font-semibold mt-3 mb-2">Skills</h2>
                 <div className="flex-align-center gap-2">
-                  <SkillRenderer user={user} requiredSkills={project?.skills} />
+                  <SkillRenderer user={user} requiredSkills={project?.skills} change={change} />
                 </div>
                 <h2 className="text-md font-semibold mt-3 mb-2">
                   Contribution

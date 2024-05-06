@@ -83,8 +83,8 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
       endYear: data.endYear ? data.endYear : endYear,
       skills: skills.length != 0 ? skills : project?.skills,
       endMonth: data.endMonth ? data.endMonth : endMonth,
+      gitHubLink: data.gitHubLink ? data.gitHubLink : gitHubLink,
       contribution: data.contribution ? data.contribution : contribution,
-      gitHubLink: data.gitHubLink ? data.gitHubLink : contribution,
       currentlyWorking: data.ongoing.checked
         ? data.ongoing.checked
         : currentlyWorking,
@@ -362,7 +362,7 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
                     id="contribution"
                     className="input !h-44 pt-2"
                     defaultValue={contribution}
-                    required
+                    // required
                   />
                 )}
               />
@@ -370,12 +370,11 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <Controller
-                name="githublink"
+                name="gitHubLink"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
-                    type="text"
                     id="gitHubLink"
                     className="input"
                     defaultValue={gitHubLink}
