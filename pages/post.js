@@ -107,10 +107,10 @@ const PostJob = () => {
       blogsCheckBox: data.socialProfile.blogs,
       githubCheckBox: data.socialProfile.github,
       linkedinCheckBox: data.socialProfile.linkedin,
-      w_education: data.fieldsWeight.education,
-      w_experience: data.fieldsWeight.experience,
-      w_technical_skills: data.fieldsWeight.technicalSkills,
-      w_soft_skills: data.fieldsWeight.softSkills,
+      w_education: parseFloat(data.fieldsWeight.education)/10,
+      w_experience: parseFloat(data.fieldsWeight.experience)/10,
+      w_technical_skills: parseFloat(data.fieldsWeight.technicalSkills)/10,
+      w_soft_skills: parseFloat(data.fieldsWeight.softSkills)/10,
     };
     console.log(actualData);
 
