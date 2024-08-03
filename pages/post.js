@@ -62,7 +62,11 @@ const PostJob = () => {
 
   const checkSubscription = (userData) => {
     setLoading(true);
-    if (userData && userData.subscription_type === "Free") {
+    if (
+      userData &&
+      userData.subscription_type === "Free" &&
+      userData.no_of_applications === 1
+    ) {
       router.push(`/subscription/${userData._id}`).then(() => {
         setLoading(false);
       });
@@ -122,82 +126,87 @@ const PostJob = () => {
       blogsCheckBox: data.socialProfile.blogs,
       githubCheckBox: data.socialProfile.github,
       linkedinCheckBox: data.socialProfile.linkedin,
-      w_education: parseFloat(data.fieldsWeight.education)/10,
-      w_experience: parseFloat(data.fieldsWeight.experience)/10,
-      w_technical_skills: parseFloat(data.fieldsWeight.technicalSkills)/10,
-      w_soft_skills: parseFloat(data.fieldsWeight.softSkills)/10,
+      w_education: parseFloat(data.fieldsWeight.education) / 10,
+      w_experience: parseFloat(data.fieldsWeight.experience) / 10,
+      w_technical_skills: parseFloat(data.fieldsWeight.technicalSkills) / 10,
+      w_soft_skills: parseFloat(data.fieldsWeight.softSkills) / 10,
     };
     console.log(actualData);
 
     setStoreData((prev) => actualData);
 
+    const uploadPromises = [];
+
     try {
       if (banner) {
-        storeImage(banner, "banner_url", actualData);
+        uploadPromises.push(storeImage(banner, "banner_url", actualData));
       }
       if (logo) {
-        storeImage(logo, "logo_url", actualData);
+        uploadPromises.push(storeImage(logo, "logo_url", actualData));
       }
     } catch (error) {
       console.error("Error in image upload:", error);
       setLoading(false);
     }
+
+    Promise.all(uploadPromises)
+      .then(() => {
+        saveData(actualData);
+      })
+      .catch((error) => {
+        console.error("Error in image upload:", error);
+        setLoading(false);
+      });
+
     if (!(banner && logo)) {
       saveData(actualData);
     }
   };
 
   const storeImage = (file, fileNameData, actualData) => {
-    const fileName = new Date().getTime() + file.name;
-    const storage = getStorage(app);
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    return new Promise((resolve, reject) => {
+      const fileName = new Date().getTime() + file.name;
+      const storage = getStorage(app);
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const prevProgress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const prevProgress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        console.log("Upload is " + prevProgress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
+          console.log("Upload is " + prevProgress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+          }
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Image upload unsuccessful!",
+          });
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            actualData[fileNameData] = downloadURL;
+            setStoreData((prevData) => ({
+              ...prevData,
+              [fileNameData]: downloadURL,
+            }));
+            resolve();
+          });
         }
-      },
-      (error) => {
-        // Handle unsuccessful uploads
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Image added unsuccess!",
-        });
-      },
-      () => {
-        // Handle successful uploads on complete
-        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          actualData[fileNameData] = downloadURL;
-
-          setStoreData((prevData) => ({
-            ...prevData,
-            fileNameData: downloadURL,
-          }));
-
-          if (banner && !logo) {
-            saveData(actualData);
-          }
-          if (logo) {
-            saveData(actualData);
-          }
-        });
-      }
-    );
+      );
+    });
   };
 
   const saveData = async (actualData) => {
@@ -218,7 +227,6 @@ const PostJob = () => {
       } else {
         setIsModalVisibleSuccess(true);
         jobData.accessToken = user.accessToken;
-        // loginUser(jobData);
       }
       setTimeout(() => {
         window.location.reload();
