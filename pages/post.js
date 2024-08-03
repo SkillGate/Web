@@ -17,6 +17,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase/firebase";
+import { useRouter } from "next/router";
 
 const PostJob = () => {
   const logoInput = useRef(null);
@@ -36,6 +37,7 @@ const PostJob = () => {
   const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
   const [storeData, setStoreData] = useState({});
 
+  const router = useRouter();
   const { loginUser } = useUiContext();
 
   const weightsOfFields = [
@@ -49,12 +51,25 @@ const PostJob = () => {
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
       setUser((prevUser) => {
         const userData = JSON.parse(storedUserData);
         return userData;
       });
+      checkSubscription(userData);
     }
   }, [change]);
+
+  const checkSubscription = (userData) => {
+    setLoading(true);
+    if (userData && userData.subscription_type === "Free") {
+      router.push(`/subscription/${userData._id}`).then(() => {
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  };
 
   const {
     handleSubmit,

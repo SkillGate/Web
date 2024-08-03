@@ -4,8 +4,8 @@ import { FaArrowAltCircleRight } from "react-icons/fa";
 const AboutUsSection = () => {
   return (
     <section id="about" className="py-16">
-      <div className="padding-container mx-auto flex flex-col-reverse md:flex-row items-center">
-        <div className="w-full md:w-1/2 mb-8 md:mb-0">
+      <div className="padding-container mx-auto flex flex-col-reverse md:flex-row items-center justify-center">
+        <div className="w-full md:w-1/2 mb-8 md:mb-0 flex justify-center">
           <img
             src="https://res.cloudinary.com/dsqosc2ig/image/upload/v1702403838/SkillGate/5351347-removebg-preview_gmirp9.png"
             alt="Square Image"
