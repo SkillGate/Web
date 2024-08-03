@@ -249,3 +249,61 @@ export const GetUserData = async (userId, token) => {
     return { data, loading, error };
   }
 };
+
+export const SubscribePackage = async (userId, token) => {
+  let loading = false;
+  let error = null;
+  let data = [];
+  if (!(userId && token)) {
+    console.log("User Id " + userId);
+    console.log("Token " + token);
+    error = "User Id or token must be provided";
+    return { data, loading, error };
+  }
+  try {
+    const res = await publicAuthRequest.put(`/user/subscription/${userId}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res);
+    data = res.data;
+    // return res.data;
+    return { data, loading, error };
+  } catch (err) {
+    console.error(err);
+    // throw new Error(err.message);
+    error = err.message;
+    data = null;
+    return { data, loading, error };
+  }
+};
+
+export const IncreaseJobPosting = async (userId, token) => {
+  let loading = false;
+  let error = null;
+  let data = [];
+  if (!(userId && token)) {
+    console.log("User Id " + userId);
+    console.log("Token " + token);
+    error = "User Id or token must be provided";
+    return { data, loading, error };
+  }
+  try {
+    const res = await publicAuthRequest.put(`/user/subscription/${userId}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res);
+    data = res.data;
+    // return res.data;
+    return { data, loading, error };
+  } catch (err) {
+    console.error(err);
+    // throw new Error(err.message);
+    error = err.message;
+    data = null;
+    return { data, loading, error };
+  }
+};
