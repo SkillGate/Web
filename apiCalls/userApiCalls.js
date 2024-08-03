@@ -290,7 +290,7 @@ export const IncreaseJobPosting = async (userId, token) => {
     return { data, loading, error };
   }
   try {
-    const res = await publicAuthRequest.put(`/user/subscription/${userId}`, {
+    const res = await publicAuthRequest.put(`/user/applications/${userId}`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
