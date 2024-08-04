@@ -227,3 +227,58 @@ export const getEAIJobComparison = async (jobId, token, candidateData, category)
   }
 };
 
+//isRemove == true when this endpoint hit
+export const closeJob = async (jobId, token) => {
+  let loading = true;
+  let error = null;
+  let data = [];
+
+  const requestData = {
+    isRemoved : true
+  }
+
+  try {
+    const res = await publicJobRequest.put(`/job/${jobId}/isRemoved`, requestData, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res.data);
+    loading = false;
+    data = res.data;
+    return { data, loading, error };
+  } catch (err) {
+    console.error(err);
+    loading = false;
+    error = err;
+    return { data, loading, error };
+  }
+};
+
+// isActive = false when this endpoint hit
+export const removeJob = async (jobId, token) => {
+  let loading = true;
+  let error = null;
+  let data = [];
+
+  const requestData = {
+    isRemoved : true
+  }
+
+  try {
+    const res = await publicJobRequest.put(`/job/${jobId}/isActive`, requestData, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res.data);
+    loading = false;
+    data = res.data;
+    return { data, loading, error };
+  } catch (err) {
+    console.error(err);
+    loading = false;
+    error = err;
+    return { data, loading, error };
+  }
+};

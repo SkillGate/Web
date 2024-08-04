@@ -66,6 +66,14 @@ footer a:hover {
   @apply border border-primary text-primary bg-white hover:text-white hover:bg-hover-btn-color;
 }
 
+.btn-error-outline {
+  @apply border border-errorRed text-errorRed bg-white hover:text-white hover:bg-errorRed;
+}
+
+.btn-disable-outline {
+  @apply border border-gray-400 text-gray-700 bg-white cursor-not-allowed opacity-50;
+}
+
 .btn-primary-light {
   @apply bg-primary text-purple-haze hover:bg-hover-btn-color;
 }
