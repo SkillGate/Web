@@ -21,6 +21,9 @@ import app from "../../firebase/firebase";
 import { getJob } from "../../apiCalls/jobApiCalls";
 
 const PostJob = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
   const logoInput = useRef(null);
   const bannerInput = useRef(null);
   const [logo, setLogo] = useState(null);
@@ -38,11 +41,8 @@ const PostJob = () => {
   const [isModalVisibleSuccess, setIsModalVisibleSuccess] = useState(false);
   const [storeData, setStoreData] = useState({});
   const [job, setJob] = useState([]);
-
-  const router = useRouter();
+  
   const { loginUser } = useUiContext();
-
-  const { id } = router.query;
 
   const weightsOfFields = [
     { key: "education", label: "Education" },
@@ -1111,4 +1111,3 @@ const PostJob = () => {
 };
 
 export default PostJob;
-//
