@@ -18,11 +18,10 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../../firebase/firebase";
-import { getStaticProps } from 'next';
 
-const PostSingleJob = ({ params }) => {
+const PostSingleJob = () => {
   const router = useRouter();
-  const { id } = params;
+  const { id } = router.query;
 
   const logoInput = useRef(null);
   const bannerInput = useRef(null);
@@ -589,7 +588,7 @@ const PostSingleJob = ({ params }) => {
                     <Controller
                       name={`requirements_and_responsibilities[${index}].responsibilityfield`}
                       control={control}
-                      defaultValue={job?.requirements_and_responsibilities[index]}
+                      // defaultValue={job?.requirements_and_responsibilities[index]}
                       render={({ field }) => (
                         <textarea
                           {...field}
