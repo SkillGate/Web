@@ -53,28 +53,26 @@ const PostSingleJob = () => {
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
-    const userData = JSON.parse(storedUserData);
+
     if (storedUserData) {
-      setUser((prevUser) => {
-        return userData;
-      });
-      fetchData(userData?.accessToken);
+      const userData = JSON.parse(storedUserData);
+      
+      if (userData) {
+        setUser(userData);
+        fetchData(userData.accessToken);
+      }
     }
-  }, [change, id]);
+  }, [id, fetchData]);
 
   const fetchData = async (token) => {
     setLoading(true);
     try {
-      const { data: jobData = [], loading } = await getJob(
-        id,
-        token
-      );
+      const { data: jobData = [] } = await getJob(id, token);
       console.log(jobData);
       setJob(jobData);
-      // setBanner(jobData?.banner_url);
-      setLoading(loading);
     } catch (error) {
       console.error("Error job fetching:", error);
+    } finally {
       setLoading(false);
     }
   };
