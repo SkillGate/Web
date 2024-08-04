@@ -18,10 +18,11 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../../firebase/firebase";
+import { getStaticProps } from 'next';
 
-const PostSingleJob = () => {
+const PostSingleJob = ({ params }) => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = params;
 
   const logoInput = useRef(null);
   const bannerInput = useRef(null);
@@ -62,7 +63,7 @@ const PostSingleJob = () => {
         fetchData(userData.accessToken);
       }
     }
-  }, [id, fetchData]);
+  }, [id]);
 
   const fetchData = async (token) => {
     setLoading(true);
