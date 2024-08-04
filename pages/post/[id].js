@@ -6,19 +6,18 @@ import Link from "next/link";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdAdd, IoMdRemove } from "react-icons/io";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
+import { useUiContext } from "../../contexts/UiContext";
+import ModelPopup from "../../components/common/ModelPopup";
+import FullPageLoader from "../../components/common/FullPageLoader";
+import { addJob, getJob } from "../../apiCalls/jobApiCalls";
 import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { useRouter } from "next/router";
-import { useUiContext } from "../../contexts/UiContext";
-import ModelPopup from "../../components/common/ModelPopup";
-import FullPageLoader from "../../components/common/FullPageLoader";
-import { addJob } from "../../apiCalls/jobApiCalls";
 import app from "../../firebase/firebase";
-import { getJob } from "../../apiCalls/jobApiCalls";
 
 const PostSingleJob = () => {
   const router = useRouter();
@@ -61,7 +60,7 @@ const PostSingleJob = () => {
       });
       fetchData(userData?.accessToken);
     }
-  }, [change]);
+  }, [change, id]);
 
   const fetchData = async (token) => {
     setLoading(true);
