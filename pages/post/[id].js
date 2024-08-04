@@ -20,7 +20,7 @@ import { addJob } from "../../apiCalls/jobApiCalls";
 import app from "../../firebase/firebase";
 import { getJob } from "../../apiCalls/jobApiCalls";
 
-const PostJob = () => {
+const PostSingleJob = () => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -1110,4 +1110,4 @@ const PostJob = () => {
   );
 };
 
-export default PostJob;
+export default PostSingleJob;
