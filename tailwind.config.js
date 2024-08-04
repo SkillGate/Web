@@ -37,6 +37,7 @@ module.exports = {
         // secondaryGreen: "#0BAB7C",
         secondaryGreen: "#896FBC",
         secondaryRed: "#FC615C",
+        errorRed: "#ff3333",
         "hover-btn-color": "#420264",
         "hover-btn-color2": "#C55FFC",
         "hover-color": "#2d2d39",

@@ -5,10 +5,6 @@ import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdAdd, IoMdRemove } from "react-icons/io";
-import { addJob } from "../apiCalls/jobApiCalls";
-import { useUiContext } from "../contexts/UiContext";
-import ModelPopup from "../components/common/ModelPopup";
-import FullPageLoader from "../components/common/FullPageLoader";
 import Swal from "sweetalert2";
 import {
   getStorage,
@@ -16,8 +12,12 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import app from "../firebase/firebase";
 import { useRouter } from "next/router";
+import { useUiContext } from "./../../contexts/UiContext";
+import ModelPopup from "./../../components/common/ModelPopup";
+import FullPageLoader from "./../../components/common/FullPageLoader";
+import { addJob } from "./../../apiCalls/jobApiCalls";
+import app from "./../../firebase/firebase";
 
 const PostJob = () => {
   const logoInput = useRef(null);
@@ -62,17 +62,14 @@ const PostJob = () => {
 
   const checkSubscription = (userData) => {
     setLoading(true);
-    if (
-      userData &&
-      userData.subscription_type === "Free" &&
-      userData.no_of_applications === 1
-    ) {
-      router.push(`/subscription/${userData._id}`).then(() => {
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
+    if (userData && userData.subscription_type === "Free") {
+      if (userData.no_of_applications === 1) {
+        router.push(`/subscription/${userData._id}`).then(() => {
+          setLoading(false);
+        });
+      }
     }
+    setLoading(false);
   };
 
   const {
@@ -1017,6 +1014,7 @@ const PostJob = () => {
               If you wish to prioritize fields for the shortlisting process,
               consider assigning weights to them to reflect their importance.
             </h2>
+
             <div className="form-input w-full sm:flex-1 relative mb-5">
               <Controller
                 name="fieldsWeight"
