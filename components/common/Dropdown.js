@@ -26,8 +26,9 @@ const Dropdown = () => {
 
   const userLogout = () => {
     logoutUser();
-    router.push("");
-    window.location.href = "";
+    router.push("https://skillgate.github.io/Web/");
+    window.location.href = "https://skillgate.github.io/Web/";
+    // window.location.reload();
   };
 
   const userProfile = () => {
@@ -59,15 +60,15 @@ const Dropdown = () => {
             <BiBriefcase className="text-muted" />
             <span className="text-muted">My Jobs</span>
           </div>
-          <Link href={"/"}>
-            <div
-              className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg"
-              // onClick={userLogout}
-            >
-              <BiLogOut className="text-muted" />
-              <span className="text-muted">Sign out</span>
-            </div>
-          </Link>
+          {/* <Link href={"/"}> */}
+          <div
+            className="flex-align-center space-x-3 p-2 sm:cursor-pointer hover:bg-slate-100 dark:hover:bg-hover-color rounded-lg"
+            onClick={userLogout}
+          >
+            <BiLogOut className="text-muted" />
+            <span className="text-muted">Sign out</span>
+          </div>
+          {/* </Link> */}
         </motion.div>
       )}
     </>

@@ -65,7 +65,7 @@ const Navbar = () => {
     e.preventDefault();
     if (search) {
       setSearch("");
-      router.push(`/jobs/search/${search}`);
+      router.push(`/employer/search/${search}`);
     }
   };
 

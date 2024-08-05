@@ -7,10 +7,16 @@ import { FaRegBookmark } from "react-icons/fa6";
 import RelatedJobs from "../../components/singleJob/RelatedJobs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getAllJob, getJob, savedJob } from "../../apiCalls/jobApiCalls";
+import {
+  closeJob,
+  getAllJob,
+  getJob,
+  savedJob,
+} from "../../apiCalls/jobApiCalls";
 import Back from "../../components/common/Back";
 import { imageUrl, userTypes } from "../../constants";
 import FullPageLoader from "../../components/common/FullPageLoader";
+import Swal from "sweetalert2";
 
 const SingleJob = () => {
   const router = useRouter();
@@ -19,6 +25,7 @@ const SingleJob = () => {
   const [job, setJob] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [change, setChange] = useState(true);
   // const [user, setUser] = useState(JSON.parse(localStorage.getItem('userData')) || {});
   const [user, setUser] = useState({});
 
@@ -41,7 +48,7 @@ const SingleJob = () => {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, change]);
 
   const calculateDate = (date) => {
     const postedDate = new Date(date);
@@ -139,14 +146,41 @@ const SingleJob = () => {
         // reset();
         console.log("Saved Job");
       } else {
-        change();
+        Swal.fire({
+          icon: 'error',
+          title: 'Job save Failed',
+          text: 'An unexpected error occurred. Please try again.',
+        });
       }
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 2000);
+      // setLoading(false);
     } catch (error) {
       // setLoading(false);
       console.error("Error in onSubmit:", error);
+    }
+  };
+
+  const closeJobVacancy = async (jobId) => {
+    setLoading(true);
+    console.log(jobId);
+    try {
+      const { data: jobData, loading, error } = await closeJob(jobId, user?.accessToken);
+      console.log(jobData);
+      // setLoading(loading);
+      if (!jobData || jobData.isRemove === true) {
+        // setIsModalVisible(true);
+        // reset();
+        console.log("Close Job");
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Job Close Failed',
+          text: 'An unexpected error occurred. Please try again.',
+        });
+      }
+      setLoading(loading);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error in close job:", error);
     }
   };
 
@@ -343,7 +377,9 @@ const SingleJob = () => {
 
                 {/*---------------------------------------- Job Experience------------------------------------- */}
                 <div className="mt-4">
-                  <h1 className="text-lg font-semibold">What You&apos;ll Bring</h1>
+                  <h1 className="text-lg font-semibold">
+                    What You&apos;ll Bring
+                  </h1>
                   <div>
                     <div className="flex-align-center gap-x-2 mt-3">
                       <BiCircle className="text-xs text-primary flex-shrink-0" />
@@ -370,6 +406,17 @@ const SingleJob = () => {
                         apply now
                       </a>
                     </Link>
+                  )}
+                  {user?.userType === userTypes.employer && (
+                    <div
+                      className={`btn flex-shrink-0 ${
+                        job.isRemoved ? "btn-disable-outline" : "btn-error-outline"
+                      } ${job.isRemoved ? "cursor-not-allowed" : ""}`}
+                      onClick={() => !job.isRemoved && closeJobVacancy(_id)}
+                      style={{ pointerEvents: job.isRemoved ? "none" : "auto" }}
+                    >
+                      {job.isRemoved ? "Job Closed" : "Close Job"}
+                    </div>
                   )}
                 </div>
               </div>

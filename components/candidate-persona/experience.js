@@ -147,7 +147,7 @@ const Experience = ({ details }) => {
           )}
         </div>
       </div>
-      {user && user.volunteering && user.volunteering.length !== 0 ? (
+      {user && user?.experience && user?.experience?.length !== 0 ? (
         <div>
           {user.experience.map((experience) => (
             <div key={experience._id}>

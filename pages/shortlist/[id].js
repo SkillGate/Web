@@ -17,7 +17,9 @@ const Shortlist = () => {
 
   const [job, setJob] = useState([]);
   const [candidateList, setCandidateList] = useState([]);
-  const [candidateQualificationList, setCandidateQualificationList] = useState([]);
+  const [candidateQualificationList, setCandidateQualificationList] = useState(
+    []
+  );
   const [candidateShortlistedList, setCandidateShortlistedList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
@@ -26,7 +28,7 @@ const Shortlist = () => {
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
     console.log(storedUserData);
-    setUser((prev)=> storedUserData);
+    setUser((prev) => storedUserData);
     const fetchData = async () => {
       try {
         const { data: jobData = [], loading } = await getJob(
@@ -37,7 +39,8 @@ const Shortlist = () => {
         setJob((prev) => jobData);
         await getCandidateData(
           jobData?.candidate_id_list,
-          storedUserData?.accessToken
+          storedUserData?.accessToken,
+          jobData
         );
         setLoading(loading);
       } catch (error) {
@@ -52,7 +55,7 @@ const Shortlist = () => {
     setActiveTab(tabNumber);
   };
 
-  const getCandidateData = async (candidate_id_list, token) => {
+  const getCandidateData = async (candidate_id_list, token, jobData) => {
     console.log(candidate_id_list);
     if (candidate_id_list?.length != 0) {
       setApplyJob(true);
@@ -82,7 +85,7 @@ const Shortlist = () => {
           let applyCandidates = [];
           candidateData?.forEach((candidate) => {
             let score = candidate?.persona_matching_score
-              ? candidate.persona_matching_score.overall_score
+              ? candidate?.persona_matching_score?.overall_score
               : 0;
             applyCandidates.push({
               id: candidate?._id,
@@ -91,6 +94,13 @@ const Shortlist = () => {
               email: candidate?.email,
               score: score,
             });
+          });
+
+          applyCandidates.forEach((candidate) => {
+            let score = jobData?.persona_matching_score?.find(
+              (personaScore) => personaScore.candidate_id === candidate.id
+            )?.overall_score || 0;
+            candidate.score = score.toFixed(2); // Round the score to 2 decimal places
           });
 
           // Sort the applyCandidates array based on the overall_score in descending order
@@ -111,7 +121,6 @@ const Shortlist = () => {
           });
           return applyCandidates;
         });
-        
       } catch (error) {
         console.error("Error job fetching:", error);
       }
@@ -140,7 +149,7 @@ const Shortlist = () => {
       title: "View CV",
       icon: "IoDocumentTextOutline",
       color: "yellow",
-      url: "",
+      url: `/candidate-persona`,
     },
     {
       name: "GitHub",
@@ -178,7 +187,7 @@ const Shortlist = () => {
       title: "View CV",
       icon: "IoDocumentTextOutline",
       color: "yellow",
-      url: "",
+      url: `/candidate-persona`,
     },
     {
       name: "Benefits",
@@ -193,7 +202,7 @@ const Shortlist = () => {
         "Access contributions made to projects via their respective GitHub URLs",
       icon: "IoLogoGithub",
       color: "green",
-      url: "github",
+      url: "/github",
     },
     {
       name: "LinkedIn",

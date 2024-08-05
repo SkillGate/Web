@@ -37,6 +37,7 @@ const Reasoning = () => {
   const [barGraphData, setBarGraphData] = useState({});
   const [candidatePersonaData, setCandidatePersonaData] = useState({});
   const [xAIData, setXAIData] = useState({});
+  const [change, setChange] = useState(false);
 
   const [user, setUser] = useState(null);
 
@@ -65,10 +66,14 @@ const Reasoning = () => {
       setUser((prev) => userJson);
       setLoading(true);
       try {
-        const { data: jobData = [], loading } = await getJob(
-          jobId,
-          userJson?.accessToken
-        );
+        const {
+          data: jobData = [],
+          loading,
+          error,
+        } = await getJob(jobId, userJson?.accessToken);
+        if (error) {
+          setChange(!change);
+        }
         console.log(jobData);
         setJob((prev) => jobData);
         setPersonaScoring((prev) => {
@@ -116,11 +121,12 @@ const Reasoning = () => {
         setLoading(loading);
       } catch (error) {
         console.error("Error job fetching:", error);
+        setChange(!change);
         setLoading(false);
       }
     };
     fetchData();
-  }, [userId, jobId]);
+  }, [userId, jobId, change]);
 
   const fetchUserData = async () => {
     try {
@@ -261,32 +267,46 @@ const Reasoning = () => {
           <div className="w-full h-full flex flex-col gap-4 m-4 justify-center item-center self-center border-r-2">
             <div className="flex text-2xl font-semibold">Overall Score</div>
             <div className="flex text-2xl font-semibold">
-              {personaScoring?.overall_score}%
+              {personaScoring?.overall_score
+                ? personaScoring?.overall_score
+                : 0}
+              %
             </div>
           </div>
           <div className="w-full h-full flex flex-col gap-4 justify-center">
             <div className="flex text-2xl font-semibold">Contribution</div>
             <div className="flex flex-row gap-2">
               <div className="flex">Education</div>
-              <div className="flex">{personaScoring?.education}%</div>
+              <div className="flex">
+                {personaScoring?.education ? personaScoring?.education : 0}%
+              </div>
             </div>
             <div className="flex flex-row gap-2">
               <div className="flex">Technical Skills</div>
-              <div className="flex">{personaScoring?.technical_skills}%</div>
+              <div className="flex">
+                {personaScoring?.technical_skills
+                  ? personaScoring?.technical_skills
+                  : 0}
+                %
+              </div>
             </div>
             <div className="flex flex-row gap-2">
               <div className="flex">Soft Skills</div>
-              <div className="flex">{personaScoring?.soft_skills}%</div>
+              <div className="flex">
+                {personaScoring?.soft_skills ? personaScoring?.soft_skills : 0}%
+              </div>
             </div>
             <div className="flex flex-row gap-2">
               <div className="flex">Experience</div>
-              <div className="flex">{personaScoring?.experience}%</div>
+              <div className="flex">
+                {personaScoring?.experience ? personaScoring?.experience : 0}%
+              </div>
             </div>
           </div>
         </div>
         <div className="flex flex-row w-1/2 rounded-md overflow-hidden border p-4 gap-4 bg-white dark:bg-dark-main">
           <div className="w-1/2 h-full flex flex-col gap-4 justify-center item-center self-center border-r-2">
-            <Pie data={barGraphData} />
+            <Pie data={barGraphData ? barGraphData : data} />
           </div>
           <div className="w-1/2 h-full flex flex-col gap-4 justify-center">
             <div className="flex text-2xl font-semibold">Allocated Weights</div>

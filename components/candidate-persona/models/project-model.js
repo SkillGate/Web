@@ -29,9 +29,21 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
     project?.currentlyWorking
   );
 
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(project?.skills || []);
   const [newSkill, setNewSkill] = useState("");
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+
+  // useEffect(() => {
+  //   const addExistingSkills = () => {
+  //     if (user && user.skills && user.skills.length !== 0) {
+  //       setSkills([]);
+  //       user.skills.map((skill) => {
+  //         setSkills((prevSkills) => [...user.skills]);
+  //       });
+  //     }
+  //   };
+  //   addExistingSkills();
+  // }, []);
 
   useEffect(() => {
     const changeProperties = () => {
@@ -83,8 +95,8 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
       endYear: data.endYear ? data.endYear : endYear,
       skills: skills.length != 0 ? skills : project?.skills,
       endMonth: data.endMonth ? data.endMonth : endMonth,
+      gitHubLink: data.gitHubLink ? data.gitHubLink : gitHubLink,
       contribution: data.contribution ? data.contribution : contribution,
-      gitHubLink: data.gitHubLink ? data.gitHubLink : contribution,
       currentlyWorking: data.ongoing.checked
         ? data.ongoing.checked
         : currentlyWorking,
@@ -323,10 +335,8 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
               <label htmlFor="projectOverview">Project overview</label>
             </div>
             <h2 className="mt-4 mb-4">Skills</h2>
-            <button type="click" onClick={handleAddSkill}>
-              <IoMdAdd size={20} className="text-primary"></IoMdAdd>
-            </button>
-            <div className="mb-5">
+
+            <div className="mb-5 flex items-center gap-4">
               <input
                 type="text"
                 className="outline-none h-8 border border-slate-300  dark:border-hover-color bg-main dark:bg-dark-main rounded-md px-[0.8rem] w-full text-base focus:!border-primary placeholder-gray-400 dark:placeholder-gray-500"
@@ -335,6 +345,9 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
                 defaultValue={skillsEx}
                 onChange={(e) => setNewSkill(e.target.value)}
               />
+              <button type="click" onClick={handleAddSkill}>
+                <IoMdAdd size={20} className="text-primary"></IoMdAdd>
+              </button>
             </div>
             <div className="flex flex-wrap gap-2 mb-10">
               {skills.map((skill, index) => (
@@ -362,7 +375,7 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
                     id="contribution"
                     className="input !h-44 pt-2"
                     defaultValue={contribution}
-                    required
+                    // required
                   />
                 )}
               />
@@ -370,12 +383,11 @@ const ProjectPopup = ({ onClose, details, onChange, project }) => {
             </div>
             <div className="form-input w-full sm:flex-1 relative">
               <Controller
-                name="githublink"
+                name="gitHubLink"
                 control={control}
                 render={({ field }) => (
                   <input
                     {...field}
-                    type="text"
                     id="gitHubLink"
                     className="input"
                     defaultValue={gitHubLink}
